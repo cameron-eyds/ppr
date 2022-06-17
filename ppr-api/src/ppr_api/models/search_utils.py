@@ -296,11 +296,6 @@ FROM search_requests sc, search_results sr
 WHERE sc.id = sr.search_id
   AND sc.account_id = '?'
   AND sc.search_ts > ((now() at time zone 'utc') - interval '{str(GET_HISTORY_DAYS_LIMIT)} days')
-  AND NOT EXISTS (SELECT sc2.id
-                    FROM search_requests sc2
-                   WHERE sc2.id = sc.id
-                     AND sc2.search_type IN ('MM', 'MI', 'MO', 'MS')
-                     AND sc2.pay_path IS NULL)
 ORDER BY sc.search_ts DESC
 FETCH FIRST {str(ACCOUNT_SEARCH_HISTORY_MAX_SIZE)} ROWS ONLY
 """
@@ -320,11 +315,6 @@ SELECT sc.id, sc.search_ts, sc.api_criteria, sc.total_results_size, sc.returned_
 FROM search_requests sc, search_results sr
 WHERE sc.id = sr.search_id
   AND sc.account_id = '?'
-  AND NOT EXISTS (SELECT sc2.id
-                    FROM search_requests sc2
-                   WHERE sc2.id = sc.id
-                     AND sc2.search_type IN ('MM', 'MI', 'MO', 'MS')
-                     AND sc2.pay_path IS NULL)
 ORDER BY sc.search_ts DESC
 FETCH FIRST {str(ACCOUNT_SEARCH_HISTORY_MAX_SIZE)} ROWS ONLY
 """
@@ -344,11 +334,6 @@ FROM search_requests sc, search_results sr
 WHERE sc.id = sr.search_id
   AND sc.account_id = '?'
   AND sc.search_ts > ((now() at time zone 'utc') - interval '{str(GET_HISTORY_DAYS_LIMIT)} days')
-  AND NOT EXISTS (SELECT sc2.id
-                    FROM search_requests sc2
-                   WHERE sc2.id = sc.id
-                     AND sc2.search_type IN ('MM', 'MI', 'MO', 'MS')
-                     AND sc2.pay_path IS NULL)
 ORDER BY sc.search_ts DESC
 FETCH FIRST {str(ACCOUNT_SEARCH_HISTORY_MAX_SIZE)} ROWS ONLY
 """
@@ -367,18 +352,6 @@ SELECT sc.id, sc.search_ts, sc.api_criteria, sc.total_results_size, sc.returned_
 FROM search_requests sc, search_results sr
 WHERE sc.id = sr.search_id
   AND sc.account_id = '?'
-  AND NOT EXISTS (SELECT sc2.id
-                    FROM search_requests sc2
-                   WHERE sc2.id = sc.id
-                     AND sc2.search_type IN ('MM', 'MI', 'MO', 'MS')
-                     AND sc2.pay_path IS NULL)
 ORDER BY sc.search_ts DESC
 FETCH FIRST {str(ACCOUNT_SEARCH_HISTORY_MAX_SIZE)} ROWS ONLY
 """
-
-
-def format_mhr_number(request_json):
-    """Trim and pad with zeroes search query mhr number query."""
-    mhr_num: str = request_json['criteria']['value']
-    mhr_num = mhr_num.strip().rjust(6, '0')
-    request_json['criteria']['value'] = mhr_num

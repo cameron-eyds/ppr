@@ -23,9 +23,9 @@ from urllib3.util.retry import Retry
 
 
 SYSTEM_ROLE = 'system'
-STAFF_ROLE = 'ppr_staff'  # Share single role/account id with ppr for search, registration history.
+STAFF_ROLE = 'ppr_staff'  # 'mhr_staff'
 COLIN_ROLE = 'colin'
-MHR_ROLE = 'mhr'
+MHR_ROLE = 'ppr'  # 'mhr'
 BASIC_USER = 'basic'
 PRO_DATA_USER = 'pro_data'
 PUBLIC_USER = 'public_user'
@@ -213,23 +213,19 @@ def is_staff(jwt: JwtManager) -> bool:  # pylint: disable=too-many-return-statem
     return False
 
 
-def is_bcol_help(account_id: str, jwt: JwtManager = None) -> bool:
+def is_bcol_help(account_id: str) -> bool:
     """Return True if the account id is a bcol help account id."""
-    if jwt is not None and jwt.validate_roles([BCOL_HELP]):
-        return True
     return account_id is not None and account_id == BCOL_HELP
 
 
-def is_staff_account(account_id: str, jwt: JwtManager = None) -> bool:
-    """Return True if the account id is a registries staff or has a staff role."""
-    if jwt is not None and jwt.validate_roles([STAFF_ROLE]):
-        return True
+def is_staff_account(account_id: str) -> bool:
+    """Return True if the account id is a registries staff or sbc office account id."""
     return account_id is not None and account_id == STAFF_ROLE
 
 
-def is_reg_staff_account(account_id: str, jwt: JwtManager = None) -> bool:
+def is_reg_staff_account(account_id: str) -> bool:
     """Return True if the account id is a staff registries account id."""
-    return is_staff_account(account_id, jwt)
+    return account_id is not None and account_id == STAFF_ROLE
 
 
 def is_sbc_office_account(token: str, account_id: str) -> bool:

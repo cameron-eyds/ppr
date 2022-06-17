@@ -129,8 +129,6 @@ class SearchRequest(db.Model):  # pylint: disable=too-many-instance-attributes
             else:
                 status = 'HISTORIC'
         timestamp = row[3]
-        value: str = str(row[8])
-        year = int(value) if value.isnumeric() else 0
         result_json = {
             'mhrNumber': str(row[0]),
             'status': status,
@@ -138,7 +136,7 @@ class SearchRequest(db.Model):  # pylint: disable=too-many-instance-attributes
             'homeLocation': str(row[6]).strip(),
             'serialNumber': str(row[7]).strip(),
             'baseInformation': {
-                'year': year,
+                'year': int(row[8]),
                 'make': str(row[9]).strip(),
                 'model': ''
             }
@@ -226,8 +224,6 @@ class SearchRequest(db.Model):  # pylint: disable=too-many-instance-attributes
         if rows is not None:
             results_json = []
             for row in rows:
-                # result = SearchRequest.__build_search_result(row)
-                # current_app.logger.debug(result)
                 results_json.append(SearchRequest.__build_search_result(row))
             self.returned_results_size = len(results_json)
             self.total_results_size = self.returned_results_size
@@ -265,10 +261,6 @@ class SearchRequest(db.Model):  # pylint: disable=too-many-instance-attributes
     def search(self):
         """Execute a search with the previously set search type and criteria."""
         use_legacy_db: bool = current_app.config.get('USE_LEGACY_DB', True)
-        if self.search_type == self.SearchTypes.MANUFACTURED_HOME_NUM:
-            # Format before searching
-            search_utils.format_mhr_number(self.request_json)
-
         if use_legacy_db:
             self.search_db2()
         else:

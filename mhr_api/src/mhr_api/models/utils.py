@@ -22,7 +22,6 @@ from datetime import time, timedelta, timezone
 
 import re
 import pytz
-from datedelta import datedelta
 from flask import current_app
 
 
@@ -38,229 +37,14 @@ TO_DB_SEARCH_TYPE = {
 }
 KEY_ALLOWED_CHARS: str = '&#ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
 
-# DB party types
-PARTY_DEBTOR_BUS = 'DB'
-PARTY_DEBTOR_IND = 'DI'
-PARTY_REGISTERING = 'RG'
-PARTY_SECURED = 'SP'
 
-# DB registration class types
-REG_CLASS_AMEND = 'AMENDMENT'
-REG_CLASS_AMEND_COURT = 'COURTORDER'
-REG_CLASS_CHANGE = 'CHANGE'
-REG_CLASS_CROWN = 'CROWNLIEN'
-REG_CLASS_DISCHARGE = 'DISCHARGE'
-REG_CLASS_FINANCING = 'PPSALIEN'
-REG_CLASS_MISC = 'MISCLIEN'
-REG_CLASS_PPSA = 'PPSALIEN'
-REG_CLASS_RENEWAL = 'RENEWAL'
-
-# DB registration types
-REG_TYPE_AMEND = 'AM'
-REG_TYPE_AMEND_COURT = 'CO'
-REG_TYPE_DISCHARGE = 'DC'
-REG_TYPE_RENEWAL = 'RE'
-REG_TYPE_REPAIRER_LIEN = 'RL'
-REG_TYPE_MARRIAGE_SEPARATION = 'FR'
-REG_TYPE_LAND_TAX_MH = 'LT'
-REG_TYPE_TAX_MH = 'MH'
-REG_TYPE_OTHER = 'OT'
-REG_TYPE_SECURITY_AGREEMENT = 'SA'
-# New amendment change types
-REG_TYPE_AMEND_ADDITION_COLLATERAL = 'AA'
-REG_TYPE_AMEND_DEBTOR_RELEASE = 'AR'
-REG_TYPE_AMEND_DEBTOR_TRANSFER = 'AD'
-REG_TYPE_AMEND_PARIAL_DISCHARGE = 'AP'
-REG_TYPE_AMEND_SP_TRANSFER = 'AS'
-REG_TYPE_AMEND_SUBSTITUTION_COLLATERAL = 'AU'
-
-SEARCH_MATCH_EXACT = 'EXACT'
-SEARCH_MATCH_SIMILAR = 'SIMILAR'
-
-# DB state types
-STATE_DISCHARGED = 'HDC'
-STATE_ACTIVE = 'ACT'
-STATE_EXPIRED = 'HEX'
-
-# Financing statement, registraiton constants
-LIFE_INFINITE = 99
-REPAIRER_LIEN_DAYS = 180
-REPAIRER_LIEN_YEARS = 0
-MAX_ACCOUNT_REGISTRATIONS_DEFAULT = 1000  # Use when not paging.
-
-# Legacy registration types not allowed with new financing statements.
-REG_TYPE_NEW_FINANCING_EXCLUDED = {
-    'SS': 'SS',
-    'MR': 'MR',
-    'CC': 'CC',
-    'DP': 'DP',
-    'HR': 'HR',
-    'MI': 'MI',
-}
-
-# Mapping from API draft type to DB registration class
-DRAFT_TYPE_TO_REG_CLASS = {
-    'AMENDMENT_STATEMENT': 'AMENDMENT',
-    'CHANGE_STATEMENT': 'CHANGE',
-    'FINANCING_STATEMENT': 'PPSALIEN'
-}
-
-# Mapping from DB registration class to API draft type
-REG_CLASS_TO_DRAFT_TYPE = {
-    'AMENDMENT': 'AMENDMENT_STATEMENT',
-    'COURTORDER': 'AMENDMENT_STATEMENT',
-    'CHANGE': 'CHANGE_STATEMENT',
-    'CROWNIEN': 'FINANCING_STATEMENT',
-    'MISCLIEN': 'FINANCING_STATEMENT',
-    'PPSALIEN': 'FINANCING_STATEMENT'
-}
-
-# Mapping from DB registration class to API statement type
-REG_CLASS_TO_STATEMENT_TYPE = {
-    'AMENDMENT': 'AMENDMENT_STATEMENT',
-    'COURTORDER': 'AMENDMENT_STATEMENT',
-    'CROWNLIEN': 'FINANCING_STATEMENT',
-    'CHANGE': 'CHANGE_STATEMENT',
-    'RENEWAL': 'RENEWAL_STATEMENT',
-    'DISCHARGE': 'DISCHARGE_STATEMENT',
-    'MISCLIEN': 'FINANCING_STATEMENT',
-    'PPSALIEN': 'FINANCING_STATEMENT'
-}
-
-# Default mapping from registration class to registration type
-REG_CLASS_TO_REG_TYPE = {
-    'AMENDMENT': 'AM',
-    'COURTORDER': 'CO',
-    'DISCHARGE': 'DC',
-    'RENEWAL': 'RE'
-}
-
-# Mapping from registration type to registration class
-REG_TYPE_TO_REG_CLASS = {
-    'AM': 'AMENDMENT',
-    'AA': 'AMENDMENT',
-    'AR': 'AMENDMENT',
-    'AD': 'AMENDMENT',
-    'AP': 'AMENDMENT',
-    'AS': 'AMENDMENT',
-    'AU': 'AMENDMENT',
-    'CO': 'COURTORDER',
-    'AC': 'CHANGE',
-    'DR': 'CHANGE',
-    'DT': 'CHANGE',
-    'PD': 'CHANGE',
-    'ST': 'CHANGE',
-    'SU': 'CHANGE',
-    'CC': 'CROWNLIEN',
-    'CT': 'CROWNLIEN',
-    'DP': 'CROWNLIEN',
-    'ET': 'CROWNLIEN',
-    'FO': 'CROWNLIEN',
-    'FT': 'CROWNLIEN',
-    'HR': 'CROWNLIEN',
-    'IP': 'CROWNLIEN',
-    'IT': 'CROWNLIEN',
-    'LO': 'CROWNLIEN',
-    'MD': 'CROWNLIEN',
-    'MI': 'CROWNLIEN',
-    'MR': 'CROWNLIEN',
-    'OT': 'CROWNLIEN',
-    'PG': 'CROWNLIEN',
-    'PS': 'CROWNLIEN',
-    'PT': 'CROWNLIEN',
-    'RA': 'CROWNLIEN',
-    'SC': 'CROWNLIEN',
-    'SS': 'CROWNLIEN',
-    'TL': 'CROWNLIEN',
-    'DC': 'DISCHARGE',
-    'HN': 'MISCLIEN',
-    'ML': 'MISCLIEN',
-    'MN': 'MISCLIEN',
-    'PN': 'MISCLIEN',
-    'WL': 'MISCLIEN',
-    'FA': 'PPSALIEN',
-    'FL': 'PPSALIEN',
-    'FR': 'PPSALIEN',
-    'FS': 'PPSALIEN',
-    'LT': 'PPSALIEN',
-    'MH': 'PPSALIEN',
-    'RL': 'PPSALIEN',
-    'SA': 'PPSALIEN',
-    'SG': 'PPSALIEN',
-    'TA': 'PPSALIEN',
-    'TF': 'PPSALIEN',
-    'TG': 'PPSALIEN',
-    'TM': 'PPSALIEN',
-    'RE': 'RENEWAL'
-}
-
-# MHR Error messages
-ERR_REGISTRATION_NOT_FOUND_MHR = '{code}: no registration found for MHR number {mhr_number}.'
+# Error messages
+ERR_REGISTRATION_NOT_FOUND = '{code}: no registration found for MHR number {mhr_number}.'
 ERR_SEARCH_TOO_OLD = '{code}: search get details search ID {search_id} timestamp too old: must be after {min_ts}.'
 ERR_SEARCH_COMPLETE = '{code}: search select results failed: results already provided for search ID {search_id}.'
 ERR_SEARCH_NOT_FOUND = '{code}: search select results failed: invalid search ID {search_id}.'
 
-# PPR Error messages
-ERR_FINANCING_NOT_FOUND = '{code}: no Financing Statement found for registration number {registration_num}.'
-ERR_REGISTRATION_NOT_FOUND = '{code}: no registration found for registration number {registration_num}.'
-ERR_FINANCING_HISTORICAL = \
-    '{code}: the Financing Statement for registration number {registration_num} has expired or been discharged.'
-
-
 SEARCH_RESULTS_DOC_NAME = 'search-results-report-{search_id}.pdf'
-DB2_REMOVE_ADRRESS = [', BC', ',BC', 'BC', ', B.C.', ',B.C.', 'B.C.', 'BRITISH COLUMBIA', 'CANADA',
-                      ', AB', ',AB', ' AB', ', ALBERTA', 'ALBERTA', ', SK', ',SK', ' SK', ', SASKATCHEWAN',
-                      'SASKATCHEWAN', ', ON', ',ON', ' ON', ', ONTARIO', 'ONTARIO']
-DB2_PROVINCE_MAPPING = {
-    'AB': 'AB',
-    ' AB': 'AB',
-    ', AB': 'AB',
-    'ALBERTA': 'AB',
-    'MB': 'MB',
-    ' MB': 'MB',
-    ', MB': 'MB',
-    'MANITOBA': 'MB',
-    'NB': 'NB',
-    ' NB': 'NB',
-    ', NB': 'NB',
-    'NEW BRUSNWICK': 'NB',
-    'NL': 'NL',
-    ' NL': 'NL',
-    ', NL': 'NL',
-    'NEWFOUNDLAND': 'NL',
-    'NS': 'NS',
-    ' NS': 'NS',
-    ', NS': 'NS',
-    'NOVA SCOTIA': 'NS',
-    'NT': 'NT',
-    ' NT': 'NT',
-    ', NT': 'NT',
-    'NORTHWEST TERRITORIES': 'NT',
-    'NU': 'NU',
-    ' NU': 'NU',
-    ', NU': 'NU',
-    'NUNUVIT': 'NU',
-    'PE': 'PE',
-    ' PE': 'PE',
-    ', PE': 'PE',
-    'PRINCE EDWARD ISLAND': 'PE',
-    'QC': 'QC',
-    ' QC': 'QC',
-    ', QC': 'QC',
-    'QUEBEC': 'QC',
-    'YT': 'YT',
-    ' YT': 'YT',
-    ', YT': 'YT',
-    'YUKON TERRITORIES': 'YT',
-    'SK': 'SK',
-    ' SK': 'SK',
-    ', SK': 'SK',
-    'SASKATCHEWAN': 'SK',
-    'ON': 'ON',
-    ' ON': 'ON',
-    ', ON': 'ON',
-    'ONTARIO': 'ON'
-}
 
 
 def get_max_registrations_size():
@@ -331,109 +115,9 @@ def to_local_timestamp(utc_ts):
     return utc_ts.astimezone(LOCAL_TZ)
 
 
-def to_local_expiry_report(expiry_date_time: str):
-    """Create an expiry timestamp adjusted from UTC to the local timezone."""
-    utc_ts: _datetime = ts_from_iso_format(expiry_date_time)
-    offset: int = 7 if utc_ts.hour == 6 else 8
-    # current_app.logger.info('UTC ts: ' + utc_ts.isoformat() + ' offset=' + str(offset))
-    local_ts = utc_ts - timedelta(hours=offset)
-    current_app.logger.info('Local expiry timestamp: ' + local_ts.isoformat())
-    return local_ts
-
-
 def today_local():
     """Return today in the local timezone."""
     return now_ts().astimezone(LOCAL_TZ)
-
-
-def expiry_dt_from_years(life_years: int, iso_date: str = None):
-    """Create a date representing the date at 23:59:59 local time as UTC.
-
-    Adjusted by the life_years number of years in the future. Use current date if no iso_date.
-    PYTZ has a DST issue (not working after 2037), so set the time before adding years.
-    """
-    # Naive date
-    today = None
-    if iso_date:
-        today = date.fromisoformat(iso_date[:10])
-    else:
-        today = now_ts().astimezone(LOCAL_TZ)
-    # Naive time
-    expiry_time = time(23, 59, 59, tzinfo=None)
-    expiry_now = _datetime.combine(date(today.year, today.month, today.day), expiry_time)
-    # Explicitly set to local timezone which will adjust for daylight savings.
-    local_ts = LOCAL_TZ.localize(expiry_now)
-    # Add years
-    future_ts = local_ts + datedelta(years=life_years)
-    # Return as UTC
-    return _datetime.utcfromtimestamp(future_ts.timestamp()).replace(tzinfo=timezone.utc)
-
-
-def expiry_dt_repairer_lien(expiry_ts: _datetime = None):
-    """Create a date representing the date at 23:59:59 local time as UTC from the current expiry date."""
-    if not expiry_ts:
-        # Naive date
-        today = now_ts().astimezone(LOCAL_TZ)
-        # base_date = date.today()
-        base_date = date(today.year, today.month, today.day)
-        # Naive time
-        expiry_time = time(23, 59, 59, tzinfo=None)
-        future_ts = _datetime.combine(base_date, expiry_time) + timedelta(days=REPAIRER_LIEN_DAYS)
-        # Explicitly set to local timezone which will adjust for daylight savings.
-        local_ts = LOCAL_TZ.localize(future_ts)
-        # Return as UTC
-        return _datetime.utcfromtimestamp(local_ts.timestamp()).replace(tzinfo=timezone.utc)
-
-    # Simplify: existing registration current expiry is always 1 day ahead in utc.
-    base_ts = expiry_ts - timedelta(days=1)
-    base_date = date(base_ts.year, base_ts.month, base_ts.day)
-    # Naive time
-    expiry_time = time(23, 59, 59, tzinfo=None)
-    future_ts = _datetime.combine(base_date, expiry_time) + timedelta(days=REPAIRER_LIEN_DAYS)
-    # Explicitly set to local timezone which will adjust for daylight savings.
-    local_ts = LOCAL_TZ.localize(future_ts)
-    # Return as UTC
-    return _datetime.utcfromtimestamp(local_ts.timestamp()).replace(tzinfo=timezone.utc)
-
-
-def expiry_dt_from_registration(registration_ts, life_years: int):
-    """Create a date representing the expiry date for a registration.
-
-    Adjust the registration timestamp by the life_years number of years in the future.
-    PYTZ has a DST issue (not working after 2037), so set the time before adding years.
-    """
-    reg_local_ts = registration_ts.astimezone(LOCAL_TZ)
-    base_time = reg_local_ts.timestamp()
-    offset = _datetime.fromtimestamp(base_time) - _datetime.utcfromtimestamp(base_time)
-    base_ts = reg_local_ts + offset
-    base_date = date(base_ts.year, base_ts.month, base_ts.day)
-    current_app.logger.info('Adjusted local reg Date: ' + base_date.isoformat())
-    # Naive time
-    expiry_time = time(23, 59, 59, tzinfo=None)
-    expiry_reg = _datetime.combine(base_date, expiry_time)
-    if life_years:
-        # Explicitly set to local timezone which will adjust for daylight savings.
-        local_ts = LOCAL_TZ.localize(expiry_reg)
-        # Add years
-        future_ts = local_ts + datedelta(years=life_years)
-        current_app.logger.info('Local expiry timestamp: ' + future_ts.isoformat())
-        # Return as UTC
-        return _datetime.utcfromtimestamp(future_ts.timestamp()).replace(tzinfo=timezone.utc)
-
-    # is RL
-    future_ts = expiry_reg + timedelta(days=REPAIRER_LIEN_DAYS)
-    # Explicitly set to local timezone which will adjust for daylight savings.
-    local_ts = LOCAL_TZ.localize(future_ts)
-    current_app.logger.info('Local expiry timestamp: ' + local_ts.isoformat())
-    # Return as UTC before formatting
-    return _datetime.utcfromtimestamp(local_ts.timestamp()).replace(tzinfo=timezone.utc)
-
-
-def expiry_dt_add_years(current_expiry, add_years: int):
-    """For renewals add years to the existing expiry timestamp."""
-    if current_expiry and add_years and add_years > 0:
-        return current_expiry + datedelta(years=add_years)
-    return current_expiry
 
 
 def get_doc_storage_name(registration):
@@ -449,6 +133,43 @@ def get_search_doc_storage_name(search_request):
     name = search_request.search_ts.isoformat()[:10]
     name = name.replace('-', '/') + '/' + SEARCH_RESULTS_DOC_NAME.format(search_id=search_request.id)
     return name
+
+
+def get_ind_name_from_db2(db2_name: str):
+    """Get an individual name json from a DB2 legacy name."""
+    last = db2_name[0:24].strip()
+    first = db2_name[25:].strip()
+    middle = None
+    if len(db2_name) > 40:
+        first = db2_name[25:38].strip()
+        middle = db2_name[39:].strip()
+    name = {
+        'first': first,
+        'last': last
+    }
+    if middle:
+        name['middle'] = middle
+    return name
+
+
+def get_address_from_db2(legacy_address: str, postal_code: str = ''):
+    """Get an address json from a DB2 legacy address."""
+    street = legacy_address[0:38].strip()
+    street2 = None
+    city = legacy_address[39:].strip()
+    if len(legacy_address) > 80:
+        city = legacy_address[79:].strip()
+        street2 = legacy_address[39:78].strip()
+    address = {
+        'city': city,
+        'street': street,
+        'region': 'BC',
+        'country': 'CA',
+        'postalCode': postal_code
+    }
+    if street2:
+        address['streetAdditional'] = street2
+    return address
 
 
 def get_compressed_key(name: str) -> str:
@@ -494,265 +215,9 @@ def get_compressed_key(name: str) -> str:
 def get_serial_number_key(serial_num: str) -> str:
     """Get the compressed search serial number key for the MH serial number."""
     key: str = ''
-
     if not serial_num:
         return key
     key = serial_num.strip().upper()
-    # 1. Remove all non-alphanumberic characters.
-    key = re.sub('[^0-9A-Z]+', '', key)
-    # current_app.logger.debug(f'1: key={key}')
-    # 2. Add 6 zeroes to the start of the serial number.
-    key = '000000' + key
-    # current_app.logger.debug(f'2: key={key}')
-    # 3. Determine the value of I as last position in the serial number that contains a numeric value.
-    last_pos: int = 0
-    for index, char in enumerate(key):
-        if char.isdigit():
-            last_pos = index
-    # current_app.logger.debug(f'3: last_pos={last_pos}')
-    # 4. Replace alphas with the corresponding integers:
-    # 08600064100100000050000042  where A=0, B=8, C=6…Z=2
-    key = key.replace('B', '8')
-    key = key.replace('C', '6')
-    key = key.replace('G', '6')
-    key = key.replace('H', '4')
-    key = key.replace('I', '1')
-    key = key.replace('L', '1')
-    key = key.replace('S', '5')
-    key = key.replace('Y', '4')
-    key = key.replace('Z', '2')
-    key = re.sub('[A-Z]', '0', key)
-    # current_app.logger.debug(f'4: key={key}')
-    # 5. Take 6 characters of the string beginning at position I – 5 and ending with the position determined by I
-    # in step 3.
-    start_pos = last_pos - 5
-    key = key[start_pos:(last_pos + 1)]
-    # current_app.logger.debug(f'5: key={key}')
-    # 6. Convert it to bytes.
-    key_bytes: bytes = int(key).to_bytes(6, 'big')
-    # current_app.logger.debug(f'6: key_bytes={key_bytes}')
-    # 7 Return the last 3 characters.
-    start_pos = len(key_bytes) - 3
-    last_3_bytes: bytes = key_bytes[start_pos:]
-    current_app.logger.debug(f'key={key} last 3 bytes={last_3_bytes} hex={last_3_bytes.hex()}')
-    return last_3_bytes.decode('utf-8', errors='ignore')  # May need to switch to latin-1 when test is available.
-
-
-def is_historical(financing_statement, create: bool):
-    """Check if a financing statement is in a historical, non-viewable state."""
-    if financing_statement.state_type == STATE_ACTIVE and financing_statement.expire_date and \
-            financing_statement.expire_date < _datetime.utcnow():
-        financing_statement.state_type = STATE_EXPIRED
-    if financing_statement.state_type == STATE_ACTIVE:
-        return False
-    # Creating a registration is not allowed immediately after the financing statement has expired or been discharged.
-    if create:
-        return True
-    # Offset matches account registrations/search window: need to check to be consistent.
-    historical_ts = now_ts_offset(30).timestamp()
-    if financing_statement.state_type == STATE_DISCHARGED and financing_statement.registration:
-        for reg in reversed(financing_statement.registration):
-            if reg.registration_type_cl == REG_CLASS_DISCHARGE and reg.registration_ts.timestamp() < historical_ts:
-                return True
-    if financing_statement.state_type == STATE_EXPIRED and \
-       financing_statement.expire_date and \
-       financing_statement.expire_date.timestamp() < historical_ts:
-        return True
-
-    return False
-
-
-def is_financing(registration_class):
-    """Check if the registration is a financing registration for some conditions."""
-    return registration_class and registration_class in (REG_CLASS_CROWN, REG_CLASS_MISC, REG_CLASS_PPSA)
-
-
-def is_change(registration_class):
-    """Check if the registration is a change or amendment for some conditions."""
-    return registration_class and registration_class in (REG_CLASS_AMEND, REG_CLASS_AMEND_COURT, REG_CLASS_CHANGE)
-
-
-def cleanup_amendment(json_data):
-    """Delete empty amendment add/remove arrays."""
-    if 'addVehicleCollateral' in json_data and not json_data['addVehicleCollateral']:
-        del json_data['addVehicleCollateral']
-    if 'deleteVehicleCollateral' in json_data and not json_data['deleteVehicleCollateral']:
-        del json_data['deleteVehicleCollateral']
-    if 'addGeneralCollateral' in json_data and not json_data['addGeneralCollateral']:
-        del json_data['addGeneralCollateral']
-    if 'deleteGeneralCollateral' in json_data and not json_data['deleteGeneralCollateral']:
-        del json_data['deleteGeneralCollateral']
-    if 'addSecuredParties' in json_data and not json_data['addSecuredParties']:
-        del json_data['addSecuredParties']
-    if 'deleteSecuredParties' in json_data and not json_data['deleteSecuredParties']:
-        del json_data['deleteSecuredParties']
-    if 'addDebtors' in json_data and not json_data['addDebtors']:
-        del json_data['addDebtors']
-    if 'deleteDebtors' in json_data and not json_data['deleteDebtors']:
-        del json_data['deleteDebtors']
-    return json_data
-
-
-def amendment_change_type(json_data):
-    # pylint: disable=too-many-boolean-expressions
-    """Try to assign a more specific amendment change type based on the request data."""
-    if 'courtOrderInformation' in json_data:
-        return REG_TYPE_AMEND_COURT
-    if 'addTrustIndenture' in json_data or 'removeTrustIndenture' in json_data:
-        return REG_TYPE_AMEND
-    change_type = json_data['changeType']
-    if 'addVehicleCollateral' not in json_data and 'deleteVehicleCollateral' not in json_data and \
-            'addGeneralCollateral' not in json_data and 'deleteGeneralCollateral' not in json_data:
-        if 'addDebtors' not in json_data and 'deleteDebtors' not in json_data and \
-                'addSecuredParties' in json_data and 'deleteSecuredParties' in json_data and \
-                len(json_data['addSecuredParties']) == 1 and len(json_data['deleteSecuredParties']) == 1:
-            change_type = REG_TYPE_AMEND_SP_TRANSFER
-        if 'addSecuredParties' not in json_data and 'deleteSecuredParties' not in json_data and \
-                'addDebtors' in json_data and 'deleteDebtors' in json_data and \
-                len(json_data['addDebtors']) == 1 and len(json_data['deleteDebtors']) == 1:
-            change_type = REG_TYPE_AMEND_DEBTOR_TRANSFER
-        if 'addSecuredParties' not in json_data and 'deleteSecuredParties' not in json_data and \
-                'addDebtors' not in json_data and 'deleteDebtors' in json_data and \
-                len(json_data['deleteDebtors']) == 1:
-            change_type = REG_TYPE_AMEND_DEBTOR_RELEASE
-    if 'addSecuredParties' not in json_data and 'deleteSecuredParties' not in json_data and \
-       'addDebtors' not in json_data and 'deleteDebtors' not in json_data:
-        if 'addVehicleCollateral' not in json_data and 'addGeneralCollateral' not in json_data and \
-                ('deleteVehicleCollateral' in json_data or 'deleteGeneralCollateral' in json_data):
-            change_type = REG_TYPE_AMEND_PARIAL_DISCHARGE
-        if ('addVehicleCollateral' in json_data or 'addGeneralCollateral' in json_data) and \
-                'deleteVehicleCollateral' not in json_data and 'deleteGeneralCollateral' not in json_data:
-            change_type = REG_TYPE_AMEND_ADDITION_COLLATERAL
-        if 'addVehicleCollateral' in json_data and 'deleteVehicleCollateral' in json_data and \
-                len(json_data['addVehicleCollateral']) == 1 and len(json_data['deleteVehicleCollateral']) == 1 and \
-                'addGeneralCollateral' not in json_data and 'deleteGeneralCollateral' not in json_data:
-            change_type = REG_TYPE_AMEND_SUBSTITUTION_COLLATERAL
-        if 'addGeneralCollateral' in json_data and 'deleteGeneralCollateral' in json_data and \
-                len(json_data['addGeneralCollateral']) == 1 and len(json_data['deleteGeneralCollateral']) == 1 and \
-                'addVehicleCollateral' not in json_data and 'deleteVehicleCollateral' not in json_data:
-            change_type = REG_TYPE_AMEND_SUBSTITUTION_COLLATERAL
-
-    return change_type
-
-
-def valid_court_order_date(financing_ts, order_ts: str):
-    """Verify requuest court order date is between the financing statement date and the current date."""
-    if not financing_ts or not order_ts:
-        return False
-    financing_date = date(financing_ts.year, financing_ts.month, financing_ts.day)
-    order_date = date.fromisoformat(order_ts[:10])
-    # Naive date
-    now = now_ts()
-    today_date = date(now.year, now.month, now.day)
-    return financing_date <= order_date <= today_date
-
-
-def get_ind_name_from_db2(db2_name: str):
-    """Get an individual name json from a DB2 legacy name."""
-    last = db2_name[0:24].strip()
-    first = db2_name[25:].strip()
-    middle = None
-    if len(db2_name) > 40:
-        first = db2_name[25:38].strip()
-        middle = db2_name[39:].strip()
-    name = {
-        'first': first,
-        'last': last
-    }
-    if middle:
-        name['middle'] = middle
-    return name
-
-
-def get_address_from_db2(legacy_address: str, postal_code: str = ''):
-    """Get an address json from a DB2 legacy address."""
-    if len(legacy_address) > 120:
-        return get_long_address_from_db2(legacy_address, postal_code)
-
-    street = legacy_address[0:38].strip()
-    street2 = None
-    city = None
-    province = None
-    if len(legacy_address) > 80:
-        value: str = legacy_address[79:].strip()
-        province = get_province_db2(value, None)
-        for text in DB2_REMOVE_ADRRESS:
-            if value.endswith(text):
-                value = value.replace(text, '')
-                break
-        value = value.strip()
-        if value:
-            city = value
-            street2 = legacy_address[39:78].strip()
-    if not city:
-        city = legacy_address[39:78].strip()
-        province = get_province_db2(city, None)
-        for text in DB2_REMOVE_ADRRESS:
-            if city.endswith(text):
-                city = city.replace(text, '')
-                break
-        city = city.strip()
-    if not province:
-        province = 'BC'
-    address = {
-        'city': city,
-        'street': street,
-        'region': province,
-        'country': 'CA',
-        'postalCode': postal_code
-    }
-    if street2:
-        address['streetAdditional'] = street2
-    return address
-
-
-def get_long_address_from_db2(legacy_address: str, postal_code: str = ''):
-    """Get an address json from a DB2 legacy address."""
-    value: str = legacy_address[119:].strip()
-    street = legacy_address[0:38].strip()
-    street2 = None
-    city = legacy_address[79:118].strip()
-    province = get_province_db2(value, None)
-    for text in DB2_REMOVE_ADRRESS:
-        if value.endswith(text):
-            value = value.replace(text, '')
-            break
-    value = value.strip()
-    # current_app.logger.debug(f'2. value={value}')
-    if value:
-        city = value
-        street2 = legacy_address[39:118].strip()
-        # current_app.logger.debug(f'3. street2={street2}, city={city}')
-    else:
-        province = get_province_db2(city, None)
-        for text in DB2_REMOVE_ADRRESS:
-            if city.endswith(text):
-                city = city.replace(text, '')
-                break
-        city = city.strip()
-        if city == '':
-            city = legacy_address[39:78].strip()
-        else:
-            street2 = legacy_address[39:78].strip()
-        # current_app.logger.debug(f'4. street2={street2}, city={city}')
-    if not province:
-        province = 'BC'
-    address = {
-        'city': city,
-        'street': street,
-        'region': province,
-        'country': 'CA',
-        'postalCode': postal_code
-    }
-    if street2:
-        address['streetAdditional'] = street2
-    return address
-
-
-def get_province_db2(legacy_value: str, default: str):
-    """Get a province code from DB2 legacy address text."""
-    for text in DB2_REMOVE_ADRRESS:
-        if legacy_value.endswith(text) and DB2_PROVINCE_MAPPING.get(text):
-            if len(legacy_value) == 2 or len(text) > 2:
-                return DB2_PROVINCE_MAPPING[text]
-    return default
+    if len(key) > 20:
+        return key[0:20]
+    return key

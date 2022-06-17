@@ -16,31 +16,28 @@
 # pylint: disable=too-many-return-statements
 from http import HTTPStatus
 
-import requests
+# import requests
 from flask import Blueprint, current_app, jsonify, request
 from flask_cors import cross_origin
 from registry_schemas import utils as schema_utils
 
 from mhr_api.exceptions import BusinessException, DatabaseException
-from mhr_api.models import EventTracking, SearchRequest, SearchResult
+# from mhr_api.services.queue_service import GoogleQueueService
+from mhr_api.models import SearchRequest, SearchResult  # , utils as model_utils,EventTracking
 from mhr_api.resources import utils as resource_utils
-from mhr_api.services.authz import authorized, is_bcol_help, is_gov_account, is_staff_account
+from mhr_api.services.authz import authorized
+from mhr_api.utils.auth import jwt
+
+
 # from mhr_api.reports import ReportTypes, get_pdf
 # from mhr_api.callback.reports.report_service import get_search_report
 # from mhr_api.callback.utils.exceptions import ReportException, ReportDataException, StorageException
-from mhr_api.services.document_storage.storage_service import GoogleStorageService
-from mhr_api.services.payment.exceptions import SBCPaymentException
-from mhr_api.services.payment.payment import Payment
-from mhr_api.services.queue_service import GoogleQueueService
-from mhr_api.utils.auth import jwt
+# from mhr_api.callback.document_storage.storage_service import GoogleStorageService
 
 
 bp = Blueprint('SEARCH_RESULTS1', __name__, url_prefix='/api/v1/search-results')  # pylint: disable=invalid-name
 
 VAL_ERROR = 'Search details request data validation errors.'  # Validation error prefix
-SAVE_ERROR_MESSAGE = 'Account {0} search db save failed: {1}'
-PAY_REFUND_MESSAGE = 'Account {0} search refunding payment for invoice {1}.'
-PAY_REFUND_ERROR = 'Account {0} search payment refund failed for invoice {1}: {2}.'
 GET_DETAILS_ERROR = 'Submit a search step 2 select results request before getting search result details.'
 SEARCH_RESULTS_DOC_NAME = 'search-results-report-{search_id}.pdf'
 CALLBACK_MESSAGES = {
@@ -56,33 +53,22 @@ CALLBACK_MESSAGES = {
 CALLBACK_PARAM = 'callbackURL'
 REPORT_URL = '/ppr/api/v1/search-results/{search_id}'
 USE_CURRENT_PARAM = 'useCurrent'
-# Map search type to payment transaction details description
-TO_SEARCH_TYPE_DESCRIPTION = {
-    SearchRequest.SearchTypes.ORGANIZATION_NAME.value: 'Organization/Business Name:',
-    SearchRequest.SearchTypes.OWNER_NAME.value: 'Owner Individual Name:',
-    SearchRequest.SearchTypes.MANUFACTURED_HOME_NUM.value: 'Manufactured Home Registration Number:',
-    SearchRequest.SearchTypes.SERIAL_NUM.value: 'Serial Number:'
-}
-CERTIFIED_PARAM = 'certified'
-ROUTING_SLIP_PARAM = 'routingSlipNumber'
-DAT_NUMBER_PARAM = 'datNumber'
-BCOL_NUMBER_PARAM = 'bcolAccountNumber'
-PRIORITY_PARAM = 'priority'
-CLIENT_REF_PARAM = 'clientReferenceId'
 
 
 @bp.route('/<string:search_id>', methods=['POST', 'OPTIONS'])
 @cross_origin(origin='*')
 @jwt.requires_auth
-def post_search_results(search_id: str):  # pylint: disable=too-many-branches, too-many-locals, too-many-statements
+def post_search_results(search_id: str):  # pylint: disable=too-many-branches, too-many-locals
     """Execute a search detail request using selection choices in the request body."""
     try:
         if search_id is None:
             return resource_utils.path_param_error_response('search ID')
+
         # Quick check: must provide an account ID.
         account_id = resource_utils.get_account_id(request)
         if account_id is None:
             return resource_utils.account_required_response()
+
         # Verify request JWT and account ID
         if not authorized(account_id, jwt):
             return resource_utils.unauthorized_error_response(account_id)
@@ -100,82 +86,47 @@ def post_search_results(search_id: str):  # pylint: disable=too-many-branches, t
                 return resource_utils.validation_error_response(errors, VAL_ERROR)
 
         # Perform any extra data validation such as start and end dates here
-        search_detail: SearchResult = SearchResult.validate_search_select(request_json, search_id)
+        search_detail = SearchResult.validate_search_select(request_json, search_id)
 
         # Large report threshold check, require/save callbackURL parameter.
         # UI may not request a report in step 2.
         callback_url = request.args.get(CALLBACK_PARAM)
-        if is_async(search_detail, request_json):
+        is_ui_pdf = (callback_url is not None and callback_url == current_app.config.get('UI_SEARCH_CALLBACK_URL'))
+        if is_async(search_detail, request_json) and (resource_utils.is_pdf(request) or is_ui_pdf):
             if callback_url is None:
                 error = f'Large search report required callbackURL parameter missing for {search_id}.'
                 current_app.logger.warn(error)
                 return resource_utils.error_response(HTTPStatus.BAD_REQUEST, error)
         else:
             callback_url = None
-
-        # Charge a search fee.
-        payment = Payment(jwt=jwt.get_token_auth_header(),
-                          account_id=account_id,
-                          details=get_payment_details(search_detail, request_json))
-        query: SearchRequest = search_detail.search
-        pay_ref: None
-        invoice_id = None
-        # Staff has special payment rules and setup.
-        if is_staff_account(account_id, jwt) or is_bcol_help(account_id, jwt):
-            current_app.logger.info(f'Setting up reg staff search for {account_id}.')
-            payment_info = build_staff_payment(request, account_id)
-            # bcol help is no fee; reg staff can be no fee.
-            # FAS is routing slip only.
-            # BCOL is dat number (optional) and BCOL account number (mandatory).
-            # All staff roles including SBC can submit no fee searches.
-            if ROUTING_SLIP_PARAM in payment_info and BCOL_NUMBER_PARAM in payment_info:
-                return resource_utils.staff_payment_bcol_fas()
-            pay_ref = payment.create_payment_staff_search(request_json,
-                                                          payment_info,
-                                                          str(query.id),
-                                                          query.client_reference_id)
-        else:
-            pay_ref = payment.create_payment_search(request_json,
-                                                    str(query.id),
-                                                    query.client_reference_id,
-                                                    is_gov_account(jwt))
-        invoice_id = pay_ref['invoiceId']
-        query.pay_invoice_id = int(invoice_id)
-        query.pay_path = pay_ref['receipt']
-        # Conditionally update client reference id from request parameter
-        if request.args.get(CLIENT_REF_PARAM):
-            client_ref: str = request.args.get(CLIENT_REF_PARAM)
-            client_ref = client_ref.strip()
-            if client_ref and len(client_ref) < 51:
-                query.client_reference_id = client_ref
-        try:
-            # Save the search query selection and details that match the selection.
-            account_name = resource_utils.get_account_name(jwt.get_token_auth_header(), account_id)
-            search_detail.update_selection(request_json, account_name, callback_url)
-            query.save()
-        except Exception as db_exception:   # noqa: B902; handle all db related errors.
-            current_app.logger.error(SAVE_ERROR_MESSAGE.format(account_id, str(db_exception)))
-            if invoice_id is not None:
-                current_app.logger.info(PAY_REFUND_MESSAGE.format(account_id, invoice_id))
-                try:
-                    payment.cancel_payment(invoice_id)
-                except Exception as cancel_exception:   # noqa: B902; log exception
-                    current_app.logger.error(PAY_REFUND_ERROR.format(account_id, invoice_id,
-                                                                     str(cancel_exception)))
-            raise db_exception
+            is_ui_pdf = False
+        # Save the search query selection and details that match the selection.
+        account_name = resource_utils.get_account_name(jwt.get_token_auth_header(), account_id)
+        search_detail.update_selection(request_json, account_name, callback_url)
+        if not search_detail.search_response:
+            return resource_utils.unprocessable_error_response('search result details')
 
         response_data = search_detail.json
-        # queue report generation.
-        enqueue_search_report(search_id)
-        response_data['getReportURL'] = REPORT_URL.format(search_id=search_id)
+        # Results data that is too large for real time report generation (small number of results) is also
+        # asynchronous.
         if callback_url is None and search_detail.callback_url is not None:
             callback_url = search_detail.callback_url
-            response_data['callbackURL'] = requests.utils.unquote(callback_url)
+            is_ui_pdf = True
+        # if resource_utils.is_pdf(request) or is_ui_pdf:
+            # If results over threshold return JSON with callbackURL, getReportURL
+            # if callback_url is not None:
+            #    # Add enqueue report generation event here.
+            #    enqueue_search_report(search_id)
+            #    response_data['callbackURL'] = requests.utils.unquote(callback_url)
+            #    response_data['getReportURL'] = REPORT_URL.format(search_id=search_id)
+            #    return jsonify(response_data), HTTPStatus.OK
+
+            # Return report if request header Accept MIME type is application/pdf.
+            # return get_pdf(response_data, account_id, ReportTypes.SEARCH_DETAIL_REPORT.value,
+            #                jwt.get_token_auth_header())
 
         return jsonify(response_data), HTTPStatus.OK
 
-    except SBCPaymentException as pay_exception:
-        return resource_utils.pay_exception_response(pay_exception, account_id)
     except DatabaseException as db_exception:
         return resource_utils.db_exception_response(db_exception, account_id, 'POST search select id=' + search_id)
     except BusinessException as exception:
@@ -213,19 +164,24 @@ def get_search_results(search_id: str):
         if search_detail.search_select is None and search_detail.search.total_results_size > 0:
             return resource_utils.bad_request_response(GET_DETAILS_ERROR)
 
-        # If the request is for a report, fetch binary data from doc storage.
-        if resource_utils.is_pdf(request):
-            if search_detail.doc_storage_url is None:
-                # If report api call failed, try again here if > 20 minutes has elapsed.
-                error_msg = f'Search report not yet available for {search_id}.'
-                current_app.logger.info(error_msg)
-                return resource_utils.bad_request_response(error_msg)
-            doc_name = search_detail.doc_storage_url
-            current_app.logger.info(f'Fetching search report {doc_name} from doc storage.')
-            raw_data = GoogleStorageService.get_document(doc_name)
-            return raw_data, HTTPStatus.OK, {'Content-Type': 'application/pdf'}
+        # If the request is for an async large report, fetch binary data from doc storage.
+        # if resource_utils.is_pdf(request) and search_detail.callback_url is not None:
+        #    if search_detail.doc_storage_url is None:
+        #        error_msg = f'Search report not yet available for {search_id}.'
+        #        current_app.logger.info(error_msg)
+        #        return resource_utils.bad_request_response(error_msg)
+        #    doc_name = search_detail.doc_storage_url if not search_detail.doc_storage_url.startswith('http') \
+        #        else SEARCH_RESULTS_DOC_NAME.format(search_id=search_id)
+        #    current_app.logger.info(f'Fetching large search report {doc_name} from doc storage.')
+        #    raw_data = GoogleStorageService.get_document(doc_name)
+        #    return raw_data, HTTPStatus.OK, {'Content-Type': 'application/pdf'}
 
         response_data = search_detail.json
+        # if resource_utils.is_pdf(request):
+        #   # Return report if request header Accept MIME type is application/pdf.
+        #    return get_pdf(response_data, account_id, ReportTypes.SEARCH_DETAIL_REPORT.value,
+        #                    jwt.get_token_auth_header())
+
         return jsonify(response_data), HTTPStatus.OK
 
     except DatabaseException as db_exception:
@@ -244,78 +200,3 @@ def is_async(search_detail: SearchResult, search_select) -> bool:
     if len(search_select) > threshold:
         return True
     return False
-
-
-def get_payment_details(search_detail: SearchResult, request_json):
-    """Extract the payment details value from the search request criteria."""
-    label = 'MHR Search'
-    for selected in request_json:
-        if selected.get('includeLienInfo', False):
-            label = 'Combined Search'
-            break
-
-    details = {
-        'label': label
-    }
-    search_criteria = search_detail.search.search_criteria
-    if search_detail.search.search_type == SearchRequest.SearchTypes.OWNER_NAME.value:
-        details['value'] = search_criteria['criteria']['ownerName']['last'] + ', ' +\
-                           search_criteria['criteria']['ownerName']['first']
-    else:
-        details['value'] = search_criteria['criteria']['value']
-    return details
-
-
-def build_staff_payment(req: request, account_id: str):
-    """Extract staff payment information from request parameters."""
-    payment_info = {
-        'waiveFees': True
-    }
-    if is_bcol_help(account_id):
-        return payment_info
-
-    certified = req.args.get(CERTIFIED_PARAM)
-    routing_slip = req.args.get(ROUTING_SLIP_PARAM)
-    bcol_number = req.args.get(BCOL_NUMBER_PARAM)
-    dat_number = req.args.get(DAT_NUMBER_PARAM)
-    priority = req.args.get(PRIORITY_PARAM)
-    if certified is not None and isinstance(certified, bool) and certified:
-        payment_info[CERTIFIED_PARAM] = True
-    elif certified is not None and isinstance(certified, str) and \
-            certified.lower() in ['true', '1', 'y', 'yes']:
-        payment_info[CERTIFIED_PARAM] = True
-    if routing_slip is not None:
-        payment_info[ROUTING_SLIP_PARAM] = str(routing_slip)
-    if bcol_number is not None:
-        payment_info[BCOL_NUMBER_PARAM] = str(bcol_number)
-    if dat_number is not None:
-        payment_info[DAT_NUMBER_PARAM] = str(dat_number)
-    if priority is not None and isinstance(priority, bool) and priority:
-        payment_info[PRIORITY_PARAM] = True
-    elif priority is not None and isinstance(priority, str) and \
-            priority.lower() in ['true', '1', 'y', 'yes']:
-        payment_info[PRIORITY_PARAM] = True
-
-    if ROUTING_SLIP_PARAM in payment_info or BCOL_NUMBER_PARAM in payment_info:
-        payment_info['waiveFees'] = False
-    current_app.logger.debug(payment_info)
-    return payment_info
-
-
-def enqueue_search_report(search_id: str):
-    """Add the search report request to the queue."""
-    try:
-        payload = {
-            'searchId': search_id
-        }
-        apikey = current_app.config.get('SUBSCRIPTION_API_KEY')
-        if apikey:
-            payload['apikey'] = apikey
-        GoogleQueueService().publish_search_report(payload)
-        current_app.logger.info(f'Enqueue search report successful for id={search_id}.')
-    except Exception as err:  # noqa: B902; do not alter app processing
-        current_app.logger.error(f'Enqueue search report failed for id={search_id}: ' + str(err))
-        EventTracking.create(search_id,
-                             EventTracking.EventTrackingTypes.SEARCH_REPORT,
-                             int(HTTPStatus.INTERNAL_SERVER_ERROR),
-                             'Enqueue search report event failed: ' + str(err))

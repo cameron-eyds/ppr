@@ -17,14 +17,19 @@
         v-if="showAddEditHomeSections"
         :isNewHomeSection="isNewHomeSection"
         @close="showAddEditHomeSections = false"
-        @submit="addEditHomeSection($event)"
+        @submit="addHomeSection($event)"
       />
     </v-expand-transition>
 
     <!-- Home Sections Table -->
     <article class="mt-6">
-      <p>Number of Sections: 0</p>
-      <HomeSectionsTable />
+      <p>Number of Sections: {{getMhrHomeSections.length}}</p>
+      <HomeSectionsTable
+        :isEditing="showAddEditHomeSections"
+        :homeSections="getMhrHomeSections"
+        @edit="editHomeSection($event)"
+        @remove="removeHomeSection($event)"
+      />
     </article>
   </div>
 </template>
@@ -55,29 +60,52 @@ export default defineComponent({
       default: ''
     }
   },
-  setup (props, { emit }) {
+  setup () {
     const {
-      setIsStaffClientPayment
+      setHomeSections
     } = useActions<any>([
-      'setHomeSection'
+      'setHomeSections'
     ])
     const {
-      getUserSettings
+      getMhrHomeSections
     } = useGetters<any>([
-      'getUserSettings'
+      'getMhrHomeSections'
     ])
     const localState = reactive({
       isNewHomeSection: true,
       showAddEditHomeSections: false
     })
 
-    const addEditHomeSection = (homeSection: HomeSectionIF): void => {
-      // Add Section to store array
+    const addHomeSection = (homeSection: HomeSectionIF): void => {
+      const homeSections = [...getMhrHomeSections.value]
+      // Add new home section to array
+      homeSections.push(homeSection)
+
+      setHomeSections(homeSections)
+    }
+
+    const editHomeSection = (homeSection: HomeSectionIF): void => {
       console.log(homeSection)
+      // const homeSections = [...getMhrHomeSections.value]
+      // // Add new home section to array
+      // homeSections.push(homeSection)
+      //
+      // setHomeSections(homeSections)
+    }
+
+    const removeHomeSection = (homeSection: HomeSectionIF): void => {
+      const homeSections = [...getMhrHomeSections.value]
+      // Remove home section from array
+      homeSections.splice(homeSections.indexOf(homeSection), 1)
+
+      setHomeSections(homeSections)
     }
 
     return {
-      addEditHomeSection,
+      addHomeSection,
+      editHomeSection,
+      removeHomeSection,
+      getMhrHomeSections,
       ...toRefs(localState)
     }
   }

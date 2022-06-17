@@ -15,10 +15,6 @@
 """This exports all of the models and schemas used by the application."""
 # flake8: noqa I001
 from .db import db
-from .address import Address
-from .client_code import ClientCode
-from .court_order import CourtOrder
-from .db2.cmpserno import Db2Cmpserno
 from .db2.descript import Db2Descript
 from .db2.docdes import Db2Docdes
 from .db2.document import Db2Document
@@ -27,32 +23,13 @@ from .db2.manuhome import Db2Manuhome
 from .db2.mhomnote import Db2Mhomnote
 from .db2.owner import Db2Owner
 from .db2.owngroup import Db2Owngroup
-from .event_tracking import EventTracking
-from .financing_statement import FinancingStatement
-from .general_collateral import GeneralCollateral
-from .party import Party
-from .registration import Registration
 from .search_request import SearchRequest
 from .search_result import SearchResult
-from .trust_indenture import TrustIndenture
 from .type_tables import (
-    CountryType,
-    EventTrackingType,
-    PartyType,
-    ProvinceType,
-    RegistrationType,
-    RegistrationTypeClass,
-    SearchType,
-    SerialType,
-    StateType
+    SearchType
 )
-from .vehicle_collateral import VehicleCollateral
 
 __all__ = ('db',
-           'Address', 'ClientCode', 'CountryType', 'CourtOrder',
-           'Db2Cmpserno', 'Db2Descript', 'Db2Docdes', 'Db2Document', 'Db2Location', 'Db2Manuhome', 'Db2Mhomnote',
+           'Db2Descript', 'Db2Docdes', 'Db2Document', 'Db2Location', 'Db2Manuhome', 'Db2Mhomnote',
            'Db2Owner', 'Db2Owngroup',
-           'EventTracking', 'EventTrackingType', 'FinancingStatement', 'GeneralCollateral', 'Party',
-           'PartyType', 'ProvinceType', 'Registration', 'RegistrationType',
-           'RegistrationTypeClass', 'SearchRequest', 'SearchResult', 'SearchType', 'StateType', 'SerialType',
-           'TrustIndenture', 'VehicleCollateral')
+           'SearchRequest', 'SearchResult', 'SearchType')
