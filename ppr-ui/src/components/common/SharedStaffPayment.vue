@@ -55,7 +55,7 @@
               @focus="paymentOption = StaffPaymentOptions.BCOL"
               @emitFolioNumber="paymentOption === StaffPaymentOptions.BCOL &&
                 emitStaffPaymentData({ option: StaffPaymentOptions.BCOL, folioNumber: $event })"
-              validate="true"
+              validate
             />
           </v-form>
 
@@ -188,7 +188,8 @@ export default defineComponent({
       context.emit(
         'valid',
         (props.staffPaymentData.option !== -1) && (localState.fasFormValid ||
-          (localState.bcolFormValid && (context.refs.folioNumberInputRef as FormIF).validateFolioNumber()) ||
+          // @ts-ignore - function exists
+          (localState.bcolFormValid && context.refs.folioNumberInputRef.validateFolioNumber()) ||
           (props.staffPaymentData.option === StaffPaymentOptions.NO_FEE)
         )
       )

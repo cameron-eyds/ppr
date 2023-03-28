@@ -95,6 +95,9 @@ function mhrStaffPaymentParameters (staffPayment: StaffPaymentIF) {
       case StaffPaymentOptions.BCOL:
         paymentParams = paymentParams + 'bcolAccountNumber=' + staffPayment.bcolAccountNumber
         paymentParams = paymentParams + '&datNumber=' + staffPayment.datNumber
+        if (staffPayment.folioNumber) {
+          paymentParams = paymentParams + '&clientReferenceId=' + staffPayment.folioNumber
+        }
         break
     }
     if (staffPayment.isPriority) {

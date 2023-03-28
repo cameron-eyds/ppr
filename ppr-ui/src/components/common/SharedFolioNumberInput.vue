@@ -104,6 +104,7 @@ export default defineComponent({
       emitFolioNumber,
       resetFolioNumber,
       resetFolioNumberValidation,
+      validateFolioNumber,
       ...toRefs(localState)
     }
   }
