@@ -54,7 +54,7 @@
             </v-row>
 
             <v-card flat class="mt-6 pa-6" :class="showErrorAlert ? 'border-error-left' : ''">
-              <staff-payment-component
+              <SharedStaffPayment
                 id="staff-payment-dialog"
                 :staffPaymentData="staffPaymentData"
                 :validate="validating||showErrors"
@@ -111,7 +111,6 @@ import { useActions, useGetters } from 'vuex-composition-helpers'
 import { SessionStorageKeys } from 'sbc-common-components/src/util/constants'
 import { FolioNumberSummary, StickyContainer } from '@/components/common'
 import { BaseDialog } from '@/components/dialogs'
-import { StaffPayment as StaffPaymentComponent } from '@bcrs-shared-components/staff-payment'
 import { RouteNames, UIMHRSearchTypeValues } from '@/enums'
 import { FeeSummaryTypes } from '@/composables/fees/enums'
 import { StaffPaymentOptions } from '@bcrs-shared-components/enums'
@@ -120,19 +119,20 @@ import { getFeatureFlag, submitSelectedMhr } from '@/utils'
 import { SearchedResultMhr } from '@/components/tables'
 import { uniqBy } from 'lodash'
 /* eslint-disable no-unused-vars */
-import { ErrorIF, DialogOptionsIF } from '@/interfaces'
+import { DialogOptionsIF } from '@/interfaces'
 import { AdditionalSearchFeeIF } from '@/composables/fees/interfaces'
 import { StaffPaymentIF } from '@bcrs-shared-components/interfaces'
+import SharedStaffPayment from '@/components/common/SharedStaffPayment.vue'
 /* eslint-enable no-unused-vars */
 
 export default defineComponent({
   name: 'ConfirmMHRSearch',
   components: {
+    SharedStaffPayment,
     BaseDialog,
     FolioNumberSummary,
     StickyContainer,
-    SearchedResultMhr,
-    StaffPaymentComponent
+    SearchedResultMhr
   },
   emits: ['haveData'],
   props: {

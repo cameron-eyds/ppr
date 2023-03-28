@@ -48,7 +48,7 @@
               @focus="paymentOption = StaffPaymentOptions.BCOL"
               @input="emitStaffPaymentData({ option: StaffPaymentOptions.BCOL, datNumber: $event })"
             />
-            <FolioNumberInput
+            <SharedFolioNumberInput
               ref="folioNumberInputRef"
               :folioNumber="staffPaymentData.folioNumber"
               :disabled="paymentOption === StaffPaymentOptions.FAS || paymentOption === StaffPaymentOptions.NO_FEE"
@@ -83,16 +83,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, ref, toRefs, watch, nextTick } from '@vue/composition-api'
+import { computed, defineComponent, onMounted, reactive, ref, toRefs, watch, nextTick } from '@vue/composition-api'
 import { StaffPaymentOptions } from '@bcrs-shared-components/enums'
-import { FolioNumberInput } from '@bcrs-shared-components/folio-number-input'
+import SharedFolioNumberInput from '@/components/common/SharedFolioNumberInput.vue'
 // eslint-disable-next-line no-unused-vars
 import { FormIF, StaffPaymentIF } from '@bcrs-shared-components/interfaces'
 
 export default defineComponent({
   name: 'SharedStaffPayment',
   components: {
-    FolioNumberInput
+    SharedFolioNumberInput
   },
   emits: ['valid', 'update:staffPaymentData'],
   props: {
@@ -100,8 +100,8 @@ export default defineComponent({
     displayPriorityCheckbox: { type: Boolean, default: true },
     validate: { type: Boolean, default: false },
     invalidSection: { type: Boolean, default: false },
-    staffPaymentDataProps: {
-      type: Object,
+    staffPaymentData: {
+      type: Object as () => StaffPaymentIF,
       default: () => {
         return {
           option: StaffPaymentOptions.NONE,
@@ -120,11 +120,31 @@ export default defineComponent({
     const folioNumberInputRef = ref(null)
 
     const localState = reactive({
-      staffPaymentData: { ...props.staffPaymentDataProps } as StaffPaymentIF,
       paymentOption: StaffPaymentOptions.NONE,
       fasFormValid: false,
       bcolFormValid: false,
-      isMounted: false
+      isMounted: false,
+      /** Validation rules for Routing Slip Number. */
+      routingSlipNumberRules: computed((): Array<Function> => {
+        return [
+          v => !!v || 'Enter FAS Routing Slip Number',
+          v => /^\d{9}$/.test(v) || 'Routing Slip Number must be 9 digits'
+        ]
+      }),
+      /** Validation rules for BCOL Account Number. */
+      bcolAccountNumberRules: computed((): Array<Function> => {
+        return [
+          v => !!v || 'Enter BC Online Account Number',
+          v => /^\d{6}$/.test(v) || 'BC Online Account Number must be 6 digits'
+        ]
+      }),
+      /** Validation rules for DAT Number. */
+      datNumberRules: computed((): Array<Function> => {
+        return [
+          v => !!v || 'Enter DAT Number',
+          v => /^[A-Z]{1}[0-9]{7,9}$/.test(v) || 'DAT Number must be in standard format (eg, C1234567)'
+        ]
+      })
     })
 
     onMounted(async (): Promise<void> => {
@@ -132,32 +152,14 @@ export default defineComponent({
       localState.isMounted = true
     })
 
-    /** Validation rules for Routing Slip Number. */
-    const routingSlipNumberRules = (): Array<Function> => [
-      v => !!v || 'Enter FAS Routing Slip Number',
-      v => /^\d{9}$/.test(v) || 'Routing Slip Number must be 9 digits'
-    ]
-
-    /** Validation rules for BCOL Account Number. */
-    const bcolAccountNumberRules = (): Array<Function> => [
-      v => !!v || 'Enter BC Online Account Number',
-      v => /^\d{6}$/.test(v) || 'BC Online Account Number must be 6 digits'
-    ]
-
-    /** Validation rules for DAT Number. */
-    const datNumberRules = (): Array<Function> => [
-      v => !!v || 'Enter DAT Number',
-      v => /^[A-Z]{1}[0-9]{7,9}$/.test(v) || 'DAT Number must be in standard format (eg, C1234567)'
-    ]
-
     /** Emits an event to update the Staff Payment Data prop. */
     const emitStaffPaymentData = ({
-      option = localState.staffPaymentData.option,
-      routingSlipNumber = localState.staffPaymentData.routingSlipNumber || '',
-      bcolAccountNumber = localState.staffPaymentData.bcolAccountNumber || '',
-      datNumber = localState.staffPaymentData.datNumber || '',
-      folioNumber = localState.staffPaymentData.folioNumber || '',
-      isPriority = localState.staffPaymentData.isPriority || false
+      option = props.staffPaymentData.option,
+      routingSlipNumber = props.staffPaymentData.routingSlipNumber || '',
+      bcolAccountNumber = props.staffPaymentData.bcolAccountNumber || '',
+      datNumber = props.staffPaymentData.datNumber || '',
+      folioNumber = props.staffPaymentData.folioNumber || '',
+      isPriority = props.staffPaymentData.isPriority || false
     }): StaffPaymentIF => {
       // return only the appropriate fields for each option
       switch (option) {
@@ -183,15 +185,11 @@ export default defineComponent({
 
     /** Emits an event indicating whether this component is valid. */
     const emitValid = (): void => {
-      console.log(localState.fasFormValid)
-      console.log(localState.bcolFormValid)
-      console.log(localState.staffPaymentData.option)
-
       context.emit(
         'valid',
-        (localState.fasFormValid ||
+        (props.staffPaymentData.option !== -1) && (localState.fasFormValid ||
           (localState.bcolFormValid && (context.refs.folioNumberInputRef as FormIF).validateFolioNumber()) ||
-          (localState.staffPaymentData.option === StaffPaymentOptions.NO_FEE)
+          (props.staffPaymentData.option === StaffPaymentOptions.NO_FEE)
         )
       )
     }
@@ -205,7 +203,6 @@ export default defineComponent({
           (context.refs.folioNumberInputRef as FormIF).resetFolioNumberValidation();
           // enable validation for this form
           (context.refs.fasForm as FormIF).validate()
-          await nextTick()
           // update data
           emitStaffPaymentData({ option: StaffPaymentOptions.FAS })
           break
@@ -215,7 +212,6 @@ export default defineComponent({
           (context.refs.fasForm as FormIF).resetValidation();
           // enable validation for this form
           (context.refs.bcolForm as FormIF).validate()
-          await nextTick()
           // update data
           emitStaffPaymentData({ option: StaffPaymentOptions.BCOL })
           break
@@ -225,7 +221,6 @@ export default defineComponent({
           (context.refs.fasForm as FormIF).resetValidation();
           (context.refs.bcolForm as FormIF).resetValidation();
           (context.refs.folioNumberInputRef as FormIF).resetFolioNumberValidation()
-          await nextTick()
           // update data
           emitStaffPaymentData({ option: StaffPaymentOptions.NO_FEE, isPriority: false })
           break
@@ -234,16 +229,14 @@ export default defineComponent({
 
     /** Watches for change to FAS and BCOL form validity. */
     watch(() => [localState.fasFormValid, localState.bcolFormValid], async (): Promise<void> => {
-      await nextTick()
       // ignore initial condition
       if (!localState.isMounted) return
       emitValid()
     })
 
     /** Watches for changes to Staff Payment Data prop. */
-    watch(() => localState.staffPaymentData, async (val: StaffPaymentIF): Promise<void> => {
+    watch(() => props.staffPaymentData, async (val: StaffPaymentIF): Promise<void> => {
       localState.paymentOption = val.option
-      await nextTick()
       emitValid()
     }, { deep: true, immediate: true })
 
@@ -251,11 +244,8 @@ export default defineComponent({
       fasForm,
       bcolForm,
       folioNumberInputRef,
-      datNumberRules,
       StaffPaymentOptions,
       emitStaffPaymentData,
-      routingSlipNumberRules,
-      bcolAccountNumberRules,
       ...toRefs(localState)
     }
   }
