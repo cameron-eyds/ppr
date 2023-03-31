@@ -55,7 +55,7 @@ import {
   defineComponent,
   reactive,
   toRefs
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters, useActions } from 'vuex-composition-helpers'
 
 // local

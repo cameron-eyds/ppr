@@ -1,4 +1,4 @@
-import APP from '@/App.vue'
+import { RouteRecordRaw } from 'vue-router'
 import {
   AddCollateral,
   AddSecuredPartiesAndDebtors,
@@ -22,7 +22,7 @@ import {
 } from '@/views'
 import { RouteNames } from '@/enums'
 
-export const routes = [
+export const routes: RouteRecordRaw[] = [
   {
     // router.beforeEach() routes here:
     path: '/login',
@@ -235,7 +235,7 @@ export const routes = [
   {
     // default/fallback route
     // must be last
-    path: '*',
-    redirect: '/login'
+    path: '/:pathMatch(.*)*',
+    redirect: '/'
   }
 ]

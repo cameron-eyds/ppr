@@ -70,7 +70,7 @@ import {
   reactive,
   computed,
   toRefs
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters, useActions } from 'vuex-composition-helpers'
 
 import {
@@ -80,7 +80,6 @@ import {
 } from '@/components/parties/summaries'
 import { AddPartiesIF } from '@/interfaces' // eslint-disable-line no-unused-vars
 import { useParty } from '@/composables/useParty'
-import { BaseAddress } from '@/composables/address'
 import { PartyAddressSchema } from '@/schemas'
 
 import {
@@ -88,22 +87,23 @@ import {
   debtorTableHeaders,
   registeringTableHeaders
 } from '@/resources'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   components: {
-    BaseAddress,
     DebtorSummary,
     RegisteringPartySummary,
     SecuredPartySummary
   },
   setup (props, context) {
+    const router = useRouter()
+
     const { getAddSecuredPartiesAndDebtors } = useGetters<any>([
       'getAddSecuredPartiesAndDebtors'
     ])
     const { setAddSecuredPartiesAndDebtors } = useActions<any>([
       'setAddSecuredPartiesAndDebtors'
     ])
-    const router = context.root.$router
 
     const parties: AddPartiesIF = getAddSecuredPartiesAndDebtors.value
     const addressSchema = PartyAddressSchema

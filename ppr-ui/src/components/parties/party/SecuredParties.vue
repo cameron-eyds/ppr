@@ -368,7 +368,7 @@ import {
   computed,
   watch,
   onMounted
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters, useActions } from 'vuex-composition-helpers'
 import { cloneDeep, isEqual } from 'lodash'
 // local components

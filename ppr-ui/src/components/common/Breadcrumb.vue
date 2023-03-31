@@ -1,44 +1,38 @@
 <template>
-  <v-container fluid :class="$style['breadcrumb-row']" class="view-container px-15 py-0">
-    <div class="container pa-0">
-      <v-row no-gutters class="container" style="padding: 6px 0;">
-        <v-col cols="auto">
-          <v-row no-gutters>
-            <v-col cols="auto">
-              <v-btn id="breadcrumb-back-btn" :class="$style['back-btn']" exact :href="buildHref(backUrl)" icon small>
-                <v-icon>mdi-arrow-left</v-icon>
-              </v-btn>
-            </v-col>
-            <v-col class="pl-3" cols="auto" style="padding-top: 2px;">
-              <div style="border-right: thin solid #ced4da; height: 28px;" />
-            </v-col>
-          </v-row>
-        </v-col>
-        <v-col cols="auto" class="pl-3" style="padding-top: 6px;">
-          <v-breadcrumbs class="pa-0" :items="breadcrumbs">
-            <v-breadcrumbs-item
-              slot="item"
-              slot-scope="{ item }"
-              exact :href="buildHref(item.href)"
-              data-test-id='breadcrumb-item'
-            >
-              <span v-if="!item.disabled" :class="[$style['underlined'], $style['breadcrumb-text']]">
+  <div class="breadcrumb-row">
+    <v-container fluid class="container py-0">
+      <div class="pa-0">
+        <v-row no-gutters style="padding: 6px 0;">
+          <v-col cols="auto">
+            <v-row no-gutters>
+              <v-col cols="auto">
+                <v-btn id="breadcrumb-back-btn" class="back-btn" exact :href="buildHref(backUrl)" icon>
+                  <v-icon icon="mdi-arrow-left" />
+                </v-btn>
+              </v-col>
+              <v-col class="pl-3" cols="auto" style="padding-top: 2px;">
+                <div style="border-right: thin solid #ced4da; height: 28px;" />
+              </v-col>
+            </v-row>
+          </v-col>
+          <v-col cols="auto" class="pl-3" style="padding-top: 6px;">
+            <v-breadcrumbs class="pa-0 breadcrumb-text" :items="breadcrumbs">
+              <template v-slot:title="{ item }">
                 {{ handleStaff(item.text) }}
-              </span>
-              <span v-else :class="$style['breadcrumb-text']">{{ handleStaff(item.text) }}</span>
-            </v-breadcrumbs-item>
-            <v-breadcrumbs-divider class="px-1" slot="divider">
-              <v-icon color="white">mdi-chevron-right</v-icon>
-            </v-breadcrumbs-divider>
-          </v-breadcrumbs>
-        </v-col>
-      </v-row>
-    </div>
-  </v-container>
+              </template>
+              <template v-slot:divider>
+                <v-icon icon="mdi-chevron-right" />
+              </template>
+            </v-breadcrumbs>
+          </v-col>
+        </v-row>
+      </div>
+    </v-container>
+  </div>
 </template>
 <script lang="ts">
 // external
-import { computed, defineComponent, reactive, toRefs, Ref } from '@vue/composition-api' // eslint-disable-line
+import { computed, defineComponent, reactive, toRefs, Ref } from 'vue' // eslint-disable-line
 import { useGetters } from 'vuex-composition-helpers'
 // local
 import { BreadcrumbIF } from '@/interfaces' // eslint-disable-line
@@ -81,7 +75,7 @@ export default defineComponent({
       backUrl: computed((): string => {
         const length = localState.breadcrumbs?.length || 0
         if (length > 1) {
-          return localState.breadcrumbs[length - 2].href || sessionStorage.getItem('REGISTRY_URL')
+          return localState.breadcrumbs[length - 2]?.href || sessionStorage.getItem('REGISTRY_URL')
         }
       }),
       breadcrumbs: computed((): Array<BreadcrumbIF> => {
@@ -171,13 +165,13 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" module>
+<style lang="scss" scoped>
 @import '@/assets/styles/theme.scss';
 .back-btn {
   background-color: white;
   color: $primary-blue !important;
-  min-height: 32px !important;
-  min-width: 32px !important;
+  height: 32px !important;
+  width: 32px !important;
 }
 .breadcrumb-row {
   background-color: $BCgovBlue3-5;
@@ -187,8 +181,11 @@ export default defineComponent({
   color: white !important;
   font-size: 0.8125rem !important;
 }
-.underlined {
-  color: white !important;
+
+:deep(.v-breadcrumbs-item:not(.v-breadcrumbs-item--disabled)) {
   text-decoration: underline;
+}
+:deep(.v-breadcrumbs-item--disabled) {
+  opacity: unset;
 }
 </style>

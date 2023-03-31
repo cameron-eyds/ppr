@@ -1,15 +1,15 @@
 <template>
   <v-container fluid no-gutters class="pa-0" ref="tableHeaderRef" style="position: relative">
-    <date-picker
-      v-show="showDatePicker"
-      ref="datePicker"
-      :setEndDate="submittedEndDate"
-      :setStartDate="submittedStartDate"
-      :setDisableEndDate="!isPpr"
-      @submit="updateDateRange($event)"
-    />
+<!--    <date-picker-->
+<!--      v-show="showDatePicker"-->
+<!--      ref="datePicker"-->
+<!--      :setEndDate="submittedEndDate"-->
+<!--      :setStartDate="submittedStartDate"-->
+<!--      :setDisableEndDate="!isPpr"-->
+<!--      @submit="updateDateRange($event)"-->
+<!--    />-->
 
-    <v-data-table
+    <VDataTable
       id="registration-table"
       :class="{
         'freeze-scroll': freezeTableScroll,
@@ -271,11 +271,11 @@
         <tr v-if="morePages">
           <td :colspan="tableLiteralWidth">
             <table-observer @intersect="getNext()" />
-            <v-skeleton-loader class="ma-0" :style="`width: ${tableLiteralWidth - 180}px`" type="list-item" />
+<!--            <v-skeleton-loader class="ma-0" :style="`width: ${tableLiteralWidth - 180}px`" type="list-item" />-->
           </td>
         </tr>
       </template>
-    </v-data-table>
+    </VDataTable>
   </v-container>
 </template>
 
@@ -288,7 +288,7 @@ import {
   ref,
   toRefs,
   watch
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters } from 'vuex-composition-helpers'
 import flushPromises from 'flush-promises'
 import _ from 'lodash'

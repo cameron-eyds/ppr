@@ -1,9 +1,8 @@
 <template>
   <v-container id="step-buttons-container" :class="$style['step-buttons-container']" pb-0>
-    <template v-for="(step, index) in getSteps">
+    <template v-for="(step, index) in getSteps" :key="index">
       <div
         :class="isCurrentStep(step) ? [$style['step__border__current'], $style['step']]: $style['step']"
-        :key="index"
         @click="goTo(step)"
         v-on:keyup.tab="goTo(step)"
         >
@@ -43,8 +42,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from '@vue/composition-api'
+import { defineComponent, reactive, toRefs } from 'vue'
 import { useGetters } from 'vuex-composition-helpers'
+import {useRoute, useRouter} from 'vue-router';
 
 export default defineComponent({
   name: 'Stepper',
@@ -56,16 +56,19 @@ export default defineComponent({
     }
   },
   setup (props, context) {
+    const route = useRoute()
+    const router = useRouter()
+
     const { getSteps, showStepErrors } = useGetters<any>([
       'getSteps', 'showStepErrors'
     ])
 
     const goTo = (step) => {
-      context.root.$router.push(step.to).catch(error => error)
+      router.push(step.to).catch(error => error)
     }
 
     const isCurrentStep = (step): boolean => {
-      return context.root.$route.name === step.to
+      return route.name === step.to
     }
 
     const showInvalid = (step): boolean => {

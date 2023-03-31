@@ -135,7 +135,7 @@ import {
   ref,
   toRefs,
   watch
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters, useActions } from 'vuex-composition-helpers'
 import { useInputRules, useMhrValidations } from '@/composables/'
 

@@ -16,8 +16,7 @@ export function getRoleProductCode (
   const accessRole = []
 
   if (authRoles.includes(AuthRoles.STAFF) || authRoles.includes(AuthRoles.SBC) ||
-    authRoles.includes(AuthRoles.HELPDESK) || authRoles.includes(AuthRoles.PPR_STAFF) ||
-    subscribedProductCodes === []) {
+    authRoles.includes(AuthRoles.HELPDESK) || authRoles.includes(AuthRoles.PPR_STAFF)) {
     // Staff User
     accessRole.push('STAFF')
     // If MHR UI is disabled then user has access only to PPR

@@ -34,7 +34,7 @@
 </template>
 <script lang="ts">
 // external
-import { computed, defineComponent, reactive, toRefs } from '@vue/composition-api'
+import { computed, defineComponent, reactive, toRefs } from 'vue'
 import { useGetters } from 'vuex-composition-helpers'
 // local
 import { formatExpiryDate, pacificDate } from '@/utils'

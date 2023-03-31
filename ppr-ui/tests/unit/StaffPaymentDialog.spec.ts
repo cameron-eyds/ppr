@@ -7,7 +7,7 @@ import { mount, createLocalVue } from '@vue/test-utils'
 import CompositionApi from '@vue/composition-api'
 
 // Components
-import { StaffPayment as StaffPaymentComponent } from '@bcrs-shared-components/staff-payment'
+import { SharedStaffPayment } from '@/components/common'
 import { StaffPaymentDialog, BaseDialog } from '@/components/dialogs'
 import { getLastEvent } from './utils'
 import {
@@ -56,7 +56,7 @@ describe('Payment component', () => {
 
   it('renders with staff payment component', () => {
     expect(wrapper.findComponent(StaffPaymentDialog).exists()).toBe(true)
-    expect(wrapper.findComponent(StaffPaymentComponent).exists()).toBe(true)
+    expect(wrapper.findComponent(SharedStaffPayment).exists()).toBe(true)
     expect(wrapper.findComponent(BaseDialog).exists()).toBe(true)
     expect(wrapper.findAll(title).length).toBe(1)
     expect(wrapper.find(title).text()).toBe('Staff Payment')
@@ -86,7 +86,7 @@ describe('Payment component', () => {
   })
 
   it('updates store payment info', async () => {
-    wrapper.findComponent(StaffPaymentComponent).vm.$emit('update:staffPaymentData', {
+    wrapper.findComponent(SharedStaffPayment).vm.$emit('update:staffPaymentData', {
       option: 1,
       routingSlipNumber: '999888777',
       bcolAccountNumber: '',
@@ -101,7 +101,7 @@ describe('Payment component', () => {
   })
 
   it('Clears the payment data on cancel', async () => {
-    wrapper.findComponent(StaffPaymentComponent).vm.$emit('update:staffPaymentData', {
+    wrapper.findComponent(SharedStaffPayment).vm.$emit('update:staffPaymentData', {
       option: 1,
       routingSlipNumber: '999888777',
       bcolAccountNumber: '',

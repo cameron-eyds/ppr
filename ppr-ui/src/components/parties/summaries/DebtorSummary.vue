@@ -15,13 +15,14 @@ import {
   reactive,
   computed,
   toRefs
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters, useActions } from 'vuex-composition-helpers'
 
 import { BasePartySummary } from '@/components/parties/summaries'
 import { AddPartiesIF, PartySummaryOptionsI } from '@/interfaces' // eslint-disable-line no-unused-vars
 
 import { debtorTableHeaders } from '@/resources'
+import {useRouter} from 'vue-router';
 
 export default defineComponent({
   name: 'DebtorSummary',
@@ -37,13 +38,14 @@ export default defineComponent({
     }
   },
   setup (props, context) {
+    const router = useRouter()
+
     const { getAddSecuredPartiesAndDebtors } = useGetters<any>([
       'getAddSecuredPartiesAndDebtors'
     ])
     const { setAddSecuredPartiesAndDebtors } = useActions<any>([
       'setAddSecuredPartiesAndDebtors'
     ])
-    const router = context.root.$router
     const parties: AddPartiesIF = getAddSecuredPartiesAndDebtors.value
 
     const localState = reactive({

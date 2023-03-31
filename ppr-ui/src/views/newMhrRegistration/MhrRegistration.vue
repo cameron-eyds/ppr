@@ -59,7 +59,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, onMounted, reactive, toRefs } from '@vue/composition-api'
+import { computed, defineComponent, nextTick, onMounted, reactive, toRefs } from 'vue'
 import { useActions, useGetters } from 'vuex-composition-helpers'
 import { SessionStorageKeys } from 'sbc-common-components/src/util/constants'
 import { RegistrationFlowType, RouteNames, StatementTypes } from '@/enums'
@@ -73,6 +73,7 @@ import { RegistrationTypeIF, RegTableNewItemI } from '@/interfaces'
 import { RegistrationLengthI } from '@/composables/fees/interfaces'
 import BaseDialog from '@/components/dialogs/BaseDialog.vue'
 import { registrationCompleteError } from '@/resources/dialogOptions'
+import {useRoute, useRouter} from 'vue-router';
 /* eslint-enable no-unused-vars */
 
 export default defineComponent({
@@ -94,6 +95,9 @@ export default defineComponent({
     }
   },
   setup (props, context) {
+    const route = useRoute()
+    const router = useRouter()
+
     const {
       getRegistrationFlowType,
       getRegistrationType,
@@ -166,7 +170,7 @@ export default defineComponent({
 
     /** Helper to check is the current route matches */
     const isRouteName = (routeName: RouteNames): boolean => {
-      return (context.root.$route.name === routeName)
+      return (route.name === routeName)
     }
 
     const registrationIncomplete = (): void => {
@@ -179,7 +183,7 @@ export default defineComponent({
     }
 
     const goToDash = (): void => {
-      context.root.$router.push({
+      router.push({
         name: RouteNames.DASHBOARD
       })
     }
@@ -229,7 +233,7 @@ export default defineComponent({
           }
           setRegTableNewItem(newRegItem)
           setUnsavedChanges(false)
-          await context.root.$router.push({ name: RouteNames.DASHBOARD })
+          await router.push({ name: RouteNames.DASHBOARD })
         } else {
           console.log(mhrSubmission?.error) // Handle Schema or Api errors here..
           localState.options = registrationCompleteError

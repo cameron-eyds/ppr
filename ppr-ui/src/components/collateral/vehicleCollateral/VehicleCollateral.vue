@@ -158,7 +158,7 @@
                           <v-btn
                             text
                             color="primary"
-                            class="smaller-button dlt-btn primary--text"
+                            class="smaller-button dlt-btn text-primary"
                             :id="'class-' + row.index + '-dlt-btn'"
                             @click="removeVehicle(row.index)"
                             :disabled="isLastDelete"
@@ -321,7 +321,7 @@ import {
   defineComponent,
   reactive,
   toRefs
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters, useActions } from 'vuex-composition-helpers'
 // local components
 import { EditCollateral } from '.'
@@ -579,7 +579,7 @@ td {
   font-weight: 700;
 }
 
-::v-deep .primary--text.v-btn.v-btn--disabled > .v-btn__content > span {
+::v-deep .text-primary.v-btn.v-btn--disabled > .v-btn__content > span {
   color: #1669bb !important;
   opacity: 0.4 !important;
 }

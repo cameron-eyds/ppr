@@ -123,7 +123,7 @@ import {
   ref,
   toRefs,
   watch
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters } from 'vuex-composition-helpers'
 import flushPromises from 'flush-promises'
 import _ from 'lodash'

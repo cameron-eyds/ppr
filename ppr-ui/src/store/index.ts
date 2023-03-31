@@ -1,6 +1,7 @@
 // Libraries
 import Vue from 'vue'
-import Vuex from 'vuex'
+// import Vuex from 'vuex'
+import { createStore } from 'vuex'
 
 // Store modules
 import * as State from './state'
@@ -11,15 +12,24 @@ import * as Actions from './actions'
 /**
  * Configures and returns Vuex Store.
  */
-export function getVuexStore () {
-  Vue.use(Vuex)
+// export function getVuexStore () {
+//   Vue.use(Vuex)
+//
+//   const store = new Vuex.Store<any>({
+//     state: { ...State },
+//     getters: { ...Getters },
+//     mutations: { ...Mutations },
+//     actions: { ...Actions }
+//   })
+//
+//   return store
+// }
 
-  const store = new Vuex.Store<any>({
-    state: { ...State },
-    getters: { ...Getters },
-    mutations: { ...Mutations },
-    actions: { ...Actions }
-  })
-
-  return store
-}
+export default createStore({
+  state: { ...State },
+  getters: { ...Getters },
+  mutations: { ...Mutations },
+  actions: { ...Actions },
+  modules: {},
+  strict: process.env.NODE_ENV !== 'production',
+})

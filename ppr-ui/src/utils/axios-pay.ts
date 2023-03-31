@@ -8,7 +8,7 @@ const axios = Axios.create()
 // Set the request headers for all pay-api requests: Authorization, Account-Id
 axios.interceptors.request.use(
   config => {
-    config.headers.common.Authorization = `Bearer ${sessionStorage.getItem(SessionStorageKeys.KeyCloakToken)}`
+    config.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem(SessionStorageKeys.KeyCloakToken)}`
     const currentAccount = sessionStorage.getItem(SessionStorageKeys.CurrentAccount)
     if (currentAccount) {
       const accountInfo = JSON.parse(currentAccount)

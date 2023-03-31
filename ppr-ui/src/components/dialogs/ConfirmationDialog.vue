@@ -27,7 +27,7 @@ import {
   reactive,
   toRefs,
   watch
-} from '@vue/composition-api'
+} from 'vue'
 import { useActions } from 'vuex-composition-helpers'
 // local components
 import { BaseDialog } from '.'

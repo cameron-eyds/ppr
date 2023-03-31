@@ -52,7 +52,7 @@
 <script lang="ts">
 // Components
 /* eslint-disable no-unused-vars */
-import { computed, defineComponent, onMounted, reactive, set, toRefs } from '@vue/composition-api'
+import { computed, defineComponent, onMounted, reactive, toRefs } from 'vue'
 import { RegistrationsWrapper } from '@/components/common'
 import { useActions, useGetters } from 'vuex-composition-helpers'
 import { useNewMhrRegistration } from '@/composables'

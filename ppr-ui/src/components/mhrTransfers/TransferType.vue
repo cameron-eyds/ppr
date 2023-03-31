@@ -120,7 +120,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref, toRefs, watch } from '@vue/composition-api'
+import {computed, defineComponent, reactive, Ref, ref, toRefs, watch} from 'vue'
 import { BaseDialog } from '@/components/dialogs'
 import { ClientTransferTypes, StaffTransferTypes } from '@/resources'
 import { useGetters } from 'vuex-composition-helpers'
@@ -139,6 +139,7 @@ export default defineComponent({
   setup (props, context) {
     const { customRules, required, isNumber, maxLength } = useInputRules()
     const transferTypeSelectRef = ref(null)
+    const transferTypeForm: Ref<FormIF> = ref(null)
     const declaredValueRef = ref(null)
 
     const {
@@ -180,9 +181,7 @@ export default defineComponent({
     const selectTransferType = (item: TransferTypeSelectIF): void => {
       context.emit('emitType', item)
       localState.selectedTransferType = cloneDeep(item)
-
-      // @ts-ignore - function exists
-      context.refs.transferTypeSelectRef.blur()
+      transferTypeSelectRef.value.blur()
     }
 
     const handleTypeChange = async (item: TransferTypeSelectIF): Promise<void> => {
@@ -205,7 +204,7 @@ export default defineComponent({
     }
 
     watch(() => props.validate, (validate: boolean) => {
-      validate && (context.refs.transferTypeForm as FormIF).validate()
+      validate && transferTypeForm.value.validate()
     })
 
     watch(() => localState.isValid, () => {
@@ -221,7 +220,7 @@ export default defineComponent({
     })
 
     watch(() => localState.selectedTransferType, (val:TransferTypeSelectIF) => {
-      (context.refs.transferTypeForm as FormIF).resetValidation()
+      transferTypeForm.value.resetValidation()
 
       switch (val.transferType) {
         case ApiTransferTypes.SALE_OR_GIFT:

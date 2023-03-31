@@ -99,7 +99,7 @@ import {
   toRefs,
   watch,
   onMounted
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters, useActions } from 'vuex-composition-helpers'
 import EditTrustIndenture from './EditTrustIndenture.vue'
 

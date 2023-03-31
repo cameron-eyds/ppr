@@ -275,7 +275,7 @@ import { useGetters } from 'vuex-composition-helpers'
 import { AddEditHomeOwner, HomeOwnersTable } from '@/components/mhrRegistration/HomeOwners'
 import { BaseDialog } from '@/components/dialogs'
 import { SimpleHelpToggle } from '@/components/common'
-import { computed, defineComponent, onBeforeMount, reactive, toRefs, watch } from '@vue/composition-api'
+import { computed, defineComponent, onBeforeMount, reactive, toRefs, watch } from 'vue'
 import { useHomeOwners, useMhrValidations, useMhrInformation, useTransferOwners } from '@/composables'
 /* eslint-disable no-unused-vars */
 import { MhrRegistrationTotalOwnershipAllocationIF } from '@/interfaces'

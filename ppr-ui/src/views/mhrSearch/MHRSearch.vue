@@ -34,12 +34,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onBeforeMount, reactive, toRefs, watch } from '@vue/composition-api'
+import { computed, defineComponent, onBeforeMount, reactive, toRefs, watch } from 'vue'
 import { useGetters } from 'vuex-composition-helpers'
 import { SessionStorageKeys } from 'sbc-common-components/src/util/constants'
 import { SearchedResultMhr } from '@/components/tables'
 import { RouteNames } from '@/enums'
 import { getFeatureFlag, navigate } from '@/utils'
+import {useRoute, useRouter} from 'vue-router';
 
 export default defineComponent({
   name: 'MHRSearch',
@@ -66,6 +67,9 @@ export default defineComponent({
     }
   },
   setup (props, context) {
+    const route = useRoute()
+    const router = useRouter()
+
     const {
       getManufacturedHomeSearchResults
     } = useGetters<any>([
@@ -90,7 +94,7 @@ export default defineComponent({
       window.onbeforeunload = (event) => {
         // unsaved selections if app is ready, search results exist, and on the search page
         const isSearchReportUnsaved = (
-          context.root.$router.currentRoute.name === RouteNames.MHRSEARCH &&
+          router.currentRoute.value.name === RouteNames.MHRSEARCH &&
            props.appReady &&
            !!getManufacturedHomeSearchResults.value
         )
@@ -128,7 +132,7 @@ export default defineComponent({
 
       // if navigated here without search results redirect to the dashboard
       if (!getManufacturedHomeSearchResults.value) {
-        context.root.$router.push({
+        router.push({
           name: RouteNames.DASHBOARD
         })
         emitHaveData(false)

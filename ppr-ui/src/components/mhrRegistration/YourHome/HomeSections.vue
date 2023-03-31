@@ -48,7 +48,7 @@
 
 <script lang="ts">
 /* eslint-disable no-unused-vars */
-import { computed, defineComponent, reactive, toRefs, watch } from '@vue/composition-api'
+import { computed, defineComponent, reactive, toRefs, watch } from 'vue'
 import { useActions, useGetters } from 'vuex-composition-helpers'
 import { HomeSectionIF } from '@/interfaces'
 import AddEditHomeSections from '@/components/mhrRegistration/YourHome/AddEditHomeSections.vue'

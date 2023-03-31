@@ -141,7 +141,7 @@ import {
   toRefs,
   watch,
   onMounted
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters, useActions } from 'vuex-composition-helpers'
 // bcregistry
 import SharedDatePicker from '@/components/common/SharedDatePicker.vue'

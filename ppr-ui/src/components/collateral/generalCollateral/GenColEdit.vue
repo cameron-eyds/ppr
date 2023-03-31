@@ -10,17 +10,17 @@
           General Collateral
         </v-col>
         <v-col cols="9" class="pr-4">
-          <tiptap-vuetify
-            :extensions="extensions"
-            v-model="newDesc"
-            id="general-collateral-new-desc"
-            placeholder="Description of General Collateral"
-            :card-props="{
-              flat: true,
-              style: 'background: rgba(0, 0, 0, 0.06)',
-            }"
-            :editor-properties="{ editorProps: editorProperties }"
-          />
+<!--          <tiptap-vuetify-->
+<!--            :extensions="extensions"-->
+<!--            v-model="newDesc"-->
+<!--            id="general-collateral-new-desc"-->
+<!--            placeholder="Description of General Collateral"-->
+<!--            :card-props="{-->
+<!--              flat: true,-->
+<!--              style: 'background: rgba(0, 0, 0, 0.06)',-->
+<!--            }"-->
+<!--            :editor-properties="{ editorProps: editorProperties }"-->
+<!--          />-->
           <p class="summary-text">
             Note: If you are pasting text,
             <strong>we recommend pasting plain text</strong>
@@ -43,37 +43,35 @@ import {
   watch,
   onMounted,
   computed
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters, useActions } from 'vuex-composition-helpers'
 // local
 import { RegistrationFlowType } from '@/enums' // eslint-disable-line no-unused-vars
 import { GeneralCollateralIF } from '@/interfaces' // eslint-disable-line no-unused-vars
 // import the component and the necessary extensions
-import {
-  TiptapVuetify,
-  Heading,
-  Bold,
-  Italic,
-  Strike,
-  Underline,
-  BulletList,
-  OrderedList,
-  ListItem,
-  Blockquote,
-  HardBreak,
-  HorizontalRule,
-  History,
-  Table,
-  TableCell,
-  TableHeader,
-  TableRow
-} from 'tiptap-vuetify'
+// import {
+//   TiptapVuetify,
+//   Heading,
+//   Bold,
+//   Italic,
+//   Strike,
+//   Underline,
+//   BulletList,
+//   OrderedList,
+//   ListItem,
+//   Blockquote,
+//   HardBreak,
+//   HorizontalRule,
+//   History,
+//   Table,
+//   TableCell,
+//   TableHeader,
+//   TableRow
+// } from 'tiptap-vuetify'
 
 export default defineComponent({
   name: 'GenColEdit',
-  components: {
-    TiptapVuetify
-  },
+  components: {},
   props: {
     showInvalid: {
       type: Boolean,
@@ -87,29 +85,29 @@ export default defineComponent({
     ])
     const { setGeneralCollateral } = useActions<any>(['setGeneralCollateral'])
     const extensions = [
-      History,
-      Blockquote,
-      Underline,
-      Strike,
-      Italic,
-      ListItem,
-      BulletList,
-      OrderedList,
-      [
-        Heading,
-        {
-          options: {
-            levels: [1, 2, 3]
-          }
-        }
-      ],
-      Bold,
-      HorizontalRule,
-      HardBreak,
-      Table,
-      TableCell,
-      TableHeader,
-      TableRow
+      // History,
+      // Blockquote,
+      // Underline,
+      // Strike,
+      // Italic,
+      // ListItem,
+      // BulletList,
+      // OrderedList,
+      // [
+      //   Heading,
+      //   {
+      //     options: {
+      //       levels: [1, 2, 3]
+      //     }
+      //   }
+      // ],
+      // Bold,
+      // HorizontalRule,
+      // HardBreak,
+      // Table,
+      // TableCell,
+      // TableHeader,
+      // TableRow
     ]
 
     const editorProperties = {

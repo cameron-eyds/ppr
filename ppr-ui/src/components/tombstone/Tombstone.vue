@@ -1,14 +1,16 @@
 <template>
-  <v-container class="header-container view-container px-15 py-0" fluid style="background-color: white;">
-    <div class="container pa-0" style="padding: 29px 0 !important;">
-      <tombstone-discharge v-if="displayDischarge || displayRenewal || displayAmendment || displayMhrInformation" />
-      <tombstone-default v-else />
-    </div>
-  </v-container>
+  <div id="tombstone-wrapper" style="background-color: white;">
+    <v-container class="header-container container py-0" fluid>
+      <div class="container pa-0" style="padding: 29px 0 !important;">
+        <tombstone-discharge v-if="displayDischarge || displayRenewal || displayAmendment || displayMhrInformation" />
+        <tombstone-default v-else />
+      </div>
+    </v-container>
+  </div>
 </template>
 <script lang="ts">
 // external
-import { computed, defineComponent, reactive, toRefs } from '@vue/composition-api'
+import { computed, defineComponent, reactive, toRefs } from 'vue'
 // local
 import { TombstoneDefault, TombstoneDischarge } from '@/components/tombstone'
 
@@ -23,7 +25,7 @@ export default defineComponent({
       default: ''
     }
   },
-  setup (props, { root }) {
+  setup (props) {
     const localState = reactive({
       currentPath: computed((): string => {
         return props.setCurrentPath

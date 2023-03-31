@@ -99,7 +99,7 @@ import {
   defineComponent,
   reactive,
   toRefs
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters, useActions } from 'vuex-composition-helpers'
 
 // local
@@ -107,6 +107,7 @@ import { LengthTrustIF } from '@/interfaces' // eslint-disable-line no-unused-va
 import { convertDate, formatExpiryDate, isInt } from '@/utils'
 import { APIRegistrationTypes, RouteNames, RegistrationFlowType } from '@/enums'
 import { getFinancingFee } from '@/composables/fees/factories'
+import { useRoute, useRouter } from 'vue-router'
 
 export default defineComponent({
   props: {
@@ -116,6 +117,9 @@ export default defineComponent({
     }
   },
   setup (props, context) {
+    const route = useRoute()
+    const router = useRouter()
+
     const { setLengthTrust } = useActions<any>(['setLengthTrust'])
     const { getLengthTrust } = useGetters<any>(['getLengthTrust'])
     const {
@@ -131,8 +135,6 @@ export default defineComponent({
     ])
     const registrationType = getRegistrationType.value?.registrationTypeAPI
     const feeInfoYears = getFinancingFee(false)
-    const router = context.root.$router
-    const route = context.root.$route
 
     const localState = reactive({
       renewalView: props.isRenewal,

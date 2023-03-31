@@ -230,7 +230,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, toRefs, watch } from '@vue/composition-api'
+import { computed, defineComponent, reactive, toRefs, watch } from 'vue'
 import { useActions, useGetters } from 'vuex-composition-helpers'
 import _ from 'lodash'
 

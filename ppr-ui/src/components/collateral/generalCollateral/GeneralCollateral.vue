@@ -29,7 +29,7 @@ import {
   reactive,
   watch,
   toRefs
-} from '@vue/composition-api'
+} from 'vue'
 // local components
 import { GenColEdit, GenColSummary, GenColAmend } from '.'
 // local types/helpers/etc.

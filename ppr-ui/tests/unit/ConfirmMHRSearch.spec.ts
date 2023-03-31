@@ -10,9 +10,9 @@ import flushPromises from 'flush-promises'
 import { ConfirmMHRSearch } from '@/views'
 import {
   FolioNumberSummary,
+  SharedStaffPayment,
   StickyContainer
 } from '@/components/common'
-import { StaffPayment as StaffPaymentComponent } from '@bcrs-shared-components/staff-payment'
 import { BaseDialog } from '@/components/dialogs'
 // ppr enums/utils/etc.
 import { RouteNames } from '@/enums'

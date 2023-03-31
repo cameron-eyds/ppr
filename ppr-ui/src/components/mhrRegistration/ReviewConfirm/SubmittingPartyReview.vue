@@ -104,7 +104,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, toRefs } from '@vue/composition-api'
+import { computed, defineComponent, reactive, toRefs } from 'vue'
 import { RouteNames } from '@/enums'
 import { useGetters } from 'vuex-composition-helpers'
 import { BaseAddress } from '@/composables/address'

@@ -15,7 +15,7 @@ import {
   reactive,
   computed,
   toRefs
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters, useActions } from 'vuex-composition-helpers'
 
 import { BasePartySummary } from '@/components/parties/summaries'
@@ -24,6 +24,7 @@ import { AddPartiesIF, PartySummaryOptionsI } from '@/interfaces' // eslint-disa
 import { partyTableHeaders } from '@/resources'
 import { isSecuredPartyRestrictedList } from '@/utils'
 import { RegistrationFlowType } from '@/enums'
+import {useRouter} from 'vue-router';
 
 export default defineComponent({
   name: 'SecuredPartySummary',
@@ -39,6 +40,8 @@ export default defineComponent({
     }
   },
   setup (props, context) {
+    const router = useRouter()
+
     const {
       getAddSecuredPartiesAndDebtors,
       getRegistrationType,
@@ -51,7 +54,6 @@ export default defineComponent({
     const { setAddSecuredPartiesAndDebtors } = useActions<any>([
       'setAddSecuredPartiesAndDebtors'
     ])
-    const router = context.root.$router
     const parties: AddPartiesIF = getAddSecuredPartiesAndDebtors.value
 
     const localState = reactive({

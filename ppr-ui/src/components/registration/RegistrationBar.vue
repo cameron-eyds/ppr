@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, toRefs } from '@vue/composition-api'
+import { computed, defineComponent, reactive, toRefs } from 'vue'
 import { useActions, useGetters } from 'vuex-composition-helpers'
 
 import RegistrationBarButtonList from '@/components/registration/RegistrationBarButtonList.vue'

@@ -244,7 +244,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, toRefs, onMounted, watch } from '@vue/composition-api'
+import { computed, defineComponent, reactive, toRefs, onMounted, watch } from 'vue'
 import { useActions, useGetters } from 'vuex-composition-helpers' // eslint-disable-line no-unused-vars
 import {
   mhSearchMhrNumberHeaders,
@@ -258,6 +258,7 @@ import { BaseHeaderIF, ManufacturedHomeSearchResultIF } from '@/interfaces' // e
 import { FolioNumber } from '@/components/common'
 import { RouteNames, UIMHRSearchTypeMap, UIMHRSearchTypes, UIMHRSearchTypeValues } from '@/enums'
 import { cloneDeep, uniqBy, filter, sortBy, groupBy } from 'lodash'
+import {useRoute, useRouter} from 'vue-router';
 
 export default defineComponent({
   components: {
@@ -285,7 +286,7 @@ export default defineComponent({
       'setSelectedManufacturedHomes',
       'setFolioOrReferenceNumber'
     ])
-    const router = context.root.$router
+    const router = useRouter()
 
     const localState = reactive({
       searched: false,

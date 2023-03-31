@@ -97,7 +97,7 @@ import {
   toRefs,
   watch,
   onMounted
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters, useActions } from 'vuex-composition-helpers'
 // local
 import { convertDate, getRegisteringPartyFromAuth } from '@/utils'

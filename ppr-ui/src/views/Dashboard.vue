@@ -1,5 +1,5 @@
 <template>
-  <v-container id="dashboard" class="view-container px-15 py-10 ma-0" fluid>
+  <div id="dashboard" class="py-10 ma-0" fluid>
     <!-- Page Overlay -->
     <v-overlay :value="loading">
       <v-progress-circular color="primary" size="50" indeterminate />
@@ -7,56 +7,56 @@
 
     <base-snackbar :setMessage="snackbarMsg" :toggleSnackbar="toggleSnackbar" />
     <div v-if="appReady" class="container pa-0">
-      <v-row no-gutters>
-        <v-col>
-          <v-row no-gutters
-                  id="search-header"
-                  :class="[$style['dashboard-title'], 'pl-6', 'pt-3', 'pb-3', 'soft-corners-top']">
-            <v-col cols="auto">
-              <b v-if="hasPPR && hasMHR">
-                Manufactured Home and Personal Property Registries Search</b>
-              <b v-else-if="hasPPR">Personal Property Registry Search</b>
-              <b v-else-if="hasMHR">Manufactured Home Registry Search</b>
-            </v-col>
-          </v-row>
-          <v-row no-gutters>
-            <search-bar
-              class="soft-corners-bottom"
-              :isNonBillable="isNonBillable"
-              :serviceFee="getUserServiceFee"
-              @debtor-name="setSearchDebtorName"
-              @searched-type="setSearchedType"
-              @searched-value="setSearchedValue"
-              @search-data="saveResults($event)"
-              @search-error="emitError($event)"
-            />
-          </v-row>
-        </v-col>
-      </v-row>
-      <v-row no-gutters class='pt-12'>
-        <v-col>
-          <v-row no-gutters
-                  id="search-history-header"
-                  :class="[$style['dashboard-title'], 'pl-6', 'pt-3', 'pb-3', 'soft-corners-top']">
-            <v-col cols="12" sm="3">
-              <b>Searches</b> ({{ searchHistoryLength }})
-            </v-col>
-            <v-col cols="12" sm="9">
-              <span :class="[$style['header-help-text'], 'float-right', 'pr-6']">
-                The Searches table will display up to 1000 searches conducted within the last 14 days.
-              </span>
-            </v-col>
-          </v-row>
-          <v-row no-gutters>
-            <v-col v-if="!appLoadingData" cols="12">
-              <search-history class="soft-corners-bottom" @retry="retrieveSearchHistory" @error="emitError"/>
-            </v-col>
-            <v-col v-else class="pa-10" cols="12">
-              <v-progress-linear color="primary" indeterminate rounded height="6" />
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
+<!--      <v-row no-gutters>-->
+<!--        <v-col>-->
+<!--          <v-row no-gutters-->
+<!--                  id="search-header"-->
+<!--                  :class="[$style['dashboard-title'], 'pl-6', 'pt-3', 'pb-3', 'soft-corners-top']">-->
+<!--            <v-col cols="auto">-->
+<!--              <b v-if="hasPPR && hasMHR">-->
+<!--                Manufactured Home and Personal Property Registries Search</b>-->
+<!--              <b v-else-if="hasPPR">Personal Property Registry Search</b>-->
+<!--              <b v-else-if="hasMHR">Manufactured Home Registry Search</b>-->
+<!--            </v-col>-->
+<!--          </v-row>-->
+<!--          <v-row no-gutters>-->
+<!--            <search-bar-->
+<!--              class="soft-corners-bottom"-->
+<!--              :isNonBillable="isNonBillable"-->
+<!--              :serviceFee="getUserServiceFee"-->
+<!--              @debtor-name="setSearchDebtorName"-->
+<!--              @searched-type="setSearchedType"-->
+<!--              @searched-value="setSearchedValue"-->
+<!--              @search-data="saveResults($event)"-->
+<!--              @search-error="emitError($event)"-->
+<!--            />-->
+<!--          </v-row>-->
+<!--        </v-col>-->
+<!--      </v-row>-->
+<!--      <v-row no-gutters class='pt-12'>-->
+<!--        <v-col>-->
+<!--          <v-row no-gutters-->
+<!--                  id="search-history-header"-->
+<!--                  :class="[$style['dashboard-title'], 'pl-6', 'pt-3', 'pb-3', 'soft-corners-top']">-->
+<!--            <v-col cols="12" sm="3">-->
+<!--              <b>Searches</b> ({{ searchHistoryLength }})-->
+<!--            </v-col>-->
+<!--            <v-col cols="12" sm="9">-->
+<!--              <span :class="[$style['header-help-text'], 'float-right', 'pr-6']">-->
+<!--                The Searches table will display up to 1000 searches conducted within the last 14 days.-->
+<!--              </span>-->
+<!--            </v-col>-->
+<!--          </v-row>-->
+<!--          <v-row no-gutters>-->
+<!--            <v-col v-if="!appLoadingData" cols="12">-->
+<!--              <search-history class="soft-corners-bottom" @retry="retrieveSearchHistory" @error="emitError"/>-->
+<!--            </v-col>-->
+<!--            <v-col v-else class="pa-10" cols="12">-->
+<!--              <v-progress-linear color="primary" indeterminate rounded height="6" />-->
+<!--            </v-col>-->
+<!--          </v-row>-->
+<!--        </v-col>-->
+<!--      </v-row>-->
       <v-row no-gutters class="mt-4 pt-7">
         <v-col>
           <DashboardTabs
@@ -76,11 +76,11 @@
         </v-col>
       </v-row>
     </div>
-  </v-container>
+  </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, reactive, toRefs, watch } from '@vue/composition-api'
+import { computed, defineComponent, onMounted, reactive, toRefs, watch } from 'vue'
 import { useActions, useGetters } from 'vuex-composition-helpers'
 import { SessionStorageKeys } from 'sbc-common-components/src/util/constants'
 import { ProductCode, RouteNames } from '@/enums'
@@ -99,6 +99,7 @@ import {
   ManufacturedHomeSearchResponseIF, RegTableNewItemI, // eslint-disable-line no-unused-vars
   SearchResponseIF // eslint-disable-line no-unused-vars
 } from '@/interfaces'
+import {useRoute, useRouter} from 'vue-router';
 
 export default defineComponent({
   name: 'Dashboard',
@@ -129,6 +130,9 @@ export default defineComponent({
     }
   },
   setup (props, context) {
+    const route = useRoute()
+    const router = useRouter()
+
     const {
       isRoleStaff,
       hasMhrRole,
@@ -250,12 +254,12 @@ export default defineComponent({
       if (results) {
         if (localState.isMHRSearchType(results.searchQuery.type)) {
           setManufacturedHomeSearchResults(results)
-          context.root.$router.replace({
+          router.replace({
             name: RouteNames.MHRSEARCH
           })
         } else {
           setSearchResults(results)
-          context.root.$router.replace({
+          router.replace({
             name: RouteNames.SEARCH
           })
         }

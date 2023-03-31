@@ -1,41 +1,69 @@
-import Vue from 'vue'
-import VueRouter, { Route } from 'vue-router'
-import { routes } from './routes'
+import { nextTick } from 'vue'
+import { RouteLocationNormalized } from 'vue-router'
+// External
+import { createRouter, createWebHistory, Router } from 'vue-router'
+// BC registry
+import { BreadcrumbIF } from '@bcrs-shared-components/interfaces'
 import { SessionStorageKeys } from 'sbc-common-components/src/util/constants'
+// Local
 import { RouteNames } from '@/enums'
+import { routes } from './routes'
 
 /**
  * Configures and returns Vue Router.
  */
-export function getVueRouter () {
-  Vue.use(VueRouter)
-
-  const router = new VueRouter({
-    mode: 'history',
-    // set base URL for Vue Router
-    base: sessionStorage.getItem('VUE_ROUTER_BASE'),
-    routes,
-    scrollBehavior (to, from, savedPosition) {
-      // see https://router.vuejs.org/guide/advanced/scroll-behavior.html
-      const scrollToTableRoutes = [
-        RouteNames.ADD_COLLATERAL,
-        RouteNames.ADD_SECUREDPARTIES_AND_DEBTORS,
-        RouteNames.LENGTH_TRUST,
-        RouteNames.REVIEW_CONFIRM,
-        RouteNames.REVIEW_DISCHARGE,
-        RouteNames.CONFIRM_DISCHARGE,
-        RouteNames.RENEW_REGISTRATION,
-        RouteNames.CONFIRM_RENEWAL,
-        RouteNames.AMEND_REGISTRATION,
-        RouteNames.CONFIRM_AMENDMENT
-      ]
-      const fromRouteName = from.name as RouteNames
-      if (to.name === RouteNames.DASHBOARD && scrollToTableRoutes.includes(fromRouteName)) {
-        return { x: 0, y: 1000 }
-      }
-      return { x: 0, y: 0 }
-    }
+export function createVueRouter () {
+  const router = createRouter({
+    history: createWebHistory(sessionStorage.getItem('VUE_ROUTER_BASE') || ''),
+    routes
+    // scrollBehavior (to, from, savedPosition) {
+    //   // see https://router.vuejs.org/guide/advanced/scroll-behavior.html
+    //   const scrollToTableRoutes = [
+    //     RouteNames.ADD_COLLATERAL,
+    //     RouteNames.ADD_SECUREDPARTIES_AND_DEBTORS,
+    //     RouteNames.LENGTH_TRUST,
+    //     RouteNames.REVIEW_CONFIRM,
+    //     RouteNames.REVIEW_DISCHARGE,
+    //     RouteNames.CONFIRM_DISCHARGE,
+    //     RouteNames.RENEW_REGISTRATION,
+    //     RouteNames.CONFIRM_RENEWAL,
+    //     RouteNames.AMEND_REGISTRATION,
+    //     RouteNames.CONFIRM_AMENDMENT
+    //   ]
+    //   const fromRouteName = from.name as RouteNames
+    //   if (to.name === RouteNames.DASHBOARD && scrollToTableRoutes.includes(fromRouteName)) {
+    //     return { x: 0, y: 1000 }
+    //   }
+    //   return { x: 0, y: 0 }
+    // }
   })
+
+  // const router = new VueRouter({
+  //   mode: 'history',
+  //   // set base URL for Vue Router
+  //   base: sessionStorage.getItem('VUE_ROUTER_BASE'),
+  //   routes,
+  //   scrollBehavior (to, from, savedPosition) {
+  //     // see https://router.vuejs.org/guide/advanced/scroll-behavior.html
+  //     const scrollToTableRoutes = [
+  //       RouteNames.ADD_COLLATERAL,
+  //       RouteNames.ADD_SECUREDPARTIES_AND_DEBTORS,
+  //       RouteNames.LENGTH_TRUST,
+  //       RouteNames.REVIEW_CONFIRM,
+  //       RouteNames.REVIEW_DISCHARGE,
+  //       RouteNames.CONFIRM_DISCHARGE,
+  //       RouteNames.RENEW_REGISTRATION,
+  //       RouteNames.CONFIRM_RENEWAL,
+  //       RouteNames.AMEND_REGISTRATION,
+  //       RouteNames.CONFIRM_AMENDMENT
+  //     ]
+  //     const fromRouteName = from.name as RouteNames
+  //     if (to.name === RouteNames.DASHBOARD && scrollToTableRoutes.includes(fromRouteName)) {
+  //       return { x: 0, y: 1000 }
+  //     }
+  //     return { x: 0, y: 0 }
+  //   }
+  // })
 
   router.beforeEach((to, from, next) => {
     if (isLoginSuccess(to)) {
@@ -65,15 +93,16 @@ export function getVueRouter () {
 
   router.afterEach((to, from) => {
     // Overrid the browser tab name
-    Vue.nextTick(() => {
+    nextTick(() => {
       if (to.meta.title) {
+        // @ts-ignore
         document.title = to.meta.title
       }
     })
   })
 
   /** Returns True if route requires authentication, else False. */
-  function requiresAuth (route: Route): boolean {
+  function requiresAuth (route: RouteLocationNormalized): boolean {
     return route.matched.some(r => r.meta?.requiresAuth)
   }
 
@@ -84,22 +113,22 @@ export function getVueRouter () {
   }
 
   /** Returns True if route is Signin, else False. */
-  function isSigninRoute (route: Route): boolean {
+  function isSigninRoute (route: RouteLocationNormalized): boolean {
     return Boolean(route.name === RouteNames.SIGN_IN)
   }
 
   /** Returns True if route is Signout, else False. */
-  function isSignoutRoute (route: Route): boolean {
+  function isSignoutRoute (route: RouteLocationNormalized): boolean {
     return Boolean(route.name === RouteNames.SIGN_OUT)
   }
 
   /** Returns True if route is Login success, else False. */
-  function isLogin (route: Route): boolean {
+  function isLogin (route: RouteLocationNormalized): boolean {
     return Boolean(route.name === RouteNames.LOGIN)
   }
 
   /** Returns True if route is Login success, else False. */
-  function isLoginSuccess (route: Route): boolean {
+  function isLoginSuccess (route: RouteLocationNormalized): boolean {
     return Boolean(route.name === RouteNames.LOGIN && route.hash)
   }
 

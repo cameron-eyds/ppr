@@ -84,7 +84,7 @@ import {
   reactive,
   computed,
   toRefs
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters } from 'vuex-composition-helpers'
 
 // local

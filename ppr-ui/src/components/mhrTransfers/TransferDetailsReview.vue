@@ -29,17 +29,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, toRefs } from '@vue/composition-api'
-import TransferDetails from '@/components/mhrTransfers/TransferDetails.vue'
+import { computed, defineComponent, reactive, toRefs } from 'vue'
 import { convertDate } from '@/utils'
 import { useGetters } from 'vuex-composition-helpers'
 import { useTransferOwners } from '@/composables'
 
 export default defineComponent({
   name: 'TransferDetailsReview',
-  components: {
-    TransferDetails
-  },
+  components: {},
   props: {
     isMhrTransfer: {
       type: Boolean,

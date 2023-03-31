@@ -5,9 +5,8 @@ import {
   MhrRegistrationHomeOwnerIF,
   MhrRegistrationTotalOwnershipAllocationIF
 } from '@/interfaces'
-import '@/utils/use-composition-api'
 
-import { readonly, ref, toRefs, watch } from '@vue/composition-api'
+import { readonly, ref, toRefs, watch } from 'vue'
 import { useActions, useGetters } from 'vuex-composition-helpers'
 import { ActionTypes, HomeTenancyTypes } from '@/enums'
 import { MhrCompVal, MhrSectVal } from '@/composables/mhrRegistration/enums'
@@ -23,7 +22,7 @@ const isGlobalEditingMode = ref(false)
 // Flag is any of the Groups has no Owners
 const hasEmptyGroup = ref(false)
 
-export function useHomeOwners (isMhrTransfer: boolean = false) {
+export function useHomeOwners (isMhrTransfer = false) {
   const {
     getMhrRegistrationHomeOwners,
     getMhrRegistrationHomeOwnerGroups,
@@ -302,7 +301,7 @@ export function useHomeOwners (isMhrTransfer: boolean = false) {
       : setMhrRegistrationHomeOwnerGroups(homeOwnerGroups)
   }
 
-  const markGroupForRemoval = (groupId: number = null, removeAll: boolean = false): void => {
+  const markGroupForRemoval = (groupId: number = null, removeAll = false): void => {
     // Filter all ADDED groups when removing all groups
     const ownerGroups = removeAll
       ? getMhrTransferHomeOwnerGroups.value.filter(group => group.action !== ActionTypes.ADDED)
@@ -328,7 +327,7 @@ export function useHomeOwners (isMhrTransfer: boolean = false) {
     setMhrTransferHomeOwnerGroups(homeOwners)
   }
 
-  const undoGroupRemoval = (groupId: number = null, undoAllOwners: boolean = false): void => {
+  const undoGroupRemoval = (groupId: number = null, undoAllOwners = false): void => {
     let homeOwnerGroups = getMhrTransferHomeOwnerGroups.value
     homeOwnerGroups = homeOwnerGroups.reduce((homeOwners, group) => {
       if (group.groupId === groupId) {

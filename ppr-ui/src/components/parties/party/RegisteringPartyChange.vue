@@ -53,7 +53,7 @@ import {
   onMounted,
   watch,
   computed
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters } from 'vuex-composition-helpers'
 // local components
 import { EditParty, PartySearch, RegisteringParty } from '@/components/parties/party'

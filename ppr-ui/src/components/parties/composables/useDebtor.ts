@@ -1,4 +1,4 @@
-import { reactive, toRefs } from '@vue/composition-api'
+import { reactive, toRefs } from 'vue'
 import { PartyIF } from '@/interfaces' // eslint-disable-line no-unused-vars
 import { useGetters, useActions } from 'vuex-composition-helpers'
 import { Months } from '@/resources/months'

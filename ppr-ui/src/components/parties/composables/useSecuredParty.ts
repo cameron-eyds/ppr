@@ -1,4 +1,4 @@
-import { reactive, toRefs, computed } from '@vue/composition-api'
+import { reactive, toRefs, computed } from 'vue'
 import { PartyIF, AddressIF } from '@/interfaces' // eslint-disable-line no-unused-vars
 import { useGetters, useActions } from 'vuex-composition-helpers'
 import { PartyAddressSchema } from '@/schemas'

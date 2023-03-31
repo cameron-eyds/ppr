@@ -79,14 +79,14 @@
 
 <script lang="ts">
 // external
-import VueRouter from 'vue-router' // eslint-disable-line no-unused-vars
+import { Router } from 'vue-router' // eslint-disable-line no-unused-vars
 import {
   computed,
   defineComponent,
   reactive,
   toRefs,
   watch
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters, useActions } from 'vuex-composition-helpers'
 import _ from 'lodash'
 // local helpers/enums/interfaces/resources
@@ -116,7 +116,7 @@ export default defineComponent({
       default: 'financing'
     },
     router: {
-      type: Object as () => VueRouter
+      type: Object as () => Router
     },
     currentStepName: {
       type: String,

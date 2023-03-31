@@ -86,7 +86,7 @@ import {
   toRefs,
   watch,
   onUnmounted
-} from '@vue/composition-api'
+} from 'vue'
 import { useActions, useGetters } from 'vuex-composition-helpers'
 // local components
 import { GeneralCollateral } from './generalCollateral'
@@ -100,6 +100,7 @@ import {
 } from '@/interfaces'
 import { useGeneralCollateral } from './generalCollateral/factories'
 import { useVehicle } from './vehicleCollateral/factories'
+import {useRouter} from 'vue-router';
 
 export default defineComponent({
   name: 'Collateral',
@@ -118,6 +119,8 @@ export default defineComponent({
     }
   },
   setup (props, context) {
+    const router = useRouter()
+
     const {
       getAddCollateral,
       getRegistrationFlowType,
@@ -130,7 +133,6 @@ export default defineComponent({
       setGeneralCollateral
     } = useActions<any>(['setCollateralShowInvalid', 'setCollateralValid', 'setGeneralCollateral'])
 
-    const router = context.root.$router
     const registrationFlowType = getRegistrationFlowType.value
     const registrationType = getRegistrationType.value.registrationTypeAPI
 

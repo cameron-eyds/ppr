@@ -69,11 +69,12 @@
 
 <script lang="ts">
 import { useInputRules, useHomeOwners } from '@/composables'
-import { computed, defineComponent, nextTick, reactive, ref, toRefs, watch } from '@vue/composition-api'
+import {computed, defineComponent, nextTick, reactive, Ref, ref, toRefs, watch} from 'vue'
 import { useActions } from 'vuex-composition-helpers'
 import { FormIF, MhrRegistrationHomeOwnerIF } from '@/interfaces' // eslint-disable-line no-unused-vars
 import { SharedDatePicker } from '@/components/common'
 import { localTodayDate } from '@/utils'
+import SharedFolioNumberInput from '@/components/common/SharedFolioNumberInput.vue';
 
 export default defineComponent({
   name: 'DeathCertificate',
@@ -99,8 +100,9 @@ export default defineComponent({
     } = useActions([
       'setUnsavedChanges'
     ])
-    const deathCertificateForm = ref(null)
+    const deathCertificateForm: Ref<FormIF> = ref(null)
     const deathCertificateNumberRef = ref(null)
+
     const deathCertificateNumberRules = computed(
       (): Array<Function> => customRules(
         maxLength(20),
@@ -120,8 +122,8 @@ export default defineComponent({
         return props.validate && !localState.isDeathCertificateFormValid
       }),
       maxDeathDate: computed((): Date => {
-        var dateOffset = 24 * 60 * 60 * 1000 // 1 day in milliseconds
-        var maxDate = new Date()
+        const dateOffset = 24 * 60 * 60 * 1000 // 1 day in milliseconds
+        const maxDate = new Date()
         maxDate.setTime(maxDate.getTime() - dateOffset)
         return maxDate
       }),
@@ -140,7 +142,7 @@ export default defineComponent({
     // Validate form when prompted
     watch(() => props.validate, async (validate: boolean) => {
       await nextTick()
-      validate && (context.refs.deathCertificateForm as FormIF).validate()
+      validate && deathCertificateForm.value.validate()
     }, { immediate: true })
 
     watch(() => localState.isDeathCertificateFormValid, async (val: boolean) => {

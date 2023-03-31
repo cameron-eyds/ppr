@@ -229,7 +229,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, toRefs } from '@vue/composition-api'
+import { computed, defineComponent, reactive, toRefs } from 'vue'
 import { HomeLocationTypes, RouteNames } from '@/enums'
 import { useGetters } from 'vuex-composition-helpers'
 import { useMhrValidations } from '@/composables'

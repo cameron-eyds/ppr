@@ -26,16 +26,16 @@
           <v-col cols="5">
             <v-row no-gutters justify="end">
               <v-tooltip top content-class="top-tooltip pa-5" nudge-left="30" transition="fade-transition">
-                <template  v-slot:activator="{ on, attrs }">
+                <template  v-slot:activator="{ props }">
                   <a :href="'https://www2.gov.bc.ca/gov/content/employment-business/business/managing-a-business/'
                            +'permits-licences/news-updates/modernization-updates/modernization-resources#ppr'"
                     class="text-decoration-none"
                     target="_blank"
                     rel="noopener noreferrer">
-                    <div v-bind="attrs" v-on="on">
+                    <div v-bind="props">
                       <v-row no-gutters class="align-center">
                         <v-icon left color="primary">mdi-help-circle-outline</v-icon>
-                        <span class="primary--text">Help</span>
+                        <span class="text-primary">Help</span>
                         <v-icon right color="primary" small>mdi-open-in-new</v-icon>
                       </v-row>
                     </div>
@@ -59,7 +59,7 @@ import {
   onMounted,
   reactive,
   toRefs
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters } from 'vuex-composition-helpers'
 import { tombstoneTitles } from '@/resources'
 // local
@@ -67,7 +67,7 @@ import { pacificDate, getRoleProductCode } from '@/utils'
 
 export default defineComponent({
   name: 'TombstoneDefault',
-  setup (props, { root }) {
+  setup (props) {
     const {
       getAccountLabel,
       getUserFirstName,

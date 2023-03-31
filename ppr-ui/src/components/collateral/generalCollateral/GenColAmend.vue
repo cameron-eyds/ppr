@@ -28,14 +28,14 @@
       </v-row>
       <v-row no-gutters>
         <v-col class="pr-4">
-          <tiptap-vuetify
-            :extensions="extensions"
-            v-model="delDesc"
-            id="general-collateral-delete-desc"
-            placeholder="Enter the General Collateral to be deleted from this registration"
-            :card-props="{ flat: true, style: 'min-height: 350px; background: rgba(0, 0, 0, 0.06)' }"
-            :editor-properties="{ editorProps: editorProperties }"
-          />
+<!--          <tiptap-vuetify-->
+<!--            :extensions="extensions"-->
+<!--            v-model="delDesc"-->
+<!--            id="general-collateral-delete-desc"-->
+<!--            placeholder="Enter the General Collateral to be deleted from this registration"-->
+<!--            :card-props="{ flat: true, style: 'min-height: 350px; background: rgba(0, 0, 0, 0.06)' }"-->
+<!--            :editor-properties="{ editorProps: editorProperties }"-->
+<!--          />-->
         </v-col>
       </v-row>
       <v-row no-gutters>
@@ -45,14 +45,14 @@
       </v-row>
       <v-row no-gutters>
         <v-col class="pr-4">
-          <tiptap-vuetify
-            :extensions="extensions"
-            v-model="addDesc"
-            id="general-collateral-add-desc"
-            placeholder="Enter the General Collateral to be added to this registration"
-            :card-props="{ flat: true, style: 'min-height: 350px; background: rgba(0, 0, 0, 0.06)' }"
-            :editor-properties="{ editorProps: editorProperties }"
-          />
+<!--          <tiptap-vuetify-->
+<!--            :extensions="extensions"-->
+<!--            v-model="addDesc"-->
+<!--            id="general-collateral-add-desc"-->
+<!--            placeholder="Enter the General Collateral to be added to this registration"-->
+<!--            :card-props="{ flat: true, style: 'min-height: 350px; background: rgba(0, 0, 0, 0.06)' }"-->
+<!--            :editor-properties="{ editorProps: editorProperties }"-->
+<!--          />-->
         </v-col>
       </v-row>
       <v-row>
@@ -91,28 +91,28 @@ import {
   toRefs,
   onMounted,
   computed
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters, useActions } from 'vuex-composition-helpers'
 // import the component and the necessary extensions
-import {
-  TiptapVuetify,
-  Heading,
-  Bold,
-  Italic,
-  Strike,
-  Underline,
-  BulletList,
-  OrderedList,
-  ListItem,
-  Blockquote,
-  HardBreak,
-  HorizontalRule,
-  History,
-  Table,
-  TableCell,
-  TableHeader,
-  TableRow
-} from 'tiptap-vuetify'
+// import {
+//   TiptapVuetify,
+//   Heading,
+//   Bold,
+//   Italic,
+//   Strike,
+//   Underline,
+//   BulletList,
+//   OrderedList,
+//   ListItem,
+//   Blockquote,
+//   HardBreak,
+//   HorizontalRule,
+//   History,
+//   Table,
+//   TableCell,
+//   TableHeader,
+//   TableRow
+// } from 'tiptap-vuetify'
 // local
 import { GeneralCollateralIF } from '@/interfaces' // eslint-disable-line no-unused-vars
 
@@ -128,7 +128,6 @@ export default defineComponent({
     }
   },
   components: {
-    TiptapVuetify
   },
   setup (props, { emit }) {
     const { getGeneralCollateral } = useGetters<any>([
@@ -136,29 +135,29 @@ export default defineComponent({
     ])
     const { setGeneralCollateral } = useActions<any>(['setGeneralCollateral'])
     const extensions = [
-      History,
-      Blockquote,
-      Underline,
-      Strike,
-      Italic,
-      ListItem,
-      BulletList,
-      OrderedList,
-      [
-        Heading,
-        {
-          options: {
-            levels: [1, 2, 3]
-          }
-        }
-      ],
-      Bold,
-      HorizontalRule,
-      HardBreak,
-      Table,
-      TableCell,
-      TableHeader,
-      TableRow
+      // History,
+      // Blockquote,
+      // Underline,
+      // Strike,
+      // Italic,
+      // ListItem,
+      // BulletList,
+      // OrderedList,
+      // [
+      //   Heading,
+      //   {
+      //     options: {
+      //       levels: [1, 2, 3]
+      //     }
+      //   }
+      // ],
+      // Bold,
+      // HorizontalRule,
+      // HardBreak,
+      // Table,
+      // TableCell,
+      // TableHeader,
+      // TableRow
     ]
 
     const localState = reactive({

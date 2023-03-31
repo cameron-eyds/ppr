@@ -47,7 +47,7 @@ import {
   ref,
   onMounted,
   computed
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters, useActions } from 'vuex-composition-helpers'
 
 export default defineComponent({

@@ -81,7 +81,7 @@
 <script lang="ts">
 /* eslint-disable no-unused-vars */
 import vue from 'vue'
-import { computed, defineComponent, reactive, toRefs, watch } from '@vue/composition-api'
+import { computed, defineComponent, reactive, toRefs, watch } from 'vue'
 import { useInputRules } from '@/composables'
 import { ltsaDetails } from '@/utils/ltsa-api-helper'
 import { BaseDialog } from '@/components/dialogs'
@@ -91,7 +91,7 @@ import { LtsaDetailsIF, PidInfoIF } from '@/interfaces/ltsa-api-interfaces'
 
 export default defineComponent({
   name: 'PidNumber',
-  emits: ['setPid'],
+  emits: ['setPid', 'verifyingPid'],
   components: {
     BaseDialog
   },

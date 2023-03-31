@@ -40,7 +40,7 @@ import {
   reactive,
   toRefs,
   watch
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters } from 'vuex-composition-helpers'
 // local components
 import { ButtonsStacked } from '@/components/common'

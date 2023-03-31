@@ -83,7 +83,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, reactive, ref, toRefs, watch, nextTick } from '@vue/composition-api'
+import {computed, defineComponent, onMounted, reactive, ref, toRefs, watch, nextTick, Ref} from 'vue'
 import { StaffPaymentOptions } from '@bcrs-shared-components/enums'
 import SharedFolioNumberInput from '@/components/common/SharedFolioNumberInput.vue'
 // eslint-disable-next-line no-unused-vars
@@ -115,9 +115,9 @@ export default defineComponent({
     }
   },
   setup (props, context) {
-    const fasForm = ref(null) as FormIF
-    const bcolForm = ref(null) as FormIF
-    const folioNumberInputRef = ref(null)
+    const fasForm: Ref<FormIF> = ref(null)
+    const bcolForm: Ref<FormIF> = ref(null)
+    const folioNumberInputRef: Ref<typeof SharedFolioNumberInput> = ref(null)
 
     const localState = reactive({
       paymentOption: StaffPaymentOptions.NONE,
@@ -188,8 +188,7 @@ export default defineComponent({
       context.emit(
         'valid',
         (props.staffPaymentData.option !== -1) && (localState.fasFormValid ||
-          // @ts-ignore - function exists
-          (localState.bcolFormValid && context.refs.folioNumberInputRef.validateFolioNumber()) ||
+          (localState.bcolFormValid && folioNumberInputRef.value.validateFolioNumber()) ||
           (props.staffPaymentData.option === StaffPaymentOptions.NO_FEE)
         )
       )
@@ -200,28 +199,28 @@ export default defineComponent({
       switch (val) {
         case StaffPaymentOptions.FAS:
           // reset other form
-          (context.refs.bcolForm as FormIF).resetValidation();
-          (context.refs.folioNumberInputRef as FormIF).resetFolioNumberValidation();
+          bcolForm.value.resetValidation()
+          folioNumberInputRef.value.resetFolioNumberValidation()
           // enable validation for this form
-          (context.refs.fasForm as FormIF).validate()
+          fasForm.value.validate()
           // update data
           emitStaffPaymentData({ option: StaffPaymentOptions.FAS })
           break
 
         case StaffPaymentOptions.BCOL:
           // reset other form
-          (context.refs.fasForm as FormIF).resetValidation();
+          fasForm.value.resetValidation()
           // enable validation for this form
-          (context.refs.bcolForm as FormIF).validate()
+          bcolForm.value.validate()
           // update data
           emitStaffPaymentData({ option: StaffPaymentOptions.BCOL })
           break
 
         case StaffPaymentOptions.NO_FEE:
           // reset other forms
-          (context.refs.fasForm as FormIF).resetValidation();
-          (context.refs.bcolForm as FormIF).resetValidation();
-          (context.refs.folioNumberInputRef as FormIF).resetFolioNumberValidation()
+          fasForm.value.resetValidation()
+          bcolForm.value.resetValidation()
+          folioNumberInputRef.value.resetFolioNumberValidation()
           // update data
           emitStaffPaymentData({ option: StaffPaymentOptions.NO_FEE, isPriority: false })
           break

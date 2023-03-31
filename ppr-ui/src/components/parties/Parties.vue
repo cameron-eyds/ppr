@@ -91,7 +91,7 @@ import {
   reactive,
   toRefs,
   computed
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters } from 'vuex-composition-helpers'
 // local components
 import PartySummary from './PartySummary.vue' // need to import like this for jest tests - cyclic issue?

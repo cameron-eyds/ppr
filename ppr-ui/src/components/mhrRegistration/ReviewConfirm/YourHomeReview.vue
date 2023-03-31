@@ -158,7 +158,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, toRefs } from '@vue/composition-api'
+import { computed, defineComponent, reactive, toRefs } from 'vue'
 import { useGetters } from 'vuex-composition-helpers'
 import { HomeCertificationOptions, RouteNames } from '@/enums'
 import { yyyyMmDdToPacificDate, formatAsHtml } from '@/utils'

@@ -164,7 +164,7 @@ import {
   defineComponent,
   reactive,
   toRefs
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters } from 'vuex-composition-helpers'
 // local
 import { SearchCriteriaIF, SearchResponseIF } from '@/interfaces' // eslint-disable-line no-unused-vars
@@ -302,8 +302,8 @@ export default defineComponent({
 
         // IE doesn't allow using a blob object directly as link href
         // instead it is necessary to use msSaveOrOpenBlob
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-          window.navigator.msSaveOrOpenBlob(blob, item.searchId)
+        if (window.navigator && window.navigator['msSaveOrOpenBlob']) {
+          window.navigator['msSaveOrOpenBlob'](blob, item.searchId)
         } else {
           // for other browsers, create a link pointing to the ObjectURL containing the blob
           const url = window.URL.createObjectURL(blob)

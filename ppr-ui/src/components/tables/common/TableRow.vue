@@ -420,7 +420,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, toRefs, watch } from '@vue/composition-api'
+import { computed, defineComponent, reactive, toRefs, watch } from 'vue'
 import { getRegistrationSummary, mhRegistrationPDF, registrationPDF } from '@/utils'
 import { useGetters } from 'vuex-composition-helpers'
 
@@ -552,8 +552,8 @@ export default defineComponent({
 
         // IE doesn't allow using a blob object directly as link href
         // instead it is necessary to use msSaveOrOpenBlob
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-          window.navigator.msSaveOrOpenBlob(blob, item.path)
+        if (window.navigator && window.navigator['msSaveOrOpenBlob']) {
+          window.navigator['msSaveOrOpenBlob'](blob, item.path)
         } else {
           // for other browsers, create a link pointing to the ObjectURL containing the blob
           const url = window.URL.createObjectURL(blob)

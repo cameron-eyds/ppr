@@ -192,7 +192,7 @@
                     5. Staff Payment
                   </h2>
                   <v-card flat class="mt-6 pa-6" :class="{ 'border-error-left': validateStaffPayment }">
-                    <StaffPayment
+                    <SharedStaffPayment
                       id="staff-payment"
                       :displaySideLabel="true"
                       :displayPriorityCheckbox="true"
@@ -304,27 +304,24 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, onMounted, reactive, ref, toRefs, watch } from '@vue/composition-api'
+import {computed, defineComponent, nextTick, onMounted, reactive, Ref, ref, toRefs, watch} from 'vue'
 import { useActions, useGetters } from 'vuex-composition-helpers'
 import { SessionStorageKeys } from 'sbc-common-components/src/util/constants'
-import { StaffPayment } from '@bcrs-shared-components/staff-payment'
 import { StaffPaymentOptions } from '@bcrs-shared-components/enums'
-import { CertifyInformation, StickyContainer } from '@/components/common'
+import { CertifyInformation, SharedStaffPayment, StickyContainer } from '@/components/common'
 import { useHomeOwners, useInputRules, useMhrInformation, useMhrInfoValidation, useTransferOwners } from '@/composables'
 import { FeeSummaryTypes } from '@/composables/fees/enums'
-import { HomeOwnersTable } from '@/components/mhrRegistration/HomeOwners'
 import { PartySearch } from '@/components/parties/party'
 import { MhrSubmittingParty } from '@/components/mhrRegistration/SubmittingParty'
 import { ConfirmCompletion, TransferDetails, TransferDetailsReview, TransferType } from '@/components/mhrTransfers'
 import { HomeLocationReview, YourHomeReview } from '@/components/mhrRegistration/ReviewConfirm'
 import { HomeOwners } from '@/views'
 import { BaseDialog } from '@/components/dialogs'
-import { BaseAddress } from '@/composables/address'
 import { registrationSaveDraftError, unsavedChangesDialog, cancelOwnerChangeConfirm } from '@/resources/dialogOptions'
 import AccountInfo from '@/components/common/AccountInfo.vue'
 /* eslint-disable no-unused-vars */
 import {
-  AccountInfoIF,
+  AccountInfoIF, FormIF,
   MhrTransferApiIF,
   RegTableNewItemI,
   TransferTypeSelectIF
@@ -350,12 +347,12 @@ import {
   submitMhrTransfer,
   updateMhrDraft
 } from '@/utils'
+import {useRoute, useRouter} from 'vue-router';
 /* eslint-enable no-unused-vars */
 
 export default defineComponent({
   name: 'MhrInformation',
   components: {
-    BaseAddress,
     BaseDialog,
     HomeOwners,
     PartySearch,
@@ -364,13 +361,12 @@ export default defineComponent({
     TransferDetails,
     TransferDetailsReview,
     HomeLocationReview,
-    HomeOwnersTable,
     StickyContainer,
     CertifyInformation,
     AccountInfo,
     ConfirmCompletion,
     YourHomeReview,
-    StaffPayment
+    SharedStaffPayment
   },
   props: {
     appReady: {
@@ -379,6 +375,9 @@ export default defineComponent({
     }
   },
   setup (props, context) {
+    const route = useRoute()
+    const router = useRouter()
+
     const {
       getMhrTransferHomeOwners,
       getMhrInformation,
@@ -458,8 +457,8 @@ export default defineComponent({
     } = useTransferOwners()
 
     // Refs
-    const homeOwnersComponentRef = ref(null)
-    const transferDetailsComponent = ref(null)
+    const homeOwnersComponentRef: Ref<typeof HomeOwners> = ref(null)
+    const transferDetailsComponent: Ref<typeof TransferDetails> = ref(null)
 
     const localState = reactive({
       dataLoaded: false,
@@ -527,6 +526,20 @@ export default defineComponent({
         return process.env.JEST_WORKER_ID !== undefined
       })
     })
+
+    const goToDash = (): void => {
+      if (hasUnsavedChanges.value === true) localState.showCancelDialog = true
+      else {
+        setUnsavedChanges(false)
+        setGlobalEditingMode(false)
+        setEmptyMhrTransfer(initMhrTransfer())
+        resetValidationState()
+
+        router.push({
+          name: RouteNames.DASHBOARD
+        })
+      }
+    }
 
     onMounted(async (): Promise<void> => {
       // do not proceed if app is not ready
@@ -662,7 +675,7 @@ export default defineComponent({
 
       // Force show removed/deceased homeOwners when invalid
       if (!getInfoValidation('isValidTransferOwners')) {
-        (context.refs.homeOwnersComponentRef as any).hideShowRemovedOwners(true)
+        homeOwnersComponentRef.value.hideShowRemovedOwners(true)
       }
 
       await nextTick()
@@ -694,20 +707,6 @@ export default defineComponent({
       } else {
         localState.showSaveDialog = true
         console.error(mhrTransferDraft?.error)
-      }
-    }
-
-    const goToDash = (): void => {
-      if (hasUnsavedChanges.value === true) localState.showCancelDialog = true
-      else {
-        setUnsavedChanges(false)
-        setGlobalEditingMode(false)
-        setEmptyMhrTransfer(initMhrTransfer())
-        resetValidationState()
-
-        context.root.$router.push({
-          name: RouteNames.DASHBOARD
-        })
       }
     }
 
@@ -759,20 +758,12 @@ export default defineComponent({
         results.results[0].includeLienInfo = true
 
         await setManufacturedHomeSearchResults(results)
-        await context.root.$router.replace({
+        await router.replace({
           name: RouteNames.MHRSEARCH
         })
       } else {
         console.error('Error: MHR_NUMBER expected, but not found.')
       }
-    }
-
-    const resetMhrInformation = async (): Promise<void> => {
-      // Set baseline MHR Information to state
-      await parseMhrInformation()
-      await handleTransferTypeChange(null)
-      await handleDeclaredValueChange(null)
-      localState.validate = false
     }
 
     const toggleTypeSelector = (): void => {
@@ -799,6 +790,15 @@ export default defineComponent({
     const handleDeclaredValueChange = async (declaredValue: number): Promise<void> => {
       await setMhrTransferDeclaredValue(declaredValue)
     }
+
+    const resetMhrInformation = async (): Promise<void> => {
+      // Set baseline MHR Information to state
+      await parseMhrInformation()
+      await handleTransferTypeChange(null)
+      await handleDeclaredValueChange(null)
+      localState.validate = false
+    }
+
     watch(() => localState.attentionReference, (val: string) => {
       setMhrTransferAttentionReference(val)
     })
@@ -810,8 +810,8 @@ export default defineComponent({
     })
 
     watch(() => hasUnsavedChanges.value, (val: boolean) => {
-      if (!val && context.refs.transferDetailsComponent) {
-        (context.refs.transferDetailsComponent as any).clearTransferDetailsData()
+      if (!val && transferDetailsComponent.value) {
+        transferDetailsComponent.value.clearTransferDetailsData()
       }
     })
 

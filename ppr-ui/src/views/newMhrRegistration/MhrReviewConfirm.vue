@@ -36,7 +36,7 @@
         2. Staff Payment
       </h2>
       <v-card flat class="mt-6 pa-6" :class="{ 'border-error-left': validateStaffPayment }">
-        <StaffPayment
+        <SharedStaffPayment
           id="staff-payment"
           :displaySideLabel="true"
           :displayPriorityCheckbox="true"
@@ -52,15 +52,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, toRefs, watch } from '@vue/composition-api'
-import { StaffPayment } from '@bcrs-shared-components/staff-payment'
+import { computed, defineComponent, reactive, toRefs, watch } from 'vue'
 import {
   HomeLocationReview,
   HomeOwnersReview,
   SubmittingPartyReview,
   YourHomeReview
 } from '@/components/mhrRegistration/ReviewConfirm'
-import { CertifyInformation } from '@/components/common'
+import { CertifyInformation, SharedStaffPayment } from '@/components/common'
 import { useMhrValidations } from '@/composables'
 import { RouteNames } from '@/enums'
 import { useActions, useGetters } from 'vuex-composition-helpers'
@@ -68,6 +67,7 @@ import { useActions, useGetters } from 'vuex-composition-helpers'
 import { StaffPaymentIF } from '@bcrs-shared-components/interfaces'
 import { StaffPaymentOptions } from '@bcrs-shared-components/enums'
 import { useHomeOwners } from '@/composables/mhrRegistration'
+import { useRoute } from 'vue-router'
 /* eslint-enable no-unused-vars */
 
 /* eslint-disable */
@@ -79,10 +79,12 @@ export default defineComponent({
     HomeOwnersReview,
     HomeLocationReview,
     CertifyInformation,
-    StaffPayment
+    SharedStaffPayment
   },
   props: {},
   setup (props, context) {
+    const route = useRoute()
+
     const { getMhrRegistrationValidationModel, isRoleStaffReg } = useGetters<any>([
       'isRoleStaffReg', 'getMhrRegistrationValidationModel'
     ])
@@ -201,7 +203,7 @@ export default defineComponent({
       }
     )
 
-    watch(() => context.root.$route.name, (route: string) => {
+    watch(() => route.name, (route: string) => {
       switch (route) {
         case RouteNames.YOUR_HOME:
           scrollToInvalid(MhrSectVal.YOUR_HOME_VALID, 'mhr-describe-your-home')

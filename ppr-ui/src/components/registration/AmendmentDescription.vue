@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, watch, computed } from '@vue/composition-api'
+import { defineComponent, reactive, toRefs, watch, computed } from 'vue'
 import { useGetters, useActions } from 'vuex-composition-helpers'
 
 export default defineComponent({

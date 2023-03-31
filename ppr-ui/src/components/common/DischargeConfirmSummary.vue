@@ -65,7 +65,7 @@ import {
   reactive,
   toRefs,
   watch
-} from '@vue/composition-api'
+} from 'vue'
 
 // local
 import { UIRegistrationTypes } from '@/enums' // eslint-disable-line no-unused-vars

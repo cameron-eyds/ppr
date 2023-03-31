@@ -83,7 +83,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref, toRefs, watch } from '@vue/composition-api'
+import {computed, defineComponent, reactive, Ref, ref, toRefs, watch} from 'vue'
 import { useActions, useGetters } from 'vuex-composition-helpers'
 import { useInputRules, useTransferOwners } from '@/composables'
 import { SharedDatePicker } from '@/components/common'
@@ -126,13 +126,7 @@ export default defineComponent({
     } = useTransferOwners()
 
     const considerationRef = ref(null)
-
-    const updateConsideration = () => {
-      // copy Declared Value into Consideration field - the initial time only
-      if (!localState.consideration && getMhrTransferDeclaredValue.value) {
-        localState.consideration = `$${getMhrTransferDeclaredValue.value}.00`
-      }
-    }
+    const transferDetailsForm: Ref<FormIF> = ref(null)
 
     const localState = reactive({
       isValidForm: false, // TransferDetails form without Transfer Date Picker
@@ -151,6 +145,13 @@ export default defineComponent({
       })
     })
 
+    const updateConsideration = () => {
+      // copy Declared Value into Consideration field - the initial time only
+      if (!localState.consideration && getMhrTransferDeclaredValue.value) {
+        localState.consideration = `$${getMhrTransferDeclaredValue.value}.00`
+      }
+    }
+
     const hasError = (ref: any): boolean => {
       return ref?.hasError
     }
@@ -163,7 +164,7 @@ export default defineComponent({
     }
 
     watch(() => props.validate, (val: boolean) => {
-      (context.refs.transferDetailsForm as FormIF).validate()
+      transferDetailsForm.value.validate()
     })
 
     watch(() => localState.consideration, (val: string) => {

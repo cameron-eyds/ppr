@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, toRefs, ref, watch } from '@vue/composition-api'
+import { computed, defineComponent, reactive, toRefs, Ref, ref, watch } from 'vue'
 // eslint-disable-next-line no-unused-vars
 import { FormIF } from '@/interfaces'
 
@@ -38,7 +38,7 @@ export default defineComponent({
     }
   },
   setup (props, context) {
-    const folioForm = ref(null)
+    const folioForm: Ref<FormIF> = ref(null)
 
     const localState = reactive({
       folioFormValid: false,
@@ -54,7 +54,7 @@ export default defineComponent({
      * component to reset the folio form.
      */
     const resetFolioNumber = (): void => {
-      (context.refs.folioForm as FormIF).reset()
+      folioForm.value.reset()
     }
 
     /**
@@ -62,7 +62,7 @@ export default defineComponent({
      * component to reset folio number validation.
      */
     const resetFolioNumberValidation = (): void => {
-      (context.refs.folioForm as FormIF).resetValidation()
+      folioForm.value.resetValidation()
     }
 
     /**
@@ -71,7 +71,7 @@ export default defineComponent({
      * @returns True if form is valid and False if not
      */
     const validateFolioNumber = (): boolean => {
-      return (context.refs.folioForm as FormIF).validate()
+      return folioForm.value.validate()
     }
 
     /** Emits an event indicating whether or not this component is valid. */

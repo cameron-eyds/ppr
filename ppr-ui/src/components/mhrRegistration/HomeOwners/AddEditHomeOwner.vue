@@ -424,7 +424,7 @@ import {
   ref,
   toRefs,
   watch
-} from '@vue/composition-api'
+} from 'vue'
 import { useInputRules } from '@/composables/useInputRules'
 import { useHomeOwners, useMhrValidations } from '@/composables/mhrRegistration'
 import { BusinessSearchAutocomplete } from '@/components/search'

@@ -106,7 +106,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, reactive, toRefs, watch } from '@vue/composition-api'
+import { computed, defineComponent, onMounted, reactive, toRefs, watch } from 'vue'
 import { useActions, useGetters } from 'vuex-composition-helpers'
 import { SessionStorageKeys } from 'sbc-common-components/src/util/constants'
 import { APIRegistrationTypes, RegistrationFlowType, RouteNames, StatementTypes } from '@/enums'
@@ -119,7 +119,8 @@ import { Parties } from '@/components/parties'
 import FolioNumberSummary from '@/components/common/FolioNumberSummary.vue'
 import { getFeatureFlag } from '@/utils'
 import { ErrorIF } from '@/interfaces' // eslint-disable-line no-unused-vars
-import { RegistrationLengthI } from '@/composables/fees/interfaces' // eslint-disable-line no-unused-vars
+import { RegistrationLengthI } from '@/composables/fees/interfaces'
+import {useRoute, useRouter} from 'vue-router'; // eslint-disable-line no-unused-vars
 
 export default defineComponent({
   name: 'ReviewConfirm',
@@ -149,6 +150,9 @@ export default defineComponent({
     }
   },
   setup (props, context) {
+    const route = useRoute()
+    const router = useRouter()
+
     const {
       getAddCollateral,
       getLengthTrust,
@@ -219,14 +223,14 @@ export default defineComponent({
       if (!val) return
       // redirect if not authenticated (safety check - should never happen) or if app is not open to user (ff)
       if (!localState.isAuthenticated || (!props.isJestRunning && !getFeatureFlag('ppr-ui-enabled'))) {
-        context.root.$router.push({
+        router.push({
           name: RouteNames.DASHBOARD
         })
         return
       }
       // redirect if store doesn't contain all needed data (happens on page reload, etc.)
       if (!getRegistrationType.value || getRegistrationFlowType.value !== RegistrationFlowType.NEW) {
-        context.root.$router.push({
+        router.push({
           name: RouteNames.DASHBOARD
         })
         return

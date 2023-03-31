@@ -54,7 +54,7 @@
   </v-select>
 </template>
 <script lang="ts">
-import { computed, defineComponent, reactive, ref, toRefs } from '@vue/composition-api'
+import { computed, defineComponent, reactive, ref, toRefs } from 'vue'
 import { useGetters } from 'vuex-composition-helpers'
 import { MHRSearchTypes, SearchTypes } from '@/resources'
 import { APISearchTypes, UISearchTypes } from '@/enums'

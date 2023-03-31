@@ -2,6 +2,7 @@ import { APISearchTypes } from '@/enums'
 
 export interface BaseHeaderIF {
     text: string
+    title?: string
     value: string
     class?: string
     sortable?: boolean

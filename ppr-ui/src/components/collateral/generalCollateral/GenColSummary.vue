@@ -94,7 +94,7 @@
           <b>ADDED</b>
         </v-chip>
         <p class="pt-3 ma-0">
-          <span style="white-space: pre-wrap;" v-html="lastGeneralCollateral.descriptionAdd">"</span>
+          <span style="white-space: pre-wrap;" v-html="lastGeneralCollateral.descriptionAdd"></span>
         </p>
       </div>
     </div>
@@ -170,7 +170,7 @@ import {
   reactive,
   toRefs,
   computed
-} from '@vue/composition-api'
+} from 'vue'
 import { useActions, useGetters } from 'vuex-composition-helpers'
 // local
 import { RegistrationFlowType } from '@/enums' // eslint-disable-line no-unused-vars

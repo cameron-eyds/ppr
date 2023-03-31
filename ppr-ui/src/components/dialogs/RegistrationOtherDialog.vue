@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, watch } from '@vue/composition-api'
+import { defineComponent, reactive, toRefs, watch } from 'vue'
 import { useActions } from 'vuex-composition-helpers'
 // eslint-disable-next-line no-unused-vars
 import { DialogOptionsIF } from '@/interfaces'

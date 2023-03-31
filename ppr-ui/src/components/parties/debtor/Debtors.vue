@@ -253,7 +253,7 @@ import {
   toRefs,
   computed,
   watch
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters, useActions } from 'vuex-composition-helpers'
 import { AddPartiesIF } from '@/interfaces' // eslint-disable-line no-unused-vars
 import EditDebtor from './EditDebtor.vue'

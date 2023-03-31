@@ -22,63 +22,63 @@
     />
 
     <!-- Registrations Upper Section -->
-    <v-row class="pt-10" align="baseline" no-gutters>
-      <v-col cols="auto">
-        <registration-bar
-          class="soft-corners-bottom"
-          :isMhr="isMhr"
-          :isTabView="isTabView"
-          @selected-registration-type="startNewRegistration($event)"
-        />
-      </v-col>
-      <v-col class="pl-3">
-        <v-row justify="end" no-gutters>
-          <v-col cols="auto" style="padding-top: 23px;">
-            <v-tooltip
-              class="pa-2"
-              content-class="top-tooltip"
-              nudge-right="2"
-              top
-              transition="fade-transition"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-icon color="primary" v-bind="attrs" v-on="on">mdi-information-outline</v-icon>
-              </template>
-              <div class="pt-2 pb-2">
-                {{ tooltipTxtRegSrch }}
-              </div>
-            </v-tooltip>
-            <label class="copy-normal pl-1">
-              Retrieve an existing registration to add to your table:
-            </label>
-          </v-col>
-          <v-col class="pl-3 pt-3" cols="auto">
-            <v-text-field
-              id="my-reg-add"
-              class="text-input-style-above ma-0 soft-corners-top"
-              :class="{'column-selection': !isTabView}"
-              append-icon="mdi-magnify"
-              autocomplete="chrome-off"
-              dense
-              :filled="isTabView"
-              :error-messages="myRegAddInvalid ? 'error' : ''"
-              hide-details
-              :label="`${registrationLabel} Registration Number`"
-              :name="Math.random()"
-              persistent-hint
-              single-line
-              style="width:330px"
-              v-model="myRegAdd"
-              @click:append="findRegistration(myRegAdd)"
-              @keypress.enter="findRegistration(myRegAdd)"
-            />
-            <p v-if="myRegAddInvalid" class="validation-msg mx-3 my-1">
-              Registration numbers contain {{ isMhr ? '6' : '7' }} digits
-            </p>
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
+<!--    <v-row class="pt-10" align="baseline" no-gutters>-->
+<!--      <v-col cols="auto">-->
+<!--        <registration-bar-->
+<!--          class="soft-corners-bottom"-->
+<!--          :isMhr="isMhr"-->
+<!--          :isTabView="isTabView"-->
+<!--          @selected-registration-type="startNewRegistration($event)"-->
+<!--        />-->
+<!--      </v-col>-->
+<!--      <v-col class="pl-3">-->
+<!--        <v-row justify="end" no-gutters>-->
+<!--          <v-col cols="auto" style="padding-top: 23px;">-->
+<!--            <v-tooltip-->
+<!--              class="pa-2"-->
+<!--              content-class="top-tooltip"-->
+<!--              nudge-right="2"-->
+<!--              top-->
+<!--              transition="fade-transition"-->
+<!--            >-->
+<!--              <template v-slot:activator="{ on, attrs }">-->
+<!--                <v-icon color="primary" v-bind="attrs" v-on="on">mdi-information-outline</v-icon>-->
+<!--              </template>-->
+<!--              <div class="pt-2 pb-2">-->
+<!--                {{ tooltipTxtRegSrch }}-->
+<!--              </div>-->
+<!--            </v-tooltip>-->
+<!--            <label class="copy-normal pl-1">-->
+<!--              Retrieve an existing registration to add to your table:-->
+<!--            </label>-->
+<!--          </v-col>-->
+<!--          <v-col class="pl-3 pt-3" cols="auto">-->
+<!--            <v-text-field-->
+<!--              id="my-reg-add"-->
+<!--              class="text-input-style-above ma-0 soft-corners-top"-->
+<!--              :class="{'column-selection': !isTabView}"-->
+<!--              append-icon="mdi-magnify"-->
+<!--              autocomplete="chrome-off"-->
+<!--              dense-->
+<!--              :filled="isTabView"-->
+<!--              :error-messages="myRegAddInvalid ? 'error' : ''"-->
+<!--              hide-details-->
+<!--              :label="`${registrationLabel} Registration Number`"-->
+<!--              :name="Math.random()"-->
+<!--              persistent-hint-->
+<!--              single-line-->
+<!--              style="width:330px"-->
+<!--              v-model="myRegAdd"-->
+<!--              @click:append="findRegistration(myRegAdd)"-->
+<!--              @keypress.enter="findRegistration(myRegAdd)"-->
+<!--            />-->
+<!--            <p v-if="myRegAddInvalid" class="validation-msg mx-3 my-1">-->
+<!--              Registration numbers contain {{ isMhr ? '6' : '7' }} digits-->
+<!--            </p>-->
+<!--          </v-col>-->
+<!--        </v-row>-->
+<!--      </v-col>-->
+<!--    </v-row>-->
 
     <!-- Registrations Table Section -->
     <v-row no-gutters class="pt-7" style="margin-top: 2px; margin-bottom: 80px;">
@@ -156,7 +156,7 @@
 <script lang="ts">
 // Components
 /* eslint-disable no-unused-vars */
-import { computed, defineComponent, reactive, toRefs, watch } from '@vue/composition-api'
+import { computed, defineComponent, reactive, toRefs, watch } from 'vue'
 import { useActions, useGetters } from 'vuex-composition-helpers'
 import { RegistrationBar } from '@/components/registration'
 import { RegistrationTable } from '@/components/tables'
@@ -208,6 +208,7 @@ import {
 import { StatusCodes } from 'http-status-codes'
 import { cloneDeep } from 'lodash'
 import { useNewMhrRegistration } from '@/composables'
+import { useRouter } from 'vue-router'
 /* eslint-enable no-unused-vars */
 
 export default defineComponent({
@@ -241,6 +242,8 @@ export default defineComponent({
     }
   },
   setup (props, context) {
+    const router = useRouter()
+
     const {
       getRegTableBaseRegs, getRegTableDraftsBaseReg, isMhrRegistration, getRegTableTotalRowCount, getStateModel,
       getRegTableDraftsChildReg, hasMorePages, getRegTableNewItem, getRegTableSortOptions, getRegTableSortPage,
@@ -384,7 +387,7 @@ export default defineComponent({
       setRegTableCollapsed(null)
 
       const route = isMhrRegistration.value ? RouteNames.YOUR_HOME : RouteNames.LENGTH_TRUST
-      context.root.$router.replace({ name: route })
+      router.replace({ name: route })
     }
 
     const findRegistration = async (regNum: string): Promise<void> => {
@@ -613,7 +616,7 @@ export default defineComponent({
       resetNewRegistration(null) // Clear store data from the previous registration.
       // Go to the Amendment first step which loads the base registration and draft data.
       setRegTableCollapsed(null)
-      context.root.$router.replace({
+      router.replace({
         name: RouteNames.AMEND_REGISTRATION,
         query: { 'reg-num': regNum, 'document-id': docId }
       })
@@ -634,13 +637,13 @@ export default defineComponent({
         setUnsavedChanges(false)
         // Go to the first step.
         setRegTableCollapsed(null)
-        await context.root.$router.replace({ name: RouteNames.LENGTH_TRUST })
+        await router.replace({ name: RouteNames.LENGTH_TRUST })
       }
     }
 
     const openMhr = async (mhrSummary: MhRegistrationSummaryIF): Promise<void> => {
       setMhrInformation(mhrSummary)
-      await context.root.$router.replace({ name: RouteNames.MHR_INFORMATION })
+      await router.replace({ name: RouteNames.MHR_INFORMATION })
     }
 
     const removeMhrDraft = async (mhrNumber: string): Promise<void> => {
@@ -662,7 +665,7 @@ export default defineComponent({
 
     const startNewChildDraft = (regNum: string, routeName: RouteNames): void => {
       setRegTableCollapsed(null)
-      context.root.$router.replace({
+      router.replace({
         name: routeName,
         query: { 'reg-num': regNum }
       })

@@ -89,7 +89,7 @@
 
 <script lang="ts">
 /* eslint-disable no-unused-vars */
-import { defineComponent, computed, reactive, toRefs, watch } from '@vue/composition-api'
+import { defineComponent, computed, reactive, toRefs, watch } from 'vue'
 import { HomeLocationInfo } from '@/components/common'
 import { useActions } from 'vuex-composition-helpers'
 import { useInputRules, useNewMhrRegistration } from '@/composables'

@@ -71,7 +71,7 @@ import {
   toRefs,
   watch,
   computed
-} from '@vue/composition-api'
+} from 'vue'
 import { useGetters } from 'vuex-composition-helpers'
 // local components
 import { PartyAutocomplete } from '@/components/parties/party'
@@ -109,7 +109,9 @@ export default defineComponent({
   emits: [
     'showSecuredPartyAdd',
     'addRegisteringParty',
-    'removeRegisteringParty'
+    'removeRegisteringParty',
+    'selectItem',
+    'hideSearch'
   ],
   setup (props, context) {
     const { getRegistrationFlowType } = useGetters<any>([

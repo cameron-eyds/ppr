@@ -30,9 +30,10 @@
           icon=" "
           align="center"
         ></sbc-system-banner>
-        <breadcrumb :setCurrentPath="currentPath" :setCurrentPathName="currentPathName" v-if="haveData" />
-        <tombstone :setCurrentPath="currentPath" v-if="haveData" />
-        <v-container class="view-container pa-0 ma-0">
+        <Breadcrumb :setCurrentPath="currentPath" :setCurrentPathName="currentPathName" />
+        <Tombstone :setCurrentPath="currentPath" />
+
+        <v-container class="container">
           <v-row no-gutters>
             <v-col cols="12">
               <router-view
@@ -56,16 +57,12 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onBeforeMount, reactive, toRefs, watch } from '@vue/composition-api'
+import { computed, defineComponent, onBeforeMount, reactive, toRefs, watch } from 'vue'
 import { useActions, useGetters } from 'vuex-composition-helpers'
-import { Route } from 'vue-router' // eslint-disable-line
 import { StatusCodes } from 'http-status-codes'
-import KeycloakService from 'sbc-common-components/src/services/keycloak.services'
+import KeycloakServices from '@/sbc-common-components/services/keycloak.services'
 import { SessionStorageKeys } from 'sbc-common-components/src/util/constants'
-import SbcHeader from 'sbc-common-components/src/components/SbcHeader.vue'
-import SbcFooter from 'sbc-common-components/src/components/SbcFooter.vue'
-import SbcSystemBanner from 'sbc-common-components/src/components/SbcSystemBanner.vue'
-import SbcAuthenticationOptionsDialog from 'sbc-common-components/src/components/SbcAuthenticationOptionsDialog.vue'
+import { SbcHeader, SbcFooter, SbcSystemBanner } from '@/sbc-common-components'
 import * as Dialogs from '@/components/dialogs'
 import { Breadcrumb } from '@/components/common'
 import { Tombstone } from '@/components/tombstone'
@@ -96,6 +93,7 @@ import {
   AccountProductSubscriptionIF, DialogOptionsIF, // eslint-disable-line
   ErrorIF, UserInfoIF, UserSettingsIF // eslint-disable-line
 } from '@/interfaces'
+import { useRoute, useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'App',
@@ -104,12 +102,14 @@ export default defineComponent({
     SbcHeader,
     SbcFooter,
     SbcSystemBanner,
-    SbcAuthenticationOptionsDialog,
     Tombstone,
     ...Dialogs,
     ...Views
   },
-  setup (props, context) {
+  setup () {
+    const route = useRoute()
+    const router = useRouter()
+
     const {
       isRoleStaff,
       isRoleStaffBcol,
@@ -215,10 +215,10 @@ export default defineComponent({
     })
 
     onBeforeMount((): void => {
-      if (context.root.$route?.query?.logout) {
+      if (route?.query?.logout) {
         localState.loggedOut = true
         sessionStorage.removeItem(SessionStorageKeys.KeyCloakToken)
-        context.root.$router.push(`${window.location.origin}`)
+        router.push(`${window.location.origin}`)
       } else {
         localState.loggedOut = false
         // before unloading this page, if there are changes then prompt user
@@ -246,7 +246,7 @@ export default defineComponent({
             RouteNames.MHR_INFORMATION
           ]
 
-          const routeName = context.root.$router.currentRoute.name as RouteNames
+          const routeName = router.currentRoute.value.name as RouteNames
           if (
             (changeRoutes.includes(routeName) || newAmendRoutes.includes(routeName) || mhrRoutes.includes(routeName)) &&
             hasUnsavedChanges.value) {
@@ -272,7 +272,7 @@ export default defineComponent({
         localState.saveDraftExitToggle = !localState.saveDraftExitToggle
       } else {
         setRegistrationNumber(null)
-        context.root.$router.push({ name: RouteNames.DASHBOARD })
+        router.push({ name: RouteNames.DASHBOARD })
       }
     }
 
@@ -344,7 +344,7 @@ export default defineComponent({
 
       try {
         console.info('Starting token refresh service...')
-        await KeycloakService.initializeToken()
+        await KeycloakServices.initializeToken()
         localState.tokenService = true
       } catch (e) {
         // this happens when the refresh token has expired
@@ -555,7 +555,7 @@ export default defineComponent({
         case ErrorCategories.REGISTRATION_LOAD:
           localState.errorOptions = registrationLoadError
           localState.errorDisplay = true
-          context.root.$router.push({ name: RouteNames.DASHBOARD })
+          router.push({ name: RouteNames.DASHBOARD })
           break
         case ErrorCategories.REGISTRATION_SAVE:
           localState.errorOptions = registrationSaveDraftError
@@ -710,7 +710,7 @@ export default defineComponent({
       }
     }
 
-    watch(() => context.root.$route, (newVal: Route) => {
+    watch(() => route, (newVal: any) => {
       localState.currentPath = newVal.path
       localState.currentPathName = newVal.name as RouteNames
     }, { immediate: true, deep: true })

@@ -5,7 +5,7 @@
     @proceed="proceed($event)"
   >
     <template v-slot:content>
-      <staff-payment-component
+      <SharedStaffPayment
         :staffPaymentData="staffPaymentData"
         :validate="validating"
         :displaySideLabel="false"
@@ -34,11 +34,11 @@ import {
   defineComponent,
   reactive,
   toRefs
-} from '@vue/composition-api'
+} from 'vue'
 import { useActions, useGetters } from 'vuex-composition-helpers'
 
 // Components
-import { StaffPayment as StaffPaymentComponent } from '@bcrs-shared-components/staff-payment'
+import SharedStaffPayment from '@/components/common/SharedStaffPayment.vue'
 import BaseDialog from '@/components/dialogs/BaseDialog.vue'
 
 // Interfaces and Enums
@@ -49,7 +49,7 @@ import { DialogOptionsIF } from '@/interfaces' // eslint-disable-line
 export default defineComponent({
   name: 'StaffPaymentDialog',
   components: {
-    StaffPaymentComponent,
+    SharedStaffPayment,
     BaseDialog
   },
   props: {

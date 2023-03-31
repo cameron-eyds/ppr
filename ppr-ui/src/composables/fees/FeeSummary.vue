@@ -185,7 +185,7 @@
 
 <script lang="ts">
 // external
-import { computed, defineComponent, reactive, toRefs, watch } from '@vue/composition-api'
+import { computed, defineComponent, reactive, toRefs, watch } from 'vue'
 import { useGetters } from 'vuex-composition-helpers'
 // local
 /* eslint-disable no-unused-vars */

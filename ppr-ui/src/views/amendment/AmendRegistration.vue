@@ -133,7 +133,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, reactive, toRefs, watch } from '@vue/composition-api'
+import { computed, defineComponent, onMounted, reactive, toRefs, watch } from 'vue'
 import { useGetters, useActions } from 'vuex-composition-helpers'
 import { cloneDeep, isEqual } from 'lodash'
 import { SessionStorageKeys } from 'sbc-common-components/src/util/constants'
@@ -179,6 +179,7 @@ import {
   FinancingStatementIF,
   RegTableNewItemI
 } from '@/interfaces'
+import {useRoute, useRouter} from 'vue-router';
 /* eslint-enable no-unused-vars */
 
 export default defineComponent({
@@ -210,6 +211,9 @@ export default defineComponent({
     }
   },
   setup (props, context) {
+    const route = useRoute()
+    const router = useRouter()
+
     const {
       getStateModel,
       getLengthTrust,
@@ -317,7 +321,7 @@ export default defineComponent({
         return Boolean(sessionStorage.getItem(SessionStorageKeys.KeyCloakToken))
       }),
       registrationNumber: computed((): string => {
-        let regNum = context.root.$route.query['reg-num'] as string
+        let regNum = route.query['reg-num'] as string
         if (regNum && regNum.endsWith('-confirm')) {
           localState.fromConfirmation = true
           regNum = regNum.replace('-confirm', '')
@@ -325,7 +329,7 @@ export default defineComponent({
         return regNum || ''
       }),
       documentId: computed((): string => {
-        return (context.root.$route.query['document-id'] as string) || ''
+        return (route.query['document-id'] as string) || ''
       }),
       registrationTypeUI: computed((): UIRegistrationTypes => {
         return getRegistrationType.value?.registrationTypeUI || null
@@ -370,7 +374,7 @@ export default defineComponent({
         } else {
           console.error('No debtor name confirmed for this amendment. Redirecting to dashboard...')
         }
-        context.root.$router.push({
+        router.push({
           name: RouteNames.DASHBOARD
         })
         return
@@ -467,7 +471,7 @@ export default defineComponent({
           await setupAmendmentStatementFromDraft(getStateModel.value, localState.documentId)
         if (stateModel.registration.draft.error) {
           emitError(stateModel.registration.draft.error)
-          context.root.$router.push({ name: RouteNames.DASHBOARD })
+          router.push({ name: RouteNames.DASHBOARD })
         } else {
           setAddCollateral(stateModel.registration.collateral)
           setLengthTrust(stateModel.registration.lengthTrust)
@@ -489,7 +493,7 @@ export default defineComponent({
 
       // redirect if not authenticated (safety check - should never happen) or if app is not open to user (ff)
       if (!localState.isAuthenticated || (!props.isJestRunning && !getFeatureFlag('ppr-ui-enabled'))) {
-        context.root.$router.push({
+        router.push({
           name: RouteNames.DASHBOARD
         })
         return
@@ -567,7 +571,7 @@ export default defineComponent({
         (!description || description.length <= 4000) &&
         localState.courtOrderValid
       ) {
-        context.root.$router.push({
+        router.push({
           name: RouteNames.CONFIRM_AMENDMENT,
           query: { 'reg-num': localState.registrationNumber }
         })
@@ -627,7 +631,7 @@ export default defineComponent({
     const goToDashboard = (): void => {
       // unset registration number
       setRegistrationNumber(null)
-      context.root.$router.push({ name: RouteNames.DASHBOARD })
+      router.push({ name: RouteNames.DASHBOARD })
     }
 
     const setCourtOrderValid = (valid): void => {
@@ -724,7 +728,7 @@ export default defineComponent({
           prevDraft: prevDraftId
         }
         setRegTableNewItem(newItem)
-        context.root.$router.push({
+        router.push({
           name: RouteNames.DASHBOARD
         })
         emitHaveData(false)

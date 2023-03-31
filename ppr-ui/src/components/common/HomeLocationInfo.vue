@@ -190,14 +190,14 @@
 
 <script lang="ts">
 /* eslint-disable no-unused-vars */
-import { computed, defineComponent, onMounted, reactive, toRefs, watch } from '@vue/composition-api'
+import { computed, defineComponent, onMounted, reactive, toRefs, watch } from 'vue'
 import { MhrLocationInfoIF } from '@/interfaces'
 import { useInputRules } from '@/composables/useInputRules'
 /* eslint-disable no-unused-vars */
 
 export default defineComponent({
   name: 'HomeLocationInfo',
-  emits: ['updateLocationInfo', 'updateLocationDescription', 'updateLocationValid'],
+  emits: ['updateLocationInfo', 'updateLocationDescription', 'updateLocationInfoValid'],
   props: {
     validate: { type: Boolean, default: false },
     isReserve: { type: Boolean, default: false },

@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onBeforeMount, reactive, toRefs, watch } from '@vue/composition-api'
+import { computed, defineComponent, onBeforeMount, reactive, toRefs, watch } from 'vue'
 import { useGetters } from 'vuex-composition-helpers'
 import { SessionStorageKeys } from 'sbc-common-components/src/util/constants'
 import {
@@ -81,7 +81,8 @@ import {
   saveSelectionsError
 } from '@/resources/dialogOptions'
 import { getFeatureFlag, submitSelected, successfulPPRResponses, updateSelected, navigate, pacificDate } from '@/utils'
-import { ErrorIF, SearchResultIF } from '@/interfaces' // eslint-disable-line no-unused-vars
+import { ErrorIF, SearchResultIF } from '@/interfaces'
+import {useRoute, useRouter} from 'vue-router'; // eslint-disable-line no-unused-vars
 
 export default defineComponent({
   name: 'Search',
@@ -113,6 +114,9 @@ export default defineComponent({
     }
   },
   setup (props, context) {
+    const route = useRoute()
+    const router = useRouter()
+
     const {
       getSearchedType,
       getUserSettings,
@@ -215,7 +219,7 @@ export default defineComponent({
       window.onbeforeunload = (event) => {
         // unsaved selections if app is ready, search results exist, and on the search page
         const isSearchReportUnsaved = (
-          context.root.$router.currentRoute.name === RouteNames.SEARCH &&
+          router.currentRoute.value.name === RouteNames.SEARCH &&
           props.appReady &&
           !!getSearchResults.value
         )
@@ -232,7 +236,7 @@ export default defineComponent({
       localState.errorDialog = false
       if (!stayOnSearchResults || (localState.errorOptions !== searchReportError &&
         localState.errorOptions !== saveSelectionsError)) {
-        context.root.$router.push({ name: RouteNames.DASHBOARD })
+        router.push({ name: RouteNames.DASHBOARD })
       }
     }
 
@@ -289,7 +293,7 @@ export default defineComponent({
           localState.errorDialog = true
           console.error({ statusCode: statusCode })
         } else {
-          context.root.$router.push({ name: RouteNames.DASHBOARD })
+          router.push({ name: RouteNames.DASHBOARD })
         }
       }
     }
@@ -317,7 +321,7 @@ export default defineComponent({
 
       // if navigated here without search results redirect to the dashboard
       if (!getSearchResults.value) {
-        context.root.$router.push({
+        router.push({
           name: RouteNames.DASHBOARD
         })
         emitHaveData(false)

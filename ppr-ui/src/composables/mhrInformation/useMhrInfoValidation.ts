@@ -5,7 +5,7 @@ import {
   MhrRegistrationHomeOwnerGroupIF,
   MhrRegistrationHomeOwnerIF
 } from '@/interfaces'
-import { computed } from '@vue/composition-api'
+import { computed } from 'vue'
 import { useHomeOwners, useTransferOwners } from '@/composables'
 import { ActionTypes } from '@/enums'
 
