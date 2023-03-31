@@ -30,8 +30,8 @@
           icon=" "
           align="center"
         ></sbc-system-banner>
-        <Breadcrumb :setCurrentPath="currentPath" :setCurrentPathName="currentPathName" />
-        <Tombstone :setCurrentPath="currentPath" />
+        <Breadcrumb v-if="haveData" :setCurrentPath="currentPath" :setCurrentPathName="currentPathName" />
+        <Tombstone v-if="haveData" :setCurrentPath="currentPath" />
 
         <v-container class="container">
           <v-row no-gutters>

@@ -370,7 +370,7 @@ export const registrationTableHeaders: Array<BaseHeaderIF> = [
     class: 'min-column-lg',
     sortable: true,
     text: 'Registration Type',
-    title: 'Registration Number',
+    title: 'Registration Type',
     value: 'registrationType',
     display: true
   },
@@ -378,7 +378,7 @@ export const registrationTableHeaders: Array<BaseHeaderIF> = [
     class: 'min-column-md',
     sortable: true,
     text: 'Date (Pacific Time)',
-    title: 'Registration Number',
+    title: 'Date (Pacific Time)',
     value: 'createDateTime',
     display: true
   },

@@ -7,56 +7,56 @@
 
     <base-snackbar :setMessage="snackbarMsg" :toggleSnackbar="toggleSnackbar" />
     <div v-if="appReady" class="container pa-0">
-<!--      <v-row no-gutters>-->
-<!--        <v-col>-->
-<!--          <v-row no-gutters-->
-<!--                  id="search-header"-->
-<!--                  :class="[$style['dashboard-title'], 'pl-6', 'pt-3', 'pb-3', 'soft-corners-top']">-->
-<!--            <v-col cols="auto">-->
-<!--              <b v-if="hasPPR && hasMHR">-->
-<!--                Manufactured Home and Personal Property Registries Search</b>-->
-<!--              <b v-else-if="hasPPR">Personal Property Registry Search</b>-->
-<!--              <b v-else-if="hasMHR">Manufactured Home Registry Search</b>-->
-<!--            </v-col>-->
-<!--          </v-row>-->
-<!--          <v-row no-gutters>-->
-<!--            <search-bar-->
-<!--              class="soft-corners-bottom"-->
-<!--              :isNonBillable="isNonBillable"-->
-<!--              :serviceFee="getUserServiceFee"-->
-<!--              @debtor-name="setSearchDebtorName"-->
-<!--              @searched-type="setSearchedType"-->
-<!--              @searched-value="setSearchedValue"-->
-<!--              @search-data="saveResults($event)"-->
-<!--              @search-error="emitError($event)"-->
-<!--            />-->
-<!--          </v-row>-->
-<!--        </v-col>-->
-<!--      </v-row>-->
-<!--      <v-row no-gutters class='pt-12'>-->
-<!--        <v-col>-->
-<!--          <v-row no-gutters-->
-<!--                  id="search-history-header"-->
-<!--                  :class="[$style['dashboard-title'], 'pl-6', 'pt-3', 'pb-3', 'soft-corners-top']">-->
-<!--            <v-col cols="12" sm="3">-->
-<!--              <b>Searches</b> ({{ searchHistoryLength }})-->
-<!--            </v-col>-->
-<!--            <v-col cols="12" sm="9">-->
-<!--              <span :class="[$style['header-help-text'], 'float-right', 'pr-6']">-->
-<!--                The Searches table will display up to 1000 searches conducted within the last 14 days.-->
-<!--              </span>-->
-<!--            </v-col>-->
-<!--          </v-row>-->
-<!--          <v-row no-gutters>-->
-<!--            <v-col v-if="!appLoadingData" cols="12">-->
-<!--              <search-history class="soft-corners-bottom" @retry="retrieveSearchHistory" @error="emitError"/>-->
-<!--            </v-col>-->
-<!--            <v-col v-else class="pa-10" cols="12">-->
-<!--              <v-progress-linear color="primary" indeterminate rounded height="6" />-->
-<!--            </v-col>-->
-<!--          </v-row>-->
-<!--        </v-col>-->
-<!--      </v-row>-->
+      <v-row no-gutters>
+        <v-col>
+          <v-row no-gutters
+                  id="search-header"
+                  :class="[$style['dashboard-title'], 'pl-6', 'pt-3', 'pb-3', 'soft-corners-top']">
+            <v-col cols="auto">
+              <b v-if="hasPPR && hasMHR">
+                Manufactured Home and Personal Property Registries Search</b>
+              <b v-else-if="hasPPR">Personal Property Registry Search</b>
+              <b v-else-if="hasMHR">Manufactured Home Registry Search</b>
+            </v-col>
+          </v-row>
+          <v-row no-gutters>
+            <search-bar
+              class="soft-corners-bottom"
+              :isNonBillable="isNonBillable"
+              :serviceFee="getUserServiceFee"
+              @debtor-name="setSearchDebtorName"
+              @searched-type="setSearchedType"
+              @searched-value="setSearchedValue"
+              @search-data="saveResults($event)"
+              @search-error="emitError($event)"
+            />
+          </v-row>
+        </v-col>
+      </v-row>
+      <v-row no-gutters class='pt-12'>
+        <v-col>
+          <v-row no-gutters
+                  id="search-history-header"
+                  :class="[$style['dashboard-title'], 'pl-6', 'pt-3', 'pb-3', 'soft-corners-top']">
+            <v-col cols="12" sm="3">
+              <b>Searches</b> ({{ searchHistoryLength }})
+            </v-col>
+            <v-col cols="12" sm="9">
+              <span :class="[$style['header-help-text'], 'float-right', 'pr-6']">
+                The Searches table will display up to 1000 searches conducted within the last 14 days.
+              </span>
+            </v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-col v-if="!appLoadingData" cols="12">
+              <search-history class="soft-corners-bottom" @retry="retrieveSearchHistory" @error="emitError"/>
+            </v-col>
+            <v-col v-else class="pa-10" cols="12">
+              <v-progress-linear color="primary" indeterminate rounded height="6" />
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
       <v-row no-gutters class="mt-4 pt-7">
         <v-col>
           <DashboardTabs

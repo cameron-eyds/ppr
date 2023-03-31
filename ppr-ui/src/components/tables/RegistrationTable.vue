@@ -1,13 +1,13 @@
 <template>
   <v-container fluid no-gutters class="pa-0" ref="tableHeaderRef" style="position: relative">
-<!--    <date-picker-->
-<!--      v-show="showDatePicker"-->
-<!--      ref="datePicker"-->
-<!--      :setEndDate="submittedEndDate"-->
-<!--      :setStartDate="submittedStartDate"-->
-<!--      :setDisableEndDate="!isPpr"-->
-<!--      @submit="updateDateRange($event)"-->
-<!--    />-->
+    <date-picker
+      v-show="showDatePicker"
+      ref="datePicker"
+      :setEndDate="submittedEndDate"
+      :setStartDate="submittedStartDate"
+      :setDisableEndDate="!isPpr"
+      @submit="updateDateRange($event)"
+    />
 
     <VDataTable
       id="registration-table"
