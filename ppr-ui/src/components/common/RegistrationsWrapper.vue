@@ -21,7 +21,7 @@
       @proceed="myRegActionDialogHandler($event)"
     />
 
-     Registrations Upper Section
+    <!-- Registrations Upper Section -->
     <v-row class="pt-10" align="baseline" no-gutters>
       <v-col cols="auto">
         <registration-bar

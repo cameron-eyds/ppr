@@ -1,8 +1,8 @@
 <template>
-  <v-container class="main-results-div pa-0 white">
+  <v-container class="main-results-div pa-0">
     <v-row no-gutters class="pt-4">
       <v-col cols="12">
-        <v-data-table
+        <v-table
           v-if="searchHistory"
           id="search-history-table"
           hide-default-footer
@@ -151,7 +151,7 @@
               </tr>
             </tbody>
           </template>
-        </v-data-table>
+        </v-table>
       </v-col>
     </v-row>
   </v-container>

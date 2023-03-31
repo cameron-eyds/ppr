@@ -1,8 +1,8 @@
 <template>
-  <div id="dashboard" class="py-10 ma-0" fluid>
+  <div id="dashboard" class="py-10 ma-0">
     <!-- Page Overlay -->
-    <v-overlay :value="loading">
-      <v-progress-circular color="primary" size="50" indeterminate />
+    <v-overlay v-model="loading" class="align-center justify-center">
+      <v-progress-circular color="primary" size=64 indeterminate />
     </v-overlay>
 
     <base-snackbar :setMessage="snackbarMsg" :toggleSnackbar="toggleSnackbar" />
@@ -57,24 +57,24 @@
           </v-row>
         </v-col>
       </v-row>
-      <v-row no-gutters class="mt-4 pt-7">
-        <v-col>
-          <DashboardTabs
-            v-if="enableDashboardTabs"
-            :appLoadingData="appLoadingData"
-            :appReady="appReady"
-            @snackBarMsg="snackBarEvent($event)"
-          />
+<!--      <v-row no-gutters class="mt-4 pt-7">-->
+<!--        <v-col>-->
+<!--          <DashboardTabs-->
+<!--            v-if="enableDashboardTabs"-->
+<!--            :appLoadingData="appLoadingData"-->
+<!--            :appReady="appReady"-->
+<!--            @snackBarMsg="snackBarEvent($event)"-->
+<!--          />-->
 
-          <RegistrationsWrapper
-            v-else-if="hasPPR"
-            isPpr
-            :appLoadingData="appLoadingData"
-            :appReady="appReady"
-            @snackBarMsg="snackBarEvent($event)"
-          />
-        </v-col>
-      </v-row>
+<!--          <RegistrationsWrapper-->
+<!--            v-else-if="hasPPR"-->
+<!--            isPpr-->
+<!--            :appLoadingData="appLoadingData"-->
+<!--            :appReady="appReady"-->
+<!--            @snackBarMsg="snackBarEvent($event)"-->
+<!--          />-->
+<!--        </v-col>-->
+<!--      </v-row>-->
     </div>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid no-gutters class="white search-bar-container">
+  <v-container fluid no-gutters class="white-background search-bar-container">
     <confirmation-dialog
       :setDisplay="confirmationDialog"
       :setOptions="dialogOptions"
@@ -15,22 +15,23 @@
       @proceed="onStaffPaymentChanges($event)"
     />
 
-    <v-row>
-      <v-col class="col-xl py-0">
-        <v-row>
-          <v-col class="search-info py-0">
-            Select a search category and then enter a criteria to search.
-          </v-col>
-          <v-col align-self="end" cols="3" class="py-0">
-            <folio-number
-              :defaultFolioNumber="folioNumber"
-              @folio-number="updateFolioNumber"
-              @folio-error="folioError = $event"
-            />
-          </v-col>
-        </v-row>
+    <v-row no-gutters>
+      <v-col cols="9" class="search-info py-0">
+        Select a search category and then enter a criteria to search.
+      </v-col>
+      <v-col align-self="end" cols="3" class="py-0">
+        <folio-number
+          :defaultFolioNumber="folioNumber"
+          @folio-number="updateFolioNumber"
+          @folio-error="folioError = $event"
+        />
+      </v-col>
+    </v-row>
+
+    <v-row no-gutters>
+      <v-col cols="8">
         <div v-if="typeOfSearch" v-html="typeOfSearch" class="font-weight-bold search-title pt-0 pb-1"></div>
-        <v-row>
+        <v-row no-gutters>
           <v-col class="pb-0" cols="4">
             <search-bar-list
               :defaultSelectedSearchType="selectedSearchType"
@@ -180,45 +181,43 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col class="col-auto py-0">
-        <v-row :style="typeOfSearch ? 'height: 115px' : 'height: 85px'" />
-        <v-row>
-          <v-col class="pb-0">
-            <v-btn
-            id="search-btn"
-            class="search-bar-btn primary"
-            :loading="searching"
-            @click="searchCheck()"
-            >
-              <v-icon>mdi-magnify</v-icon>
-            </v-btn>
 
-          <v-menu v-if="(isStaffBcolReg || isRoleStaff) && !isStaffSbc" offset-y left nudge-bottom="4">
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  v-on="on"
-                  id="client-search"
-                  outlined
-                  class="down-btn ml-3"
-                  color="primary"
-                  data-test-id="client-search-bar-btn"
-                >
-                  <v-icon color="primary">mdi-menu-down</v-icon>
-                </v-btn>
-              </template>
-              <v-list class="actions__more-actions">
-                <v-list-item @click="clientSearch()">
-                  <v-list-item-subtitle>
-                    <v-icon style="font-size: 18px;padding-bottom: 2px;">mdi-magnify</v-icon>
-                    <span>
+      <v-col cols="4" align-self="end">
+        <v-btn
+          id="search-btn"
+          class="search-bar-btn primary"
+          :loading="searching"
+          @click="searchCheck()"
+        >
+          <v-icon>mdi-magnify</v-icon>
+        </v-btn>
+
+        <v-menu v-if="(isStaffBcolReg || isRoleStaff) && !isStaffSbc" offset-y left nudge-bottom="4">
+          <template v-slot:activator="{ on }">
+            <v-btn
+              v-on="on"
+              id="client-search"
+              outlined
+              class="down-btn ml-3"
+              color="primary"
+              data-test-id="client-search-bar-btn"
+            >
+              <v-icon color="primary">mdi-menu-down</v-icon>
+            </v-btn>
+          </template>
+          <v-list class="actions__more-actions">
+            <v-list-item @click="clientSearch()">
+              <v-list-item-subtitle>
+                <v-icon style="font-size: 18px;padding-bottom: 2px;">mdi-magnify</v-icon>
+                <span>
                       Client Search
                     </span>
-                  </v-list-item-subtitle>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-          </v-col>
-        </v-row>
+              </v-list-item-subtitle>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-col>
+      <v-col cols="12">
         <v-row v-if="showPprFeeHint" no-gutters>
           <v-col>
             <span id="search-btn-info" class="fee-text"> ${{ fee }} fee </span>
