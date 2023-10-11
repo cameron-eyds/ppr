@@ -2,9 +2,9 @@
   <v-card flat id="home-owners-summary" class="mt-10">
     <header class="review-header">
       <img
-          class="ml-1 home-owners-icon"
-          alt="home-owners-review-icon"
-          src="@/assets/svgs/homeownersicon_reviewscreen.svg"
+        class="ml-1 home-owners-icon"
+        alt="home-owners-review-icon"
+        src="@/assets/svgs/homeownersicon_reviewscreen.svg"
       />
       <label class="font-weight-bold pl-2">Home Owners</label>
     </header>
@@ -33,10 +33,10 @@
         </article>
 
         <HomeOwnersTable
-            :isMhrTransfer="isMhrTransfer"
-            :homeOwnerGroups="getHomeOwnerGroups"
-            isReadonlyTable
-            class="readonly-home-owners-table px-0 py-3"
+          :isMhrTransfer="isMhrTransfer"
+          :homeOwnerGroups="getHomeOwnerGroups"
+          isReadonlyTable
+          class="readonly-home-owners-table px-0 py-3"
         />
       </section>
     </div>
@@ -78,7 +78,7 @@ export default defineComponent({
       hasGroups: computed(() => getTransferOrRegistrationHomeOwnerGroups().length > 0),
       showStepError: computed(() => {
         return !props.isMhrTransfer && !isMhrManufacturerRegistration.value &&
-            !getStepValidation(MhrSectVal.HOME_OWNERS_VALID)
+          !getStepValidation(MhrSectVal.HOME_OWNERS_VALID)
       })
     })
 

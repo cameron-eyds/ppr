@@ -11,7 +11,7 @@
           <v-icon color="error">mdi-information-outline</v-icon>
           <span class="error-text mx-1">This step is unfinished.</span>
           <router-link
-              :to="{ path: `/${RouteNames.MHR_REGISTRATION}/${RouteNames.YOUR_HOME}` }"
+            :to="{ path: `/${RouteNames.MHR_REGISTRATION}/${RouteNames.YOUR_HOME}` }"
           >Return to this step to complete it.</router-link>
         </span>
       </section>
@@ -34,8 +34,8 @@
             <v-col cols="9">
               <p v-if="getMhrRegistrationHomeDescription.baseInformation.year">
                 {{ getMhrRegistrationHomeDescription.baseInformation.circa
-                  ? 'Circa ' + getMhrRegistrationHomeDescription.baseInformation.year
-                  : getMhrRegistrationHomeDescription.baseInformation.year
+                ? 'Circa ' + getMhrRegistrationHomeDescription.baseInformation.year
+                : getMhrRegistrationHomeDescription.baseInformation.year
                 }}
               </p>
               <p v-else>(Not Entered)</p>
@@ -206,7 +206,7 @@ export default defineComponent({
       }),
       isEngineerInspection: computed((): boolean => {
         return getMhrRegistrationHomeDescription.value?.certificationOption ===
-            HomeCertificationOptions.ENGINEER_INSPECTION
+          HomeCertificationOptions.ENGINEER_INSPECTION
       }),
       engineerDisplayDate: computed((): string => {
         const engineersDate = props.isTransferReview
@@ -218,7 +218,7 @@ export default defineComponent({
       showStepError: computed(() => !getStepValidation(MhrSectVal.YOUR_HOME_VALID)),
       hasData: computed(() : boolean => {
         return hasTruthyValue(getMhrRegistrationHomeDescription.value) ||
-            (!isMhrManufacturerRegistration.value && !!getMhrRegistrationOtherInfo.value)
+          (!isMhrManufacturerRegistration.value && !!getMhrRegistrationOtherInfo.value)
       })
     })
 

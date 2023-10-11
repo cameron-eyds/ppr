@@ -2,9 +2,9 @@
   <v-card flat id="home-location-summary" class="mt-10">
     <header class="review-header">
       <img
-          class="ml-1 home-location-icon"
-          alt="home-location-review-icon"
-          src="@/assets/svgs/homelocationicon_reviewscreen.svg"
+        class="ml-1 home-location-icon"
+        alt="home-location-review-icon"
+        src="@/assets/svgs/homelocationicon_reviewscreen.svg"
       />
       <label class="font-weight-bold pl-2">Location of Home</label>
     </header>
@@ -17,7 +17,7 @@
           <v-icon color="error">mdi-information-outline</v-icon>
           <span class="error-text mx-1">This step is unfinished.</span>
           <router-link
-              :to="{ path: `/${RouteNames.MHR_REGISTRATION}/${RouteNames.HOME_LOCATION}` }"
+            :to="{ path: `/${RouteNames.MHR_REGISTRATION}/${RouteNames.HOME_LOCATION}` }"
           >Return to this step to complete it.</router-link>
         </span>
       </section>
@@ -296,8 +296,8 @@ export default defineComponent({
       }),
       hasAddress: computed((): boolean => {
         return getMhrRegistrationLocation.value.address?.street ||
-            getMhrRegistrationLocation.value.address?.streetAdditional ||
-            getMhrRegistrationLocation.value.address?.city
+          getMhrRegistrationLocation.value.address?.streetAdditional ||
+          getMhrRegistrationLocation.value.address?.city
       }),
       displayPid: computed((): string => {
         return getMhrRegistrationLocation.value.pidNumber.replace(/(\d{3})(\d{3})(\d{3})/, '$1-$2-$3')
@@ -329,8 +329,8 @@ export default defineComponent({
       hasManualEntries: computed((): boolean => {
         const location = getMhrRegistrationLocation.value
         return !!location.lot || !!location.parcel || !!location.block || !!location.districtLot || !!location.partOf ||
-            !!location.section || !!location.township || !!location.range || !!location.meridian || !!location.bandName ||
-            !!location.landDistrict || !!location.plan || !!location.exceptionPlan || !!location.reserveNumber
+          !!location.section || !!location.township || !!location.range || !!location.meridian || !!location.bandName ||
+          !!location.landDistrict || !!location.plan || !!location.exceptionPlan || !!location.reserveNumber
       }),
       landOwnershipLabel: computed(() => {
         return `The manufactured home is <b>${getMhrRegistrationOwnLand.value ? '' : 'not'}</b> located on land that the
