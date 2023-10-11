@@ -5,68 +5,47 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26f6cbdf-f7c6-4f65-b915-e67cc08c10a0" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/mhr_api/src/database/postgres_views/mhr_account_reg_vw.sql" beforeDir="false" afterPath="$PROJECT_DIR$/mhr_api/src/database/postgres_views/mhr_account_reg_vw.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mhr_api/src/database/postgres_views/mhr_lien_check_vw.sql" beforeDir="false" afterPath="$PROJECT_DIR$/mhr_api/src/database/postgres_views/mhr_lien_check_vw.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mhr_api/src/mhr_api/models/db2/owngroup.py" beforeDir="false" afterPath="$PROJECT_DIR$/mhr_api/src/mhr_api/models/db2/owngroup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mhr_api/src/mhr_api/models/db2/queries.py" beforeDir="false" afterPath="$PROJECT_DIR$/mhr_api/src/mhr_api/models/db2/queries.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mhr_api/src/mhr_api/utils/note_validator.py" beforeDir="false" afterPath="$PROJECT_DIR$/mhr_api/src/mhr_api/utils/note_validator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mhr_api/src/mhr_api/utils/registration_validator.py" beforeDir="false" afterPath="$PROJECT_DIR$/mhr_api/src/mhr_api/utils/registration_validator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mhr_api/src/mhr_api/utils/validator_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/mhr_api/src/mhr_api/utils/validator_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mhr_api/tests/unit/utils/test_registration_validator.py" beforeDir="false" afterPath="$PROJECT_DIR$/mhr_api/tests/unit/utils/test_registration_validator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-api/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-api/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-api/src/ppr_api/callback/document_storage/storage_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-api/src/ppr_api/callback/document_storage/storage_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-api/src/ppr_api/resources/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-api/src/ppr_api/resources/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-api/src/ppr_api/version.py" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-api/src/ppr_api/version.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-api/tests/unit/callback/test_storage_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-api/tests/unit/callback/test_storage_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/jest.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/jest.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/src/assets/styles/base.scss" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/assets/styles/base.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/src/assets/styles/overrides.scss" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/assets/styles/overrides.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/common/Attention.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/components/common/Attention.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/common/CertifyInformation.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/components/common/CertifyInformation.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/common/DocumentId.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/components/common/DocumentId.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/common/FormCard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/components/common/FormCard.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/common/RegistrationsWrapper.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/components/common/RegistrationsWrapper.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/common/Remarks.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/components/common/Remarks.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/common/SimpleHelpToggle.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/components/common/SimpleHelpToggle.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/common/StickyContainer.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/components/common/StickyContainer.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/common/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/components/common/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/mhrRegistration/HomeOwners/AddEditHomeOwner-XMC02FXG2PMD6M.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/mhrRegistration/HomeOwners/AddEditHomeOwner.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/components/mhrRegistration/HomeOwners/AddEditHomeOwner.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/mhrRegistration/HomeOwners/HomeOwnerRoles-XMC02FXG2PMD6M.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/mhrRegistration/HomeOwners/HomeOwnerRoles.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/components/mhrRegistration/HomeOwners/HomeOwnerRoles.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/mhrRegistration/HomeOwners/HomeOwnersTable-XMC02FXG2PMD6M.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/mhrRegistration/HomeOwners/HomeOwnersTable.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/components/mhrRegistration/HomeOwners/HomeOwnersTable.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/mhrRegistration/ReviewConfirm/HomeLocationReview-XMC02FXG2PMD6M.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/mhrRegistration/ReviewConfirm/HomeLocationReview.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/components/mhrRegistration/ReviewConfirm/HomeLocationReview.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/mhrRegistration/ReviewConfirm/HomeOwnersReview-XMC02FXG2PMD6M.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/mhrRegistration/ReviewConfirm/HomeOwnersReview.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/components/mhrRegistration/ReviewConfirm/HomeOwnersReview.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/mhrRegistration/ReviewConfirm/YourHomeReview-XMC02FXG2PMD6M.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/mhrRegistration/ReviewConfirm/YourHomeReview.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/components/mhrRegistration/ReviewConfirm/YourHomeReview.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/mhrTransfers/ConfirmCompletion-XMC02FXG2PMD6M.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/mhrTransfers/ConfirmCompletion.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/components/mhrTransfers/ConfirmCompletion.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/mhrTransfers/TransferDetailsReview-XMC02FXG2PMD6M.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/mhrTransfers/TransferDetailsReview.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/components/mhrTransfers/TransferDetailsReview.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/tables/common/TableRow-XMC02FXG2PMD6M.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/tables/common/TableRow.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/components/tables/common/TableRow.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/userAccess/ReviewConfirm/Authorization-XMC02FXG2PMD6M.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/userAccess/ReviewConfirm/Authorization.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/components/userAccess/ReviewConfirm/Authorization.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/userAccess/ReviewConfirm/ListRequirements-XMC02FXG2PMD6M.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ppr-ui/src/components/userAccess/ReviewConfirm/ListRequirements.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/components/userAccess/ReviewConfirm/ListRequirements.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppr-ui/src/composables/mhrInformation/useTransferOwners-XMC02FXG2PMD6M.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ppr-ui/src/composables/mhrInformation/useTransferOwners.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/composables/mhrInformation/useTransferOwners.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ppr-ui/src/composables/mhrRegistration/useHomeOwners.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/composables/mhrRegistration/useHomeOwners.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppr-ui/src/enums/routeNames-XMC02FXG2PMD6M.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ppr-ui/src/enums/routeNames.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/enums/routeNames.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/src/enums/tableActions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/enums/tableActions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/src/interfaces/content-interface.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/interfaces/content-interface.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/src/interfaces/exemption-interfaces/ExemptionIF.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/interfaces/exemption-interfaces/ExemptionIF.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/src/resources/authorizedTableHeaders.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/resources/authorizedTableHeaders.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/src/resources/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/resources/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/src/resources/tableHeaders.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/resources/tableHeaders.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/src/store/state/state-model.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/store/state/state-model.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/src/utils/feature-flags.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/utils/feature-flags.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppr-ui/src/utils/feature-flags-XMC02FXG2PMD6M.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppr-ui/src/utils/format-helper-XMC02FXG2PMD6M.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ppr-ui/src/utils/format-helper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/utils/format-helper.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppr-ui/src/utils/mhr-api-helper-XMC02FXG2PMD6M.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ppr-ui/src/utils/mhr-api-helper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/utils/mhr-api-helper.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppr-ui/src/views/exemption/ExemptionDetails-XMC02FXG2PMD6M.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ppr-ui/src/views/exemption/ExemptionDetails.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/views/exemption/ExemptionDetails.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppr-ui/src/views/exemption/ExemptionReview-XMC02FXG2PMD6M.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ppr-ui/src/views/exemption/ExemptionReview.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/views/exemption/ExemptionReview.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppr-ui/src/views/exemption/Exemptions-XMC02FXG2PMD6M.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ppr-ui/src/views/exemption/Exemptions.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/views/exemption/Exemptions.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ppr-ui/src/views/mhrInformation/MhrInformation-XMC02FXG2PMD6M.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ppr-ui/src/views/mhrInformation/MhrInformation.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/views/mhrInformation/MhrInformation.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/src/views/newMhrRegistration/HomeOwners.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/views/newMhrRegistration/HomeOwners.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/src/views/newMhrRegistration/MhrReviewConfirm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/src/views/newMhrRegistration/MhrReviewConfirm.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/tests/jest.setup.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/tests/jest.setup.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/tests/unit/Exemptions.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/tests/unit/Exemptions.spec.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/tests/unit/MhrInformation.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/tests/unit/MhrInformation.spec.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/tests/unit/MhrRegistrationHomeOwners.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/tests/unit/MhrRegistrationHomeOwners.spec.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ppr-ui/tests/unit/MhrTransferHomeOwners.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ppr-ui/tests/unit/MhrTransferHomeOwners.spec.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,25 +66,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/cameron.bowler/Library/CloudStorage/OneDrive-EY/Documents/BcRos/ppr&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/cameron.bowler/Library/CloudStorage/OneDrive-EY/Documents/BcRos/ppr/ppr-ui/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "Test-New-Work-Branch",
+    "last_opened_file_path": "/Users/cameron.bowler/Library/CloudStorage/OneDrive-EY/Documents/BcRos/ppr",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "/Users/cameron.bowler/Library/CloudStorage/OneDrive-EY/Documents/BcRos/ppr/ppr-ui/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -135,5 +114,17 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/ppr-ui/src/components/tables/common/TableRow.vue</url>
+          <line>167</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

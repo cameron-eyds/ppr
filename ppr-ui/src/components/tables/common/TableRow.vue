@@ -9,40 +9,40 @@
     }"
   >
     <td
-      v-if="inSelectedHeaders('registrationNumber') || inSelectedHeaders('mhrNumber')"
-      :class="(isChild || setIsExpanded) ? 'border-left': ''"
+        v-if="inSelectedHeaders('registrationNumber') || inSelectedHeaders('mhrNumber')"
+        :class="(isChild || setIsExpanded) ? 'border-left': ''"
     >
       <v-row no-gutters>
         <v-col v-if="item.changes" class="pr-2" cols="auto">
           <v-btn
-            class="btn-row-expand-arr btn-expand"
-            color="white"
-            icon
-            small
-            @click="toggleExpand(item)"
-            @mouseover="rollover = true"
-            @mouseleave="rollover = false"
+              class="btn-row-expand-arr btn-expand"
+              color="white"
+              icon
+              small
+              @click="toggleExpand(item)"
+              @mouseover="rollover = true"
+              @mouseleave="rollover = false"
           >
             <v-icon v-if="setIsExpanded">mdi-chevron-up</v-icon>
             <v-icon v-else>mdi-chevron-down</v-icon>
           </v-btn>
         </v-col>
         <v-col
-          v-if="isChild && hasFrozenParentReg(item) && (isTransAffi(item.registrationType) || isDraft(item))"
-          cols="2"
+            v-if="isChild && hasFrozenParentReg(item) && (isTransAffi(item.registrationType) || isDraft(item))"
+            cols="2"
         >
           <v-icon data-test-id="alert-icon" class="mt-n1" color="caution">mdi-alert</v-icon>
         </v-col>
         <v-col style="padding-top: 2px;">
           <p
-            v-if="isDraft(item)"
-            class="ma-0"
-            :class="isChild && !isTransAffi(item.registrationType) && !hasFrozenParentReg(item) ? 'pl-9': 'pl-1'"
+              v-if="isDraft(item)"
+              class="ma-0"
+              :class="isChild && !isTransAffi(item.registrationType) && !hasFrozenParentReg(item) ? 'pl-9': 'pl-1'"
           >Pending</p>
           <!-- child drafts will sometimes show outside their base reg during the sort -->
           <div
-            v-if="isChild || (isDraft(item) && item.baseRegistrationNumber)"
-            :class="!(isChild && hasFrozenParentReg(item) && (isTransAffi(item.registrationType) || isDraft(item)))
+              v-if="isChild || (isDraft(item) && item.baseRegistrationNumber)"
+              :class="!(isChild && hasFrozenParentReg(item) && (isTransAffi(item.registrationType) || isDraft(item)))
             ? 'pl-9'
             : 'pl-1'"
           >
@@ -65,14 +65,14 @@
 
       <!-- Caution message for Frozen MHR state -->
       <v-row
-        v-if="
+          v-if="
           !isPpr &&
           !isChild &&
           item.statusType === MhApiStatusTypes.FROZEN &&
           item.frozenDocumentType === MhApiFrozenDocumentTypes.TRANS_AFFIDAVIT
         "
-        class="mt-8"
-        :class="item.changes && 'pt-4'"
+          class="mt-8"
+          :class="item.changes && 'pt-4'"
       >
         <v-col class="pb-0">
           <p class="mb-0 text-no-wrap">
@@ -83,8 +83,8 @@
       </v-row>
     </td>
     <td
-      v-if="inSelectedHeaders('registrationType') || inSelectedHeaders('registrationDescription')"
-      :class="isChild || item.expanded ? 'border-left': ''"
+        v-if="inSelectedHeaders('registrationType') || inSelectedHeaders('registrationDescription')"
+        :class="isChild || item.expanded ? 'border-left': ''"
     >
       <div v-if="isPpr && !!item.registrationType">
         {{ getRegistrationType(item.registrationType) }}
@@ -95,12 +95,12 @@
           {{ `(${multipleWordsToTitleCase(item.cancelledDocumentDescription, true)})` }}
         </span>
         <v-tooltip
-          v-if="item.registrationDescription === APIMhrDescriptionTypes.CONVERTED"
-          class="pa-2"
-          content-class="top-tooltip"
-          nudge-right="2"
-          top
-          transition="fade-transition"
+            v-if="item.registrationDescription === APIMhrDescriptionTypes.CONVERTED"
+            class="pa-2"
+            content-class="top-tooltip"
+            nudge-right="2"
+            top
+            transition="fade-transition"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-icon style="vertical-align: baseline" color="primary" small v-bind="attrs" v-on="on">
@@ -114,14 +114,14 @@
         </v-tooltip>
       </div>
       <v-btn
-        v-if="item.changes"
-        class="btn-row-expand-txt btn-txt pa-0"
-        color="primary"
-        text
-        underlined
-        @click="toggleExpand(item)"
-        @mouseover="rollover = true"
-        @mouseleave="rollover = false"
+          v-if="item.changes"
+          class="btn-row-expand-txt btn-txt pa-0"
+          color="primary"
+          text
+          underlined
+          @click="toggleExpand(item)"
+          @mouseover="rollover = true"
+          @mouseleave="rollover = false"
       >
         <label style="cursor: pointer;">
           <span v-if="!setIsExpanded">View </span>
@@ -139,75 +139,75 @@
       </span>
     </td>
     <td
-      v-if="inSelectedHeaders('statusType')"
-      :class="isChild || item.expanded ? 'border-left': ''"
+        v-if="inSelectedHeaders('statusType')"
+        :class="isChild || item.expanded ? 'border-left': ''"
     >
       <div v-if="!isChild || isDraft(item) || !isPpr">
         {{  isMhrTransfer(item) ?
-        'Completed' : getStatusDescription(item.statusType, isChild, isPpr) }}
+          'Completed' : getStatusDescription(item.statusType, isChild, isPpr) }}
         <p v-if="!isChild && item.hasDraft" class="ma-0">
           <i>{{ isPpr ? '* Draft Amendment' : '* Draft Changes' }}</i>
         </p>
       </div>
     </td>
     <td
-      v-if="inSelectedHeaders('registeringName')"
-      :class="isChild || item.expanded ? 'border-left': ''"
+        v-if="inSelectedHeaders('registeringName')"
+        :class="isChild || item.expanded ? 'border-left': ''"
     >
       <span v-if="item.registeringName">{{ getRegisteringName(item.registeringName) }}</span>
       <span v-else>{{ item.username || 'N/A' }}</span>
     </td>
     <td
-      v-if="inSelectedHeaders('registeringParty')"
-      :class="isChild || item.expanded ? 'border-left': ''"
+        v-if="inSelectedHeaders('registeringParty')"
+        :class="isChild || item.expanded ? 'border-left': ''"
     >
       {{ item.registeringParty || item.submittingParty }}
     </td>
     <td
-      v-if="inSelectedHeaders('ownerNames')"
-      :class="isChild || item.expanded ? 'border-left': ''"
+        v-if="inSelectedHeaders('ownerNames')"
+        :class="isChild || item.expanded ? 'border-left': ''"
     >
       {{ item.ownerNames}}
     </td>
     <td
-      v-if="inSelectedHeaders('securedParties') && isPpr"
-      :class="isChild || item.expanded ? 'border-left': ''"
+        v-if="inSelectedHeaders('securedParties') && isPpr"
+        :class="isChild || item.expanded ? 'border-left': ''"
     >
       {{ item.securedParties || '' }}
     </td>
     <td
-      v-if="inSelectedHeaders('clientReferenceId')"
-      :class="isChild || item.expanded ? 'border-left': ''"
+        v-if="inSelectedHeaders('clientReferenceId')"
+        :class="isChild || item.expanded ? 'border-left': ''"
     >
       {{ item.clientReferenceId }}
     </td>
     <td
-      v-if="inSelectedHeaders('expireDays')"
-      v-html="showExpireDays(item)"
-      :class="isChild || item.expanded ? 'border-left': ''"
+        v-if="inSelectedHeaders('expireDays')"
+        v-html="showExpireDays(item)"
+        :class="isChild || item.expanded ? 'border-left': ''"
     />
     <td
-      v-if="inSelectedHeaders('vs')"
-      :class="isChild || item.expanded ? 'border-left': ''"
+        v-if="inSelectedHeaders('vs')"
+        :class="isChild || item.expanded ? 'border-left': ''"
     >
       <v-btn
-        :id="`pdf-btn-${item.id}`"
-        v-if="!isDraft(item) && item.path"
-        class="pdf-btn px-0 mt-n3"
-        depressed
-        :loading="item.path === loadingPDF"
-        @click="downloadPDF(item)"
+          :id="`pdf-btn-${item.id}`"
+          v-if="!isDraft(item) && item.path"
+          class="pdf-btn px-0 mt-n3"
+          depressed
+          :loading="item.path === loadingPDF"
+          @click="downloadPDF(item)"
       >
         <img src="@/assets/svgs/pdf-icon-blue.svg">
         <span class="pl-1">PDF</span>
       </v-btn>
       <v-tooltip
-        v-else-if="!isDraft(item)"
-        class="pa-2"
-        content-class="top-tooltip"
-        nudge-right="2"
-        top
-        transition="fade-transition"
+          v-else-if="!isDraft(item)"
+          class="pa-2"
+          content-class="top-tooltip"
+          nudge-right="2"
+          top
+          transition="fade-transition"
       >
         <template v-slot:activator="{ on, attrs }">
           <v-icon color="primary" v-bind="attrs" v-on="on" @click="refresh(item)">mdi-information-outline</v-icon>
@@ -220,47 +220,47 @@
 
     <!-- Action Btns -->
     <td
-      v-if="headers.length > 1"
-      class="actions-cell pl-2 py-4"
-      :style="disableActionShadow ? 'box-shadow: none; border-left: none;' : ''"
+        v-if="headers.length > 1"
+        class="actions-cell pl-2 py-4"
+        :style="disableActionShadow ? 'box-shadow: none; border-left: none;' : ''"
     >
       <!-- PPR ACTIONS -->
       <v-row v-if="isPpr && (!isChild || isDraft(item))" class="actions" no-gutters>
         <v-col class="edit-action pa-0" cols="auto">
           <v-btn
-            v-if="isDraft(item)"
-            class="edit-btn"
-            color="primary"
-            elevation="0"
-            @click="editDraft(item)"
+              v-if="isDraft(item)"
+              class="edit-btn"
+              color="primary"
+              elevation="0"
+              @click="editDraft(item)"
           >
             <span>Edit</span>
           </v-btn>
           <v-btn
-            v-else-if="isRepairersLien(item) && isActive(item)"
-            class="edit-btn"
-            style="flex:0"
-            color="primary"
-            elevation="0"
-            @click="handleAction(item, TableActions.DISCHARGE)"
+              v-else-if="isRepairersLien(item) && isActive(item)"
+              class="edit-btn"
+              style="flex:0"
+              color="primary"
+              elevation="0"
+              @click="handleAction(item, TableActions.DISCHARGE)"
           >
             <span class="discharge-btn text-wrap">Total Discharge</span>
           </v-btn>
           <v-btn
-            v-else-if="!isExpired(item) && !isDischarged(item)"
-            class="edit-btn"
-            color="primary"
-            elevation="0"
-            @click="handleAction(item, TableActions.AMEND)"
+              v-else-if="!isExpired(item) && !isDischarged(item)"
+              class="edit-btn"
+              color="primary"
+              elevation="0"
+              @click="handleAction(item, TableActions.AMEND)"
           >
             <span>Amend</span>
           </v-btn>
           <v-btn
-            v-else
-            color="primary"
-            style="height:36px"
-            elevation="0"
-            @click="handleAction(item, TableActions.REMOVE)"
+              v-else
+              color="primary"
+              style="height:36px"
+              elevation="0"
+              @click="handleAction(item, TableActions.REMOVE)"
           >
             <span class="remove-btn text-wrap">Remove From<br>Table</span>
           </v-btn>
@@ -269,11 +269,11 @@
           <v-menu offset-y left nudge-bottom="4" @input="freezeScrolling($event)">
             <template v-slot:activator="{ on: onMenu, value }">
               <v-btn
-                small
-                elevation="0"
-                v-on="onMenu"
-                color="primary"
-                class="actions__more-actions__btn reg-table down-btn"
+                  small
+                  elevation="0"
+                  v-on="onMenu"
+                  color="primary"
+                  class="actions__more-actions__btn reg-table down-btn"
               >
                 <v-icon v-if="value">mdi-menu-up</v-icon>
                 <v-icon v-else>mdi-menu-down</v-icon>
@@ -281,7 +281,7 @@
             </template>
             <v-list v-if="isDraft(item)" class="actions__more-actions registration-actions">
               <v-list-item
-                @click="deleteDraft(item, TableActions.DELETE)"
+                  @click="deleteDraft(item, TableActions.DELETE)"
               >
                 <v-list-item-subtitle>
                   <v-icon small>mdi-delete</v-icon>
@@ -291,17 +291,17 @@
             </v-list>
             <v-list v-else class="actions__more-actions registration-actions">
               <v-tooltip
-                left
-                content-class="left-tooltip pa-2 mr-2 pl-4"
-                transition="fade-transition"
-                :disabled="!isRepairersLienAmendDisabled(item)"
+                  left
+                  content-class="left-tooltip pa-2 mr-2 pl-4"
+                  transition="fade-transition"
+                  :disabled="!isRepairersLienAmendDisabled(item)"
               >
                 <template v-slot:activator="{ on: onTooltip }">
                   <div v-on="onTooltip">
                     <v-list-item
-                      v-if="isRepairersLien(item)"
-                      :disabled="isRepairersLienAmendDisabled(item)"
-                      @click="handleAction(item, TableActions.AMEND)"
+                        v-if="isRepairersLien(item)"
+                        :disabled="isRepairersLienAmendDisabled(item)"
+                        @click="handleAction(item, TableActions.AMEND)"
                     >
                       <v-list-item-subtitle>
                         <v-icon small>mdi-pencil</v-icon>
@@ -315,8 +315,8 @@
                 </span>
               </v-tooltip>
               <v-list-item
-                v-if="isActive(item) && !isExpired(item) && !isDischarged(item) && !isRepairersLien(item)"
-                @click="handleAction(item, TableActions.DISCHARGE)"
+                  v-if="isActive(item) && !isExpired(item) && !isDischarged(item) && !isRepairersLien(item)"
+                  @click="handleAction(item, TableActions.DISCHARGE)"
               >
                 <v-list-item-subtitle>
                   <v-icon small>mdi-note-remove-outline</v-icon>
@@ -324,17 +324,17 @@
                 </v-list-item-subtitle>
               </v-list-item>
               <v-tooltip
-                left
-                content-class="left-tooltip pa-2 mr-2"
-                transition="fade-transition"
-                :disabled="!isRenewalDisabled(item)"
+                  left
+                  content-class="left-tooltip pa-2 mr-2"
+                  transition="fade-transition"
+                  :disabled="!isRenewalDisabled(item)"
               >
                 <template v-slot:activator="{ on: onTooltip }">
                   <div v-on="onTooltip">
                     <v-list-item
-                      v-if="isActive(item) && !isExpired(item) && !isDischarged(item)"
-                      :disabled="isRenewalDisabled(item)"
-                      @click="handleAction(item, TableActions.RENEW)"
+                        v-if="isActive(item) && !isExpired(item) && !isDischarged(item)"
+                        :disabled="isRenewalDisabled(item)"
+                        @click="handleAction(item, TableActions.RENEW)"
                     >
                       <v-list-item-subtitle>
                         <v-icon small>mdi-calendar-clock</v-icon>
@@ -362,11 +362,11 @@
       <v-row v-else-if="isEnabledMhr(item)" class="actions" no-gutters>
         <v-col class="edit-action pa-0" cols="auto">
           <v-btn
-            color="primary"
-            elevation="0"
-            width="100"
-            class="edit-btn"
-            @click="openMhr(item)"
+              color="primary"
+              elevation="0"
+              width="100"
+              class="edit-btn"
+              @click="openMhr(item)"
           >
             <span>Open</span>
           </v-btn>
@@ -375,11 +375,11 @@
           <v-menu offset-y left nudge-bottom="4" @input="freezeScrolling($event)">
             <template v-slot:activator="{ on: onMenu, value }">
               <v-btn
-                small
-                elevation="0"
-                v-on="onMenu"
-                color="primary"
-                class="actions__more-actions__btn reg-table down-btn"
+                  small
+                  elevation="0"
+                  v-on="onMenu"
+                  color="primary"
+                  class="actions__more-actions__btn reg-table down-btn"
               >
                 <v-icon v-if="value">mdi-menu-up</v-icon>
                 <v-icon v-else>mdi-menu-down</v-icon>
@@ -387,8 +387,8 @@
             </template>
             <v-list class="actions__more-actions registration-actions">
               <v-list-item
-                v-if="isExemptionEnabled"
-                @click="goToExemptions(UnitNoteDocTypes.RESIDENTIAL_EXEMPTION_ORDER)"
+                  v-if="isExemptionEnabled"
+                  @click="openExemption(TableActions.OPEN_RES_EXEMPTION, item)"
               >
                 <v-list-item-subtitle>
                   <img alt="exemption-icon" class="ml-0 exemption-icon" src="@/assets/svgs/ic_exemption.svg" />
@@ -396,8 +396,8 @@
                 </v-list-item-subtitle>
               </v-list-item>
               <v-list-item
-                v-if="isRoleStaffReg && isExemptionEnabled"
-                @click="goToExemptions(UnitNoteDocTypes.NON_RESIDENTIAL_EXEMPTION)"
+                  v-if="isRoleStaffReg && isExemptionEnabled"
+                  @click="openExemption(TableActions.OPEN_NON_RES_EXEMPTION, item)"
               >
                 <v-list-item-subtitle>
                   <img alt="exemption-icon" class="exemption-icon" src="@/assets/svgs/ic_exemption.svg" />
@@ -419,11 +419,11 @@
       <v-row v-else-if="!isPpr && isDraft(item)" class="actions" no-gutters>
         <v-col class="edit-action pa-0" cols="auto">
           <v-btn
-            color="primary"
-            elevation="0"
-            width="100"
-            class="edit-btn"
-            @click="openMhr(item)"
+              color="primary"
+              elevation="0"
+              width="100"
+              class="edit-btn"
+              @click="openMhr(item)"
           >
             <span>Edit</span>
           </v-btn>
@@ -432,11 +432,11 @@
           <v-menu offset-y left nudge-bottom="4" @input="freezeScrolling($event)">
             <template v-slot:activator="{ on: onMenu, value }">
               <v-btn
-                small
-                elevation="0"
-                v-on="onMenu"
-                color="primary"
-                class="actions__more-actions__btn reg-table down-btn"
+                  small
+                  elevation="0"
+                  v-on="onMenu"
+                  color="primary"
+                  class="actions__more-actions__btn reg-table down-btn"
               >
                 <v-icon v-if="value">mdi-menu-up</v-icon>
                 <v-icon v-else>mdi-menu-down</v-icon>
@@ -527,7 +527,7 @@ export default defineComponent({
       securedParties
     } = useRegistration(null)
     const { isTransAffi } = useTransferOwners()
-    const { isExemptionEnabled, goToExemptions } = useExemptions()
+    const { isExemptionEnabled } = useExemptions()
 
     const localState = reactive({
       loadingPDF: '',
@@ -559,7 +559,7 @@ export default defineComponent({
       }),
       enableOpenEdit: computed(() => {
         return (isRoleQualifiedSupplier.value || isRoleStaffReg.value || isRoleStaff.value) &&
-          !isRoleStaffSbc.value && !isRoleStaffBcol.value
+            !isRoleStaffSbc.value && !isRoleStaffBcol.value
       })
     })
 
@@ -574,16 +574,16 @@ export default defineComponent({
     const tooltipTxtPdf = (item): string => {
       if (!props.isPpr) {
         return 'Documents are only available to the Submitting Party of this filing. To view the details of this ' +
-          'registration you must conduct a search.'
+            'registration you must conduct a search.'
       } else if (!item.registeringName) {
         return 'Verification Statements are only available ' +
-      'to Secured Parties or the Registering Party of this filing. To ' +
-      'view the details of this registration you must conduct a search.'
+            'to Secured Parties or the Registering Party of this filing. To ' +
+            'view the details of this registration you must conduct a search.'
       } else {
         return 'This document PDF is still being generated. Click the ' +
-        '<i class="v-icon notranslate mdi mdi-information-outline" style="font-size:18px; margin-bottom:4px;"></i>' +
-        ' icon to see if your PDF is ready to download. <br>' +
-        'Note: Large documents may take up to 20 minutes to generate.'
+            '<i class="v-icon notranslate mdi mdi-information-outline" style="font-size:18px; margin-bottom:4px;"></i>' +
+            ' icon to see if your PDF is ready to download. <br>' +
+            'Note: Large documents may take up to 20 minutes to generate.'
       }
     }
 
@@ -622,10 +622,10 @@ export default defineComponent({
           const regClass = getRegistrationClass(item.registrationClass) || ''
           if (regClass === 'Registration Verification') {
             a.download = today.toISOString().slice(0, 10) + regType +
-              item.registrationType + '_' + regClass.replace(/ /g, '_') + '_' + item.registrationNumber
+                item.registrationType + '_' + regClass.replace(/ /g, '_') + '_' + item.registrationNumber
           } else {
             a.download = today.toISOString().slice(0, 10) + regType +
-              regClass.replace(/ /g, '_') + '_' + (item.registrationNumber || item.baseRegistrationNumber)
+                regClass.replace(/ /g, '_') + '_' + (item.registrationNumber || item.baseRegistrationNumber)
           }
           a.click()
           window.URL.revokeObjectURL(url)
@@ -649,8 +649,8 @@ export default defineComponent({
 
     const isEnabledMhr = (item: MhRegistrationSummaryIF) => {
       return [MhApiStatusTypes.ACTIVE, MhApiStatusTypes.FROZEN].includes(item.statusType as MhApiStatusTypes) &&
-        localState.enableOpenEdit && (item.registrationDescription === APIMhrDescriptionTypes.REGISTER_NEW_UNIT ||
-          item.registrationDescription === APIMhrDescriptionTypes.CONVERTED)
+          localState.enableOpenEdit && (item.registrationDescription === APIMhrDescriptionTypes.REGISTER_NEW_UNIT ||
+              item.registrationDescription === APIMhrDescriptionTypes.CONVERTED)
     }
 
     const openMhr = (item: MhRegistrationSummaryIF): void => {
@@ -658,6 +658,13 @@ export default defineComponent({
         action: (item.registrationType === APIMhrTypes.MANUFACTURED_HOME_REGISTRATION && item.draftNumber)
           ? TableActions.EDIT_NEW_MHR
           : TableActions.OPEN_MHR,
+        mhrInfo: item
+      })
+    }
+
+    const openExemption = (action: TableActions, item: MhRegistrationSummaryIF): void => {
+      emit('action', {
+        action: action,
         mhrInfo: item
       })
     }
@@ -672,7 +679,7 @@ export default defineComponent({
       ].map(type => stripChars(type).toUpperCase())
 
       return [MhApiStatusTypes.ACTIVE, MhApiStatusTypes.FROZEN].includes(item.statusType) &&
-        formattedTransferTypes.includes(stripChars(item.registrationDescription))
+          formattedTransferTypes.includes(stripChars(item.registrationDescription))
     }
 
     const removeMhrDraft = (item: MhRegistrationSummaryIF): void => {
@@ -711,10 +718,10 @@ export default defineComponent({
     // locked state for MHR based on API response (eg. TAXN Unit Note is blocking QS)
     const hasLockedState = (item: MhRegistrationSummaryIF): boolean => {
       const parentReg: MhRegistrationSummaryIF =
-        item.mhrNumber && getMhRegTableBaseRegs.value?.find(reg => reg.mhrNumber === item.mhrNumber)
+          item.mhrNumber && getMhRegTableBaseRegs.value?.find(reg => reg.mhrNumber === item.mhrNumber)
       // For QS status will be frozen, but for Staff it will be Active, so no locked state would be shown
       return (isRoleQualifiedSupplier.value && parentReg?.statusType === MhApiStatusTypes.FROZEN) &&
-        QSLockedStateUnitNoteTypes.includes(parentReg?.frozenDocumentType)
+          QSLockedStateUnitNoteTypes.includes(parentReg?.frozenDocumentType)
     }
 
     const isDischarged = (item: RegistrationSummaryIF): boolean => {
@@ -824,9 +831,9 @@ export default defineComponent({
         if (days < 30) {
           return (
             '<span class="invalid-color">' +
-            days.toString() +
-            ' days' +
-            '</span>'
+              days.toString() +
+              ' days' +
+              '</span>'
           )
         }
         return days.toString() + ' days'
@@ -884,6 +891,7 @@ export default defineComponent({
       toggleExpand,
       tooltipTxtPdf,
       openMhr,
+      openExemption,
       isEnabledMhr,
       removeMhrDraft,
       isMhrTransfer,
@@ -893,7 +901,6 @@ export default defineComponent({
       hasFrozenParentReg,
       hasLockedState,
       MhApiFrozenDocumentTypes,
-      goToExemptions,
       UnitNoteDocTypes,
       ...toRefs(localState)
     }

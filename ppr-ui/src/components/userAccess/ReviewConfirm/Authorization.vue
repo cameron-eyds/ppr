@@ -1,17 +1,17 @@
 <template>
   <FormCard
-    label="Confirm Authorization"
-    :showErrors="showErrors"
-    :class="{'border-error-left': showErrors}"
+      label="Confirm Authorization"
+      :showErrors="showErrors"
+      :class="{'border-error-left': showErrors}"
   >
     <template #formSlot>
-      <v-form class="pl-10" ref="authorizationForm" v-model="authorizationFormValid">
+      <v-form ref="authorizationForm" v-model="authorizationFormValid">
         <v-text-field
-          id="authorization-text-field"
-          filled
-          label="Legal name of authorized person (must be a lawyer or notary)"
-          v-model="authorization.authorizationName"
-          :rules="authorizationRules"
+            id="authorization-text-field"
+            filled
+            label="Legal name of authorized person (must be a lawyer or notary)"
+            v-model="authorization.authorizationName"
+            :rules="authorizationRules"
         />
         <v-checkbox
             id="authorization-checkbox"
@@ -21,8 +21,8 @@
         >
           <template #label>
             <span
-              class="ml-2"
-              :class="{ 'error-text': validateReview && !authorization.isAuthorizationConfirmed}"
+                class="ml-2"
+                :class="{ 'error-text': validateReview && !authorization.isAuthorizationConfirmed}"
             >
               <b class=authorization-text>{{ authorization.authorizationName }}</b>
               certifies that they have relevant knowledge of the Qualified Supplier
@@ -67,7 +67,7 @@ export default defineComponent({
       authorizationRules: customRules(required('Enter the legal name of authorized person'), maxLength(150)),
       showErrors: computed((): boolean =>
         props.validateReview &&
-        (!authorizationForm.value?.validate() || !localState.authorization.isAuthorizationConfirmed)
+          (!authorizationForm.value?.validate() || !localState.authorization.isAuthorizationConfirmed)
       )
     })
 
@@ -100,7 +100,6 @@ span {
 }
 
 ::v-deep {
-
   .v-label {
     line-height: 24px;
   }
@@ -112,7 +111,5 @@ span {
   .v-text-field__slot > label {
     height: fit-content;
   }
-
 }
-
 </style>

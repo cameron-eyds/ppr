@@ -80,8 +80,8 @@ export function useHomeOwners (isMhrTransfer: boolean = false) {
   const getHomeTenancyType = (): HomeTenancyTypes => {
     // check if there are any groups with mixed owner types for Sale or Gift transfers
     if (isMhrTransfer &&
-      getMhrTransferType.value?.transferType === ApiTransferTypes.SALE_OR_GIFT &&
-      getMhrTransferHomeOwnerGroups.value.length === 1) {
+        getMhrTransferType.value?.transferType === ApiTransferTypes.SALE_OR_GIFT &&
+        getMhrTransferHomeOwnerGroups.value.length === 1) {
       // git first group since there is only one group in this case
       const ownerTypes = getMhrTransferHomeOwnerGroups.value[0].owners
         .filter(owner => owner.action !== ActionTypes.REMOVED)
@@ -143,7 +143,7 @@ export function useHomeOwners (isMhrTransfer: boolean = false) {
       HomeOwnerPartyTypes.ADMINISTRATOR
     ]
     return group.owners.some(owner => executorTrusteeAdmin.includes(owner.partyType) &&
-      owner.action !== ActionTypes.REMOVED)
+        owner.action !== ActionTypes.REMOVED)
   }
 
   /**
@@ -158,9 +158,9 @@ export function useHomeOwners (isMhrTransfer: boolean = false) {
     const nominators = groups.map(group => (group.interestNumerator / group.interestDenominator) * denominator)
     const totalNominator = nominators.reduce((a, b) => a + b, 0)
     const hasTotalAllocationError = totalNominator !== denominator ||
-      hasUndefinedGroupInterest(
-        getTransferOrRegistrationHomeOwnerGroups().filter(group => group.action !== ActionTypes.REMOVED)
-      )
+        hasUndefinedGroupInterest(
+          getTransferOrRegistrationHomeOwnerGroups().filter(group => group.action !== ActionTypes.REMOVED)
+        )
 
     // Determine allocation or error messaging
     if (!hasTotalAllocationError) totalAllocationMsg = 'Fully Allocated'
@@ -179,8 +179,9 @@ export function useHomeOwners (isMhrTransfer: boolean = false) {
 
   const hasMinimumGroups = (): boolean => {
     const groups = getTransferOrRegistrationHomeOwnerGroups().filter(group => group.action !== ActionTypes.REMOVED)
-    return !groups || groups.length >= 2 ||
-    (!showGroups.value && groups.length === 1)
+    const hasNoGroups = [HomeTenancyTypes.SOLE, HomeTenancyTypes.JOINT].includes(getHomeTenancyType())
+    return hasNoGroups || !groups || groups.length >= 2 ||
+        (!showGroups.value && groups.length === 1)
   }
 
   const hasMixedOwnersInGroup = (groupId: number): boolean => {
@@ -209,7 +210,7 @@ export function useHomeOwners (isMhrTransfer: boolean = false) {
       numOfAdditionalGroupsInDropdown = 1
     } else {
       numOfAdditionalGroupsInDropdown =
-        find(homeOwnerGroups, { groupId: groupId })?.owners.length > 1 ? 1 : 0
+          find(homeOwnerGroups, { groupId: groupId })?.owners.length > 1 ? 1 : 0
     }
 
     const dropDownItems = Array(homeOwnerGroups.length + numOfAdditionalGroupsInDropdown)
@@ -252,23 +253,23 @@ export function useHomeOwners (isMhrTransfer: boolean = false) {
     // If WILL flow, add new executor to existing group instead of incrementing the group
     let transferDefaultId = groupId
     if (getMhrTransferType.value?.transferType !== ApiTransferTypes.TO_EXECUTOR_PROBATE_WILL ||
-      getMhrTransferType.value?.transferType !== ApiTransferTypes.TO_ADMIN_NO_WILL) {
+        getMhrTransferType.value?.transferType !== ApiTransferTypes.TO_ADMIN_NO_WILL) {
       transferDefaultId = homeOwnerGroups.find(group => group.action !== ActionTypes.REMOVED)?.groupId ||
-      homeOwnerGroups.filter(group => group.action === ActionTypes.REMOVED).length + 1
+          homeOwnerGroups.filter(group => group.action === ActionTypes.REMOVED).length + 1
     }
     const fallBackId = isMhrTransfer ? transferDefaultId : DEFAULT_GROUP_ID
 
     // Try to find a group to add the owner
     const groupToUpdate =
-      homeOwnerGroups.find(
-        (group: MhrRegistrationHomeOwnerGroupIF) => group.groupId === (groupId || fallBackId)
-      ) || ({} as MhrRegistrationHomeOwnerGroupIF)
+        homeOwnerGroups.find(
+          (group: MhrRegistrationHomeOwnerGroupIF) => group.groupId === (groupId || fallBackId)
+        ) || ({} as MhrRegistrationHomeOwnerGroupIF)
 
     // Allow update to "REMOVED" group if WILL flow
     if (groupToUpdate.owners &&
         (groupToUpdate.action !== ActionTypes.REMOVED ||
-         (getMhrTransferType.value?.transferType === ApiTransferTypes.TO_EXECUTOR_PROBATE_WILL ||
-          getMhrTransferType.value?.transferType === ApiTransferTypes.TO_EXECUTOR_UNDER_25K_WILL))) {
+            (getMhrTransferType.value?.transferType === ApiTransferTypes.TO_EXECUTOR_PROBATE_WILL ||
+                getMhrTransferType.value?.transferType === ApiTransferTypes.TO_EXECUTOR_UNDER_25K_WILL))) {
       groupToUpdate.owners.push({ ...owner, groupId: groupId || fallBackId })
     } else {
       // No groups exist, need to create a new one
@@ -304,9 +305,9 @@ export function useHomeOwners (isMhrTransfer: boolean = false) {
       set(groupToUpdate, `owners[${i}]`, updatedOwner)
 
       if (!groupToUpdate.interestNumerator && !groupToUpdate.interestDenominator &&
-        groupToUpdate.owners.every(owner => owner.action === ActionTypes.REMOVED &&
-        getMhrTransferType.value.transferType !== ApiTransferTypes.TO_EXECUTOR_PROBATE_WILL &&
-        getMhrTransferType.value.transferType !== ApiTransferTypes.TO_ADMIN_NO_WILL)) {
+          groupToUpdate.owners.every(owner => owner.action === ActionTypes.REMOVED &&
+              getMhrTransferType.value.transferType !== ApiTransferTypes.TO_EXECUTOR_PROBATE_WILL &&
+              getMhrTransferType.value.transferType !== ApiTransferTypes.TO_ADMIN_NO_WILL)) {
         set(groupToUpdate, 'action', ActionTypes.REMOVED)
       }
 
@@ -421,18 +422,18 @@ export function useHomeOwners (isMhrTransfer: boolean = false) {
   }
 
   const setGroupFractionalInterest =
-    (groupId: number, fractionalData: MhrRegistrationFractionalOwnershipIF, hasChanges: boolean = false): void => {
-      const homeOwnerGroups = getTransferOrRegistrationHomeOwnerGroups()
-      const groupToUpdate = find(homeOwnerGroups, { groupId: groupId }) as MhrRegistrationHomeOwnerGroupIF
+      (groupId: number, fractionalData: MhrRegistrationFractionalOwnershipIF, hasChanges: boolean = false): void => {
+        const homeOwnerGroups = getTransferOrRegistrationHomeOwnerGroups()
+        const groupToUpdate = find(homeOwnerGroups, { groupId: groupId }) as MhrRegistrationHomeOwnerGroupIF
 
-      Object.assign(groupToUpdate, {
-        ...fractionalData,
-        ...(hasChanges && { action: ActionTypes.CHANGED })
-      })
+        Object.assign(groupToUpdate, {
+          ...fractionalData,
+          ...(hasChanges && { action: ActionTypes.CHANGED })
+        })
 
-      const updatedOwnerGroups = [...homeOwnerGroups]
-      setTransferOrRegistrationHomeOwnerGroups(updatedOwnerGroups)
-    }
+        const updatedOwnerGroups = [...homeOwnerGroups]
+        setTransferOrRegistrationHomeOwnerGroups(updatedOwnerGroups)
+      }
 
   /**
    * Return the group number as it correlates to its current place in the active owners.
@@ -498,14 +499,14 @@ export function useHomeOwners (isMhrTransfer: boolean = false) {
     if (showGroups.value) {
       // groups must not be empty or have any fractional errors and add/edit form must be closed
       isHomeOwnersStepValid =
-        !getTotalOwnershipAllocationStatus().hasMinimumGroupsError &&
-        !getTotalOwnershipAllocationStatus().hasTotalAllocationError &&
-        !hasEmptyGroup.value &&
-        !isGlobalEditingMode.value && !hasMixedOwnersInAGroup()
+              !getTotalOwnershipAllocationStatus().hasMinimumGroupsError &&
+              !getTotalOwnershipAllocationStatus().hasTotalAllocationError &&
+              !hasEmptyGroup.value &&
+              !isGlobalEditingMode.value && !hasMixedOwnersInAGroup()
     } else {
       // must have at least one owner with proper id and add/edit form must be closed
       isHomeOwnersStepValid = !!getMhrRegistrationHomeOwners.value.find(owner => owner.ownerId) &&
-                              !isGlobalEditingMode.value && !hasMixedOwnersInAGroup()
+              !isGlobalEditingMode.value && !hasMixedOwnersInAGroup()
     }
     setValidation(MhrSectVal.HOME_OWNERS_VALID, MhrCompVal.OWNERS_VALID, isHomeOwnersStepValid)
   })

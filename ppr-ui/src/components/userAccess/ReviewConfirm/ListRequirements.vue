@@ -1,10 +1,10 @@
 <template>
   <ol class="pl-0">
     <div
-      v-for="(requirement, index) in requirements"
-      :key="index"
+        v-for="(requirement, index) in requirements"
+        :key="index"
     >
-      <li class="ml-14 px-3">
+      <li class="ml-6 px-3">
 
         <!-- Requirement with tooltip text -->
         <p  v-if="requirement.tooltipText" class="ma-0">
@@ -20,7 +20,7 @@
             </v-tooltip>
             {{ requirement.boldTextPostTooltip }}
           </b>
-            {{ requirement.regularText }}
+          {{ requirement.regularText }}
         </p>
 
         <!-- Requirement without tooltip text -->
@@ -49,5 +49,6 @@ export default defineComponent({
 @import '@/assets/styles/theme.scss';
 li {
   color: $gray7;
+  font-weight: bold;
 }
 </style>

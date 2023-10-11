@@ -3,7 +3,7 @@
     <v-row id="mhr-home-add-person">
       <v-col cols="3">
         <label class="generic-label"
-        :class="{ 'error-text' : showTableError || showReviewedError}"
+               :class="{ 'error-text' : showTableError || showReviewedError}"
         >
           {{ getSidebarTitle }}
         </label>
@@ -13,20 +13,20 @@
         <HomeOwnerRoles :partyType="owner.partyType"  @update:partyType="owner.partyType = $event"/>
 
         <v-form
-          id="addHomeOwnerForm"
-          ref="addHomeOwnerForm"
-          v-model="isHomeOwnerFormValid"
+            id="addHomeOwnerForm"
+            ref="addHomeOwnerForm"
+            v-model="isHomeOwnerFormValid"
         >
           <div v-if="isPerson">
             <label class="generic-label">
               Person's Name
             </label>
             <v-tooltip
-              v-if="disableNameFields"
-              top
-              content-class="top-tooltip pa-5"
-              transition="fade-transition"
-              data-test-id="suffix-tooltip"
+                v-if="disableNameFields"
+                top
+                content-class="top-tooltip pa-5"
+                transition="fade-transition"
+                data-test-id="suffix-tooltip"
             >
               <template v-slot:activator="{ on }">
                 <v-icon class="mt-n1" color="primary" v-on="on">
@@ -38,38 +38,38 @@
             <v-row>
               <v-col cols="4">
                 <v-text-field
-                  id="first-name"
-                  v-model="owner.individualName.first"
-                  filled
-                  label="First Name"
-                  data-test-id="first-name"
-                  :rules="firsNameRules"
-                  :disabled="disableNameFields"
-                  :readonly="disableNameFields"
+                    id="first-name"
+                    v-model="owner.individualName.first"
+                    filled
+                    label="First Name"
+                    data-test-id="first-name"
+                    :rules="firsNameRules"
+                    :disabled="disableNameFields"
+                    :readonly="disableNameFields"
                 />
               </v-col>
               <v-col cols="4">
                 <v-text-field
-                  id="middle-name"
-                  v-model="owner.individualName.middle"
-                  filled
-                  label="Middle Name (Optional)"
-                  data-test-id="middle-name"
-                  :rules="maxLength(15)"
-                  :disabled="disableNameFields"
-                  :readonly="disableNameFields"
+                    id="middle-name"
+                    v-model="owner.individualName.middle"
+                    filled
+                    label="Middle Name (Optional)"
+                    data-test-id="middle-name"
+                    :rules="maxLength(15)"
+                    :disabled="disableNameFields"
+                    :readonly="disableNameFields"
                 />
               </v-col>
               <v-col cols="4">
                 <v-text-field
-                  id="last-name"
-                  v-model="owner.individualName.last"
-                  filled
-                  label="Last Name"
-                  data-test-id="last-name"
-                  :rules="lastNameRules"
-                  :disabled="disableNameFields"
-                  :readonly="disableNameFields"
+                    id="last-name"
+                    v-model="owner.individualName.last"
+                    filled
+                    label="Last Name"
+                    data-test-id="last-name"
+                    :rules="lastNameRules"
+                    :disabled="disableNameFields"
+                    :readonly="disableNameFields"
                 />
               </v-col>
             </v-row>
@@ -82,19 +82,19 @@
               <v-col>
                 <p>
                   You can find the full legal name of an active B.C. business by entering the name
-                   or incorporation number of the business, or you can type the full legal name of other types of
+                  or incorporation number of the business, or you can type the full legal name of other types of
                   <v-tooltip
-                    top
-                    content-class="top-tooltip pa-5"
-                    transition="fade-transition"
-                    data-test-id="organization-tooltip"
-                    allow-overflow
+                      top
+                      content-class="top-tooltip pa-5"
+                      transition="fade-transition"
+                      data-test-id="organization-tooltip"
+                      allow-overflow
                   >
                     <template v-slot:activator="{ on, attrs }">
                       <span
-                        class="underline"
-                        v-bind="attrs"
-                        v-on="on"
+                          class="underline"
+                          v-bind="attrs"
+                          v-on="on"
                       > organizations.</span>
                     </template>
                     Organizations, other than active B.C. businesses, that can be listed as owners
@@ -107,8 +107,8 @@
                 </p>
 
                 <simple-help-toggle
-                  toggleButtonTitle="Help with Business and Organization Owners"
-                  :defaultHideText="false"
+                    toggleButtonTitle="Help with Business and Organization Owners"
+                    :defaultHideText="false"
                 >
                   <h3 class="text-center mb-2">
                     Business and Organization Owners
@@ -175,37 +175,37 @@
             <v-row>
               <v-col>
                 <v-text-field
-                  filled
-                  id="org-name"
-                  ref="orgNameSearchField"
-                  label="Find or enter the Full Legal Name of the Business or Organization"
-                  v-model="searchValue"
-                  persistent-hint
-                  :rules="orgNameRules"
-                  :clearable="showClear"
-                  :disabled="disableNameFields"
-                  :readonly="disableNameFields"
-                  @click:clear="showClear = false"
+                    filled
+                    id="org-name"
+                    ref="orgNameSearchField"
+                    label="Find or enter the Full Legal Name of the Business or Organization"
+                    v-model="searchValue"
+                    persistent-hint
+                    :rules="orgNameRules"
+                    :clearable="showClear"
+                    :disabled="disableNameFields"
+                    :readonly="disableNameFields"
+                    @click:clear="showClear = false"
                 >
                   <template v-slot:append>
                     <v-progress-circular
-                      v-if="loadingSearchResults"
-                      indeterminate
-                      color="primary"
-                      class="mx-3"
-                      :size="25"
-                      :width="3"
+                        v-if="loadingSearchResults"
+                        indeterminate
+                        color="primary"
+                        class="mx-3"
+                        :size="25"
+                        :width="3"
                     />
                   </template>
                 </v-text-field>
 
                 <BusinessSearchAutocomplete
-                  :searchValue="autoCompleteSearchValue"
-                  :setAutoCompleteIsActive="autoCompleteIsActive"
-                  v-click-outside="setCloseAutoComplete"
-                  @search-value="setSearchValue"
-                  @searching="loadingSearchResults = $event"
-                  :showDropdown="$refs.orgNameSearchField && $refs.orgNameSearchField.isFocused"
+                    :searchValue="autoCompleteSearchValue"
+                    :setAutoCompleteIsActive="autoCompleteIsActive"
+                    v-click-outside="setCloseAutoComplete"
+                    @search-value="setSearchValue"
+                    @searching="loadingSearchResults = $event"
+                    :showDropdown="$refs.orgNameSearchField && $refs.orgNameSearchField.isFocused"
                 />
               </v-col>
             </v-row>
@@ -214,11 +214,11 @@
           <label class="generic-label">
             Additional Name Information
             <v-tooltip
-              v-if="disableNameFields"
-              top
-              content-class="top-tooltip pa-5"
-              transition="fade-transition"
-              data-test-id="suffix-tooltip"
+                v-if="disableNameFields"
+                top
+                content-class="top-tooltip pa-5"
+                transition="fade-transition"
+                data-test-id="suffix-tooltip"
             >
               <template v-slot:activator="{ on }">
                 <v-icon class="mt-n1" color="primary" v-on="on">
@@ -232,25 +232,25 @@
           <v-row>
             <v-col class="col">
               <v-tooltip
-                right
-                content-class="right-tooltip pa-5"
-                transition="fade-transition"
-                nudge-top="12"
-                :disabled="!additionalNameTooltip"
+                  right
+                  content-class="right-tooltip pa-5"
+                  transition="fade-transition"
+                  nudge-top="12"
+                  :disabled="!additionalNameTooltip"
               >
                 <template v-slot:activator="{ on }">
                   <v-text-field
-                    v-on="on"
-                    id="suffix"
-                    v-model="owner[getSuffixOrDesc(owner)]"
-                    filled
-                    :label="nameConfig.label"
-                    data-test-id="suffix"
-                    :hint="nameConfig.hint"
-                    persistent-hint
-                    :rules="additionalNameRules"
-                    :disabled="disableNameFields"
-                    :readonly="disableNameFields"
+                      v-on="on"
+                      id="suffix"
+                      v-model="owner[getSuffixOrDesc(owner)]"
+                      filled
+                      :label="nameConfig.label"
+                      data-test-id="suffix"
+                      :hint="nameConfig.hint"
+                      persistent-hint
+                      :rules="additionalNameRules"
+                      :disabled="disableNameFields"
+                      :readonly="disableNameFields"
                   />
                 </template>
                 <span v-html="additionalNameTooltip"></span>
@@ -264,23 +264,23 @@
           <v-row>
             <v-col cols="6">
               <v-text-field
-                id="phone-number"
-                v-mask="'(NNN) NNN-NNNN'"
-                v-model="displayPhone"
-                filled
-                :rules="phoneNumberRules"
-                label="Phone Number (Optional)"
-                data-test-id="phone-number"
+                  id="phone-number"
+                  v-mask="'(NNN) NNN-NNNN'"
+                  v-model="displayPhone"
+                  filled
+                  :rules="phoneNumberRules"
+                  label="Phone Number (Optional)"
+                  data-test-id="phone-number"
               />
             </v-col>
             <v-col cols="6">
               <v-text-field
-                id="phone-ext"
-                v-model="owner.phoneExtension"
-                filled
-                :rules="phoneExtensionRules"
-                label="Extension (Optional)"
-                data-test-id="phone-ext"
+                  id="phone-ext"
+                  v-model="owner.phoneExtension"
+                  filled
+                  :rules="phoneExtensionRules"
+                  label="Extension (Optional)"
+                  data-test-id="phone-ext"
               />
             </v-col>
           </v-row>
@@ -290,24 +290,24 @@
           </label>
 
           <base-address
-            :editing="true"
-            :schema="{ ...addressSchema }"
-            v-model="owner.address"
-            :triggerErrors="triggerAddressErrors"
-            @valid="isAddressFormValid = $event"
-            class="mt-2"
-            hideAddressHint
+              :editing="true"
+              :schema="{ ...addressSchema }"
+              v-model="owner.address"
+              :triggerErrors="triggerAddressErrors"
+              @valid="isAddressFormValid = $event"
+              class="mt-2"
+              hideAddressHint
           />
 
           <!-- Group Add / Edit -->
           <template v-if="!isTransferDueToDeath && !isFrozenMhr">
             <hr class="mt-3 mb-10" />
             <HomeOwnerGroups
-              :groupId="isDefinedGroup ? ownersGroupId : null"
-              :isAddingHomeOwner="isAddingHomeOwner"
-              @setOwnerGroupId="ownerGroupId = $event"
-              :fractionalData="groupFractionalData"
-              :isMhrTransfer="isMhrTransfer"
+                :groupId="isDefinedGroup ? ownersGroupId : null"
+                :isAddingHomeOwner="isAddingHomeOwner"
+                @setOwnerGroupId="ownerGroupId = $event"
+                :fractionalData="groupFractionalData"
+                :isMhrTransfer="isMhrTransfer"
             />
           </template>
           <template v-else>
@@ -318,32 +318,32 @@
           <v-col>
             <div class="form__row form__btns">
               <v-btn
-                outlined
-                color="error"
-                class="remove-btn"
-                :disabled="isAddingHomeOwner"
-                :ripple="false"
-                @click="remove()"
+                  outlined
+                  color="error"
+                  class="remove-btn"
+                  :disabled="isAddingHomeOwner"
+                  :ripple="false"
+                  @click="remove()"
               >
                 <span>{{ isCurrentOwner(owner) ? 'Delete' : 'Remove' }}</span>
               </v-btn>
               <v-btn
-                color="primary"
-                class="ml-auto"
-                :ripple="false"
-                large
-                @click="done()"
-                data-test-id="done-btn"
+                  color="primary"
+                  class="ml-auto"
+                  :ripple="false"
+                  large
+                  @click="done()"
+                  data-test-id="done-btn"
               >
                 Done
               </v-btn>
               <v-btn
-                :ripple="false"
-                large
-                color="primary"
-                outlined
-                @click="cancel()"
-                data-test-id="cancel-btn"
+                  :ripple="false"
+                  large
+                  color="primary"
+                  outlined
+                  @click="cancel()"
+                  data-test-id="cancel-btn"
               >
                 Cancel
               </v-btn>
@@ -481,7 +481,7 @@ export default defineComponent({
     const defaultHomeOwner: MhrRegistrationHomeOwnerIF = {
       ...props.editHomeOwner,
       ownerId: props.editHomeOwner?.ownerId ||
-        (props.isMhrTransfer ? getMhrTransferHomeOwners.value.length + 1 : DEFAULT_OWNER_ID++),
+          (props.isMhrTransfer ? getMhrTransferHomeOwners.value.length + 1 : DEFAULT_OWNER_ID++),
       phoneNumber: props.editHomeOwner?.phoneNumber || '',
       phoneExtension: props.editHomeOwner?.phoneExtension || '',
       suffix: props.editHomeOwner?.suffix || '',
@@ -511,11 +511,11 @@ export default defineComponent({
 
     // Transfers flow: Pre-fill suffix and type for new owners (not when editing existing owner)
     if (props.isMhrTransfer && isTransferToExecOrAdmin.value && !props.editHomeOwner &&
-      TransToExec.hasDeletedOwnersWithProbateGrantOrAffidavit()) {
+        TransToExec.hasDeletedOwnersWithProbateGrantOrAffidavit()) {
       TransToExec.prefillOwnerAsExecOrAdmin(defaultHomeOwner)
     }
 
-    if (isFrozenMhr.value) {
+    if (isFrozenMhr.value && !isFrozenMhrDueToAffidavit) {
       defaultHomeOwner.partyType = HomeOwnerPartyTypes.OWNER_IND
     }
 
@@ -530,7 +530,7 @@ export default defineComponent({
     }) as FractionalOwnershipWithGroupIdIF[]
 
     const hasMultipleOwnersInGroup =
-      find(getTransferOrRegistrationHomeOwnerGroups(), { groupId: props.editHomeOwner?.groupId })?.owners.length > 1
+        find(getTransferOrRegistrationHomeOwnerGroups(), { groupId: props.editHomeOwner?.groupId })?.owners.length > 1
 
     if (allFractionalData.length === 0 || props.editHomeOwner == null || hasMultipleOwnersInGroup) {
       // Default LCM to be used if all denominators are the identical. UX feature for MHR's only
@@ -592,7 +592,7 @@ export default defineComponent({
       searchValue: props.editHomeOwner?.organizationName,
       isDefinedGroup: computed((): boolean => {
         return !!localState.groupFractionalData?.interestNumerator &&
-          !!localState.groupFractionalData?.interestDenominator
+            !!localState.groupFractionalData?.interestDenominator
       }),
       nameConfig: computed((): AdditionalNameConfigIF => {
         return AdditionalNameConfig[localState.owner.partyType]
@@ -629,14 +629,14 @@ export default defineComponent({
             : localState.owner
 
           editHomeOwner(
-            updatedOwner as MhrRegistrationHomeOwnerIF,
-            localState.ownerGroupId || 1
+              updatedOwner as MhrRegistrationHomeOwnerIF,
+              localState.ownerGroupId || 1
           )
         } else {
           // In TransToExec flow, if the owner is the executor, add to same group as deleted owner with Probate Grant
           if (props.isMhrTransfer &&
-            TransToExec.hasDeletedOwnersWithProbateGrantOrAffidavit() &&
-            localState.owner.partyType === HomeOwnerPartyTypes.EXECUTOR) {
+              TransToExec.hasDeletedOwnersWithProbateGrantOrAffidavit() &&
+              localState.owner.partyType === HomeOwnerPartyTypes.EXECUTOR) {
             localState.ownerGroupId = localState.owner.groupId
           }
 
@@ -649,8 +649,8 @@ export default defineComponent({
           }
 
           addOwnerToTheGroup(
-            localState.owner as MhrRegistrationHomeOwnerIF,
-            localState.ownerGroupId
+              localState.owner as MhrRegistrationHomeOwnerIF,
+              localState.ownerGroupId
           )
         }
 
@@ -750,7 +750,6 @@ export default defineComponent({
       isTransferDueToDeath,
       disableNameFields,
       HomeOwnerPartyTypes,
-      getMhrTransferType,
       transfersContent,
       isFrozenMhr,
       customRules,
@@ -776,8 +775,8 @@ export default defineComponent({
 }
 
 .underline {
-    border-bottom: 1px dotted $gray7;
-    text-decoration: none;
+  border-bottom: 1px dotted $gray7;
+  text-decoration: none;
 }
 
 #addHomeOwnerForm {
@@ -821,6 +820,10 @@ export default defineComponent({
 
     label {
       color: $gray7;
+      opacity: .4;
+    }
+
+    i {
       opacity: .4;
     }
   }

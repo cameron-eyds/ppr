@@ -7,27 +7,27 @@
     </v-col>
     <v-col class="pt-2 pb-9">
       <v-radio-group
-        id="owner-role-options"
-        class="mt-0 pr-2" row
-        hide-details="true"
-        v-model="selectedPartyType"
+          id="owner-role-options"
+          class="mt-0 pr-2" row
+          hide-details="true"
+          v-model="selectedPartyType"
       >
         <v-tooltip
-          v-for="role in HomeOwnerRoles"
-          :key="role.id"
-          top
-          nudge-right="18"
-          content-class="top-tooltip pa-5"
-          transition="fade-transition"
+            v-for="role in HomeOwnerRoles"
+            :key="role.id"
+            top
+            nudge-right="18"
+            content-class="top-tooltip pa-5"
+            transition="fade-transition"
         >
           <template v-slot:activator="{ on }">
             <v-radio
-              v-on="on"
-              :id="role.id"
-              :class="role.class"
-              active-class="selected-radio"
-              :disabled="isDisabledRadio(role.model)"
-              v-model="role.model"
+                v-on="on"
+                :id="role.id"
+                :class="role.class"
+                active-class="selected-radio"
+                :disabled="isDisabledRadio(role.model)"
+                v-model="role.model"
             >
               <template v-slot:label>
                 <div :class="{'underline' : !isDisabledRadio(role.model)}">{{ role.label }}</div>
@@ -50,7 +50,7 @@ import { useMhrInformation, useTransferOwners } from '@/composables'
 /* eslint-enable no-unused-vars */
 
 export default defineComponent({
-  name: 'HomeLocationType',
+  name: 'HomeOwnerRoles',
   props: {
     partyType: {
       type: String as PropType<HomeOwnerPartyTypes>,
@@ -59,11 +59,12 @@ export default defineComponent({
   },
   emits: ['update:partyType'],
   setup (props, context) {
-    const { isFrozenMhr } = useMhrInformation()
+    const { isFrozenMhrDueToUnitNote } = useMhrInformation()
     const {
       disableNameFields,
       isTransferDueToDeath,
       isTransferToAdminNoWill,
+      isTransferDueToSaleOrGift,
       isTransferToExecutorProbateWill,
       isTransferToExecutorUnder25Will,
       isTransferToSurvivingJointTenant
@@ -82,14 +83,15 @@ export default defineComponent({
         case HomeOwnerPartyTypes.OWNER_IND:
         case HomeOwnerPartyTypes.OWNER_BUS:
           return isTransferToExecutorProbateWill.value || isTransferToExecutorUnder25Will.value ||
-            isTransferToAdminNoWill.value || isTransferToSurvivingJointTenant.value
+              isTransferToAdminNoWill.value || isTransferToSurvivingJointTenant.value
         case HomeOwnerPartyTypes.EXECUTOR:
-          return disableNameFields.value || isTransferToAdminNoWill.value || isFrozenMhr.value
+          return disableNameFields.value || isTransferToAdminNoWill.value || isTransferDueToSaleOrGift.value ||
+              isFrozenMhrDueToUnitNote.value
         case HomeOwnerPartyTypes.ADMINISTRATOR:
           return isTransferToSurvivingJointTenant.value || isTransferToExecutorUnder25Will.value ||
-            isTransferToExecutorProbateWill.value || isFrozenMhr.value
+              isTransferToExecutorProbateWill.value || isTransferDueToSaleOrGift.value || isFrozenMhrDueToUnitNote.value
         case HomeOwnerPartyTypes.TRUSTEE:
-          return isTransferDueToDeath.value || isFrozenMhr.value
+          return isTransferDueToDeath.value || isTransferDueToSaleOrGift.value || isFrozenMhrDueToUnitNote.value
       }
     }
 
