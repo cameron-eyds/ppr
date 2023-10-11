@@ -64,7 +64,7 @@ export function multipleWordsToTitleCase (value: string, excludeWords: boolean):
   const titleCaseWords = words.map((word, index) => {
     // If excludePrePosAndConj is true, and sentence does not start with a preposition or conjunction
     if (excludeWords && exclusions.includes(word.toLowerCase()) &&
-        !(index === 0 || words[index - 1].endsWith('.'))) {
+      !(index === 0 || words[index - 1].endsWith('.'))) {
       return word.toLowerCase()
     }
     return toTitleCase(word)

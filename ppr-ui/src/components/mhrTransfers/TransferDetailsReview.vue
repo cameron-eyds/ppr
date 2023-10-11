@@ -10,9 +10,9 @@
         <label class="generic-label">Consideration</label>
       </v-col>
       <v-col
-          cols="9"
-          class="gray7"
-          id="consideration-display"
+        cols="9"
+        class="gray7"
+        id="consideration-display"
       >
         {{ formatCurrency(getMhrTransferConsideration) }}
       </v-col>

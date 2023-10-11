@@ -1,8 +1,8 @@
 <template>
   <ol class="pl-0">
     <div
-        v-for="(requirement, index) in requirements"
-        :key="index"
+      v-for="(requirement, index) in requirements"
+      :key="index"
     >
       <li class="ml-6 px-3">
 
@@ -49,6 +49,5 @@ export default defineComponent({
 @import '@/assets/styles/theme.scss';
 li {
   color: $gray7;
-  font-weight: bold;
 }
 </style>

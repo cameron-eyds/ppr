@@ -5,12 +5,12 @@
       The following information must be completed and confirmed before submitting this registration.
     </p>
     <v-card
-        flat
-        rounded
-        id="confirm-completion-card"
-        class="mt-8 pt-5 pa-8 pr-6 pb-7"
-        :class="{ 'border-error-left': showErrorComponent }"
-        data-test-id="confirm-completion-card"
+      flat
+      rounded
+      id="confirm-completion-card"
+      class="mt-8 pt-5 pa-8 pr-6 pb-7"
+      :class="{ 'border-error-left': showErrorComponent }"
+      data-test-id="confirm-completion-card"
     >
       <v-form ref="confirmCompletionForm">
         <v-row>
@@ -37,11 +37,11 @@
                 <li v-else-if="isTransferDueToDeath" class="pl-3 pb-3 mb-7" data-test-id="death-certificate-section">
                   <p><strong>Original or
                     <v-tooltip
-                        top
-                        content-class="top-tooltip pa-5"
-                        transition="fade-transition"
-                        data-test-id="organization-tooltip"
-                        allow-overflow
+                      top
+                      content-class="top-tooltip pa-5"
+                      transition="fade-transition"
+                      data-test-id="organization-tooltip"
+                      allow-overflow
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <span
@@ -58,11 +58,11 @@
                     of Death Certificate</strong> that has been issued by Vital Statistics and has been received for
                     each joint tenant owner being removed due to death. I confirm that it was
                     <v-tooltip
-                        top
-                        content-class="top-tooltip pa-5"
-                        transition="fade-transition"
-                        data-test-id="organization-tooltip"
-                        allow-overflow
+                      top
+                      content-class="top-tooltip pa-5"
+                      transition="fade-transition"
+                      data-test-id="organization-tooltip"
+                      allow-overflow
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <span
@@ -120,17 +120,17 @@
           </v-col>
           <v-col cols="9" class="ml-n4">
             <v-checkbox
-                class="py-7 px-4 my-0 confirm-checkbox"
-                :hide-details="true"
-                id="checkbox-certified"
-                v-model="confirmCompletion"
-                data-test-id="confirm-completion-checkbox"
+              class="py-7 px-4 my-0 confirm-checkbox"
+              :hide-details="true"
+              id="checkbox-certified"
+              v-model="confirmCompletion"
+              data-test-id="confirm-completion-checkbox"
             >
               <template v-slot:label>
-                  <span data-test-id="confirm-checkbox-label" :class="{ 'invalid-color': showErrorComponent }">
-                    I, <strong>{{ legalName }}</strong
-                  >, confirm that all of the requirements listed above have been completed.
-                  </span>
+                <span data-test-id="confirm-checkbox-label" :class="{ 'invalid-color': showErrorComponent }">
+                  I, <strong>{{ legalName }}</strong
+                >, confirm that all of the requirements listed above have been completed.
+                </span>
               </template>
             </v-checkbox>
           </v-col>
@@ -153,7 +153,7 @@ export default defineComponent({
   props: {
     sectionNumber: {
       type: Number,
-      default: null
+      default: 2
     },
     legalName: {
       type: String,

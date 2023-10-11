@@ -8,16 +8,16 @@
         </p>
 
         <CautionBox
-            class="mt-9"
-            setMsg="The homeowner and home location information in the residential exemption form, the manufactured home
-            registry, and the land title must align. If the current MHR registration information is inaccurate, the
-            register must be updated prior to proceeding with this Application for Residential Exemption."
+          class="mt-9"
+          setMsg="The homeowner and home location information in the residential exemption form, the manufactured home
+          registry, and the land title must align. If the current MHR registration information is inaccurate, the
+          register must be updated prior to proceeding with this Application for Residential Exemption."
         />
 
         <SimpleHelpToggle
-            toggleButtonTitle="Help with Home Verification"
-            :defaultHideText="false"
-            class="my-6"
+          toggleButtonTitle="Help with Home Verification"
+          :defaultHideText="false"
+          class="my-6"
         >
           <template #content>
             <article class="px-8 py-2">
@@ -45,11 +45,11 @@
     <div :class="{ 'increment-sections' : isRoleStaffReg }">
       <section v-if="isRoleStaffReg" id="document-id-section" class="mt-7">
         <DocumentId
-            :content="exDocIdContent"
-            :documentId="''"
-            :validate="false"
-            @setStoreProperty="handleDocumentIdUpdate"
-            @isValid="handleDocumentIdUpdate($event)"
+          :content="exDocIdContent"
+          :documentId="''"
+          :validate="false"
+          @setStoreProperty="handleDocumentIdUpdate"
+          @isValid="handleDocumentIdUpdate($event)"
         />
       </section>
 
@@ -63,9 +63,9 @@
 
       <section v-if="isRoleStaffReg" id="remarks-section" class="mt-7">
         <Remarks
-            :content="exRemarksContent"
-            :unitNoteRemarks="''"
-            @setStoreProperty="handleRemarksUpdate"
+          :content="exRemarksContent"
+          :unitNoteRemarks="''"
+          @setStoreProperty="handleRemarksUpdate"
         />
       </section>
     </div>

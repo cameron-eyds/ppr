@@ -17,33 +17,33 @@
                 </v-col>
               </v-row>
               <Stepper
-                  class="mt-11"
-                  :stepConfig="getMhrExemptionSteps"
-                  :showStepErrors="false"
+                class="mt-11"
+                :stepConfig="getMhrExemptionSteps"
+                :showStepErrors="false"
               />
               <!-- Component Steps -->
               <component
-                  v-for="step in getMhrExemptionSteps"
-                  v-show="isRouteName(step.to)"
-                  :is="step.component"
-                  :key="step.step"
-                  :validate="false"
-                  :validateReview="false"
+                v-for="step in getMhrExemptionSteps"
+                v-show="isRouteName(step.to)"
+                :is="step.component"
+                :key="step.step"
+                :validate="false"
+                :validateReview="false"
               />
             </v-col>
             <v-col class="pl-6 pt-5" cols="3">
               <aside>
                 <affix
-                    class="sticky-container overlap"
-                    relative-element-selector=".col-9"
-                    :offset="{ top: 90, bottom: -100 }"
+                  class="sticky-container overlap"
+                  relative-element-selector=".col-9"
+                  :offset="{ top: 90, bottom: -100 }"
                 >
                   <StickyContainer
-                      :setShowButtons="false"
-                      :setRightOffset="true"
-                      :setShowFeeSummary="true"
-                      :setFeeType="FeeSummaryTypes.RESIDENTIAL_EXEMPTION"
-                      data-test-id="exemption-fee-summary"
+                    :setShowButtons="false"
+                    :setRightOffset="true"
+                    :setShowFeeSummary="true"
+                    :setFeeType="FeeSummaryTypes.RESIDENTIAL_EXEMPTION"
+                    data-test-id="exemption-fee-summary"
                   />
                 </affix>
               </aside>
@@ -57,11 +57,11 @@
     <v-row no-gutters class="mt-20">
       <v-col cols="12">
         <ButtonFooter
-            :navConfig="MhrExemptionFooterConfig"
-            :currentStepName="$route.name"
-            :baseDialogOptions="notCompleteDialog"
-            @error="emitError($event)"
-            @submit="submit()"
+          :navConfig="MhrExemptionFooterConfig"
+          :currentStepName="$route.name"
+          :baseDialogOptions="notCompleteDialog"
+          @error="emitError($event)"
+          @submit="submit()"
         />
       </v-col>
     </v-row>

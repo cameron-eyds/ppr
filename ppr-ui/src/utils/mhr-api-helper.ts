@@ -712,7 +712,7 @@ function addSortParams (url: string, sortOptions: RegistrationSortIF): string {
     // add timestamp onto datetime param values
     if (sortOptions[sortKeys[i]] && ['startDateTime', 'endDateTime'].includes(UIFilterToApiFilter[sortKeys[i]])) {
       sortOptions[sortKeys[i]] =
-          addTimestampToDate(sortOptions[sortKeys[i]], sortOptions[sortKeys[i]] === 'endDateTime')
+        addTimestampToDate(sortOptions[sortKeys[i]], sortOptions[sortKeys[i]] === 'endDateTime')
     }
     if (sortOptions[sortKeys[i]]) {
       url += `&${UIFilterToApiFilter[sortKeys[i]]}=${sortOptions[sortKeys[i]]}`

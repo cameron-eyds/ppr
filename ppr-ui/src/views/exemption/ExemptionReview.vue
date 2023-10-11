@@ -12,10 +12,10 @@
 
     <!-- Exemption Content Review -->
     <ReviewCard
-        class="mt-5"
-        :showIncomplete="false"
-        :reviewProperties="reviewContent"
-        :returnToRoutes="[RouteNames.RESIDENTIAL_EXEMPTION, RouteNames.EXEMPTION_DETAILS]"
+      class="mt-5"
+      :showIncomplete="false"
+      :reviewProperties="reviewContent"
+      :returnToRoutes="[RouteNames.RESIDENTIAL_EXEMPTION, RouteNames.EXEMPTION_DETAILS]"
     >
       <template #headerSlot>
         <header class="review-header">
@@ -34,17 +34,17 @@
           code, you can look up the party code or name.</p>
 
         <FormCard
-            label="Add Submitting party"
-            :showErrors="false"
-            :class="{'border-error-left': false}"
+          label="Add Submitting party"
+          :showErrors="false"
+          :class="{'border-error-left': false}"
         >
           <template v-slot:formSlot>
             <PartyForm
-                ref=""
-                :baseParty="getMhrExemption.submittingParty"
-                :schema="PartyFormSchema"
-                :orgLookupConfig="null"
-                @isValid="null"
+              ref=""
+              :baseParty="getMhrExemption.submittingParty"
+              :schema="PartyFormSchema"
+              :orgLookupConfig="null"
+              @isValid="null"
             >
             </PartyForm>
           </template>
@@ -54,18 +54,18 @@
       <!-- Attention -->
       <section class="mt-13">
         <Attention
-            sectionId="mhr-exemption-attention"
+          sectionId="mhr-exemption-attention"
         />
       </section>
 
       <!-- Confirm Requirements -->
       <section class="mt-13">
         <ConfirmCompletion
-            :legalName="getCertifyInformation.legalName"
+          :legalName="getCertifyInformation.legalName"
         >
           <template #contentSlot>
             <ListRequirements
-                :requirements="exConfirmRequirements"
+              :requirements="exConfirmRequirements"
             />
           </template>
         </ConfirmCompletion>
@@ -74,7 +74,7 @@
       <!-- Authorization -->
       <section class="mt-13">
         <CertifyInformation
-            :content="exCertifyInfoContent"
+          :content="exCertifyInfoContent"
         />
       </section>
 
@@ -83,13 +83,13 @@
         <h2>Staff Payment</h2>
         <v-card flat class="mt-4 pa-8" :class="{ 'border-error-left': false }">
           <StaffPayment
-              id="staff-payment"
-              :displaySideLabel="true"
-              :displayPriorityCheckbox="true"
-              :staffPaymentData="staffPayment"
-              :invalidSection="false"
-              :validate="false"
-              @update:staffPaymentData="onStaffPaymentDataUpdate($event)"
+            id="staff-payment"
+            :displaySideLabel="true"
+            :displayPriorityCheckbox="true"
+            :staffPaymentData="staffPayment"
+            :invalidSection="false"
+            :validate="false"
+            @update:staffPaymentData="onStaffPaymentDataUpdate($event)"
           />
         </v-card>
       </section>
