@@ -1,6 +1,7 @@
 <template>
   <div
     id="dashboard-tabs"
+    class="mt-12"
   >
     <!-- Tabs -->
     <v-tabs

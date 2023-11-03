@@ -5,19 +5,16 @@ import type { IconSet, IconProps } from 'vuetify'
 
 // Styles
 import '@mdi/font/css/materialdesignicons.css'
-import 'vuetify/styles'
-import 'vuetify/dist/vuetify.min.css'
+import '@/styles/main.scss'
 import '@mdi/font/css/materialdesignicons.min.css' // ensure you are using css-loader
 import '@/assets/styles/base.scss'
 import '@/assets/styles/layout.scss'
 import '@/assets/styles/overrides.scss'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
 
 // Custom Svg Icons
 import { ExecutorBusinessIcon, ExecutorPersonIcon, HomeLocationIcon, HomeOwnersIcon } from '@/assets/svgs'
 
-const customSvgNameToComponent: any = {
+const customSvgNameToComponent = {
   ExecutorBusinessIcon, ExecutorPersonIcon, HomeLocationIcon, HomeOwnersIcon
 }
 
@@ -48,7 +45,5 @@ export default createVuetify({
     sets: {
       custom: custom
     }
-  },
-  components,
-  directives
+  }
 })

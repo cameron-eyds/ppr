@@ -128,7 +128,6 @@
         <v-col>
           <DashboardTabs
             v-if="enableDashboardTabs"
-            class="mt-13"
             :app-loading-data="loading"
             :app-ready="appReady"
             @snack-bar-msg="snackBarEvent($event)"

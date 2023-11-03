@@ -25,7 +25,7 @@
 
     <div class="app-body">
       <main>
-        <sbc-system-banner
+        <SbcSystemBanner
           v-if="bannerText != null"
           :show="bannerText != null"
           :type="null"
@@ -35,6 +35,15 @@
         <Breadcrumb v-if="haveData" />
         <Tombstone v-if="haveData" />
         <v-container>
+          <!--          <p class="text-3xl mt-2">-->
+          <!--            TESTING SPAN-->
+          <!-- class="flex flex-nowrap content-center p-2 hover:bg-bcGovColor-activeBlue/[0.2]"          </p>-->
+          <div>
+            <Menu
+              :menu-button-text="propsTest.menuButtonText"
+              :menu-lists="propsTest.menuLists"
+            />
+          </div>
           <v-row no-gutters>
             <v-col cols="12">
               <router-view
@@ -100,10 +109,12 @@ import {
   DialogOptionsIF, ErrorIF, UserInfoIF, UserSettingsIF // eslint-disable-line
 } from '@/interfaces'
 import { useAuth, useNavigation } from '@/composables'
+import Menu from '@/components/common/Menu.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
+    Menu,
     SbcHeader,
     SbcFooter,
     Breadcrumb,
@@ -146,6 +157,21 @@ export default defineComponent({
     } = storeToRefs(useStore())
 
     const localState = reactive({
+      propsTest: {
+        menuButtonText: 'menu button',
+        menuLists: [{ header: 'list title', items: [
+            {
+              label: 'Test Label',
+              icon: 'i-mdi-check',
+              setActive: true
+            },
+            {
+              label: 'Test Label',
+              setActive: false
+            }
+          ]
+        }]
+      },
       errorDisplay: false,
       errorOptions: loginError as DialogOptionsIF,
       saveDraftExitToggle: false,
